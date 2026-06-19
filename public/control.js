@@ -11526,6 +11526,9 @@ document.querySelectorAll('.conn-copy-btn').forEach(btn => {
       }).catch(() => {});
     }
 
+    // buildSeqUI renvoie undefined si le DOM cible (sbb-seq-list, etc.) n'existe
+    // pas — c'est le cas depuis que l'onglet Builder a été retiré. On garde la
+    // destructuration safe avec `|| {}` pour ne pas faire planter tout control.js.
     const { render: renderSbbSeq } = buildSeqUI({
       listId:         'sbb-seq-list',
       addBtnId:       'sbb-seq-add',
@@ -11534,7 +11537,7 @@ document.querySelectorAll('.conn-copy-btn').forEach(btn => {
       saveLayout:     saveSbb,
       apiBase:        '/api/sb-layouts',
       canvasSelector: '#sbb-canvas-inner',
-    });
+    }) || {};
 
     /* Sync avec l'état du builder sbb (layouts + activeId) */
     socket.on('sbLayoutUpdate', data => {
