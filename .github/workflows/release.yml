@@ -1,0 +1,37 @@
+name: Release
+
+# Déclenché quand un tag v* est poussé (ex: v1.0.1, v1.2.0).
+# Workflow type :
+#   npm version patch        → bump 1.0.0 → 1.0.1 dans package.json
+#                              + commit "1.0.1" + tag v1.0.1
+#   git push --follow-tags   → push le commit + le tag → ce workflow se lance
+#                              → release publiée auto avec changelog généré
+#
+# La release inclut "Source code (zip)" et "Source code (tar.gz)" générés
+# par GitHub, exactement ce que update-checker.js télécharge via zipballUrl.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # fetch-depth: 0 permet à softprops/action-gh-release de générer
+          # le changelog en comparant avec le tag précédent.
+          fetch-depth: 0
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
