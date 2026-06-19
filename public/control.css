@@ -6169,3 +6169,15 @@ h1, .section-header h2, .custom-card h3,
   border-left: none;
   border-top: none;
 }
+
+/* Couleur de section pilotée par l'onglet actif — chaque section override
+   --gold (cyan néon par défaut) avec sa propre couleur, et tout le contenu
+   (titres h3, boutons actifs, accents) en hérite automatiquement via la cascade. */
+#sb-scroll-area > :nth-child(1) { --gold: #4e9eff; --neon-cyan: #4e9eff; } /* Affichage  – bleu  */
+#sb-scroll-area > :nth-child(2) { --gold: #ff9f3f; --neon-cyan: #ff9f3f; } /* Logo       – orange */
+#sb-scroll-area > :nth-child(3) { --gold: #3fc89f; --neon-cyan: #3fc89f; } /* Drapeaux   – vert  */
+#sb-scroll-area > :nth-child(4) { --gold: #ff4f8f; --neon-cyan: #ff4f8f; } /* Fond       – rose  */
+#sb-scroll-area > :nth-child(5) { --gold: #af6fff; --neon-cyan: #af6fff; } /* Style      – violet */
+#sb-scroll-area > :nth-child(6) { --gold: #ffdd44; --neon-cyan: #ffdd44; } /* Position   – jaune */
+#sb-scroll-area > :nth-child(7) { --gold: #44ddff; --neon-cyan: #44ddff; } /* Textes     – cyan  */
+#sb-scroll-area > :nth-child(8) { --gold: #ff5e5e; --neon-cyan: #ff5e5e; } /* Particules – rouge */
