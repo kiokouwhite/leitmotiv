@@ -6138,3 +6138,25 @@ h1, .section-header h2, .custom-card h3,
   pointer-events: none;
   letter-spacing: 0.5px;
 }
+
+/* ── État actif des nav-titles en mode onglets ────────────────────── */
+/* initSectionTabs (sb-scroll-area) ajoute .active sur le titre courant.
+   On garde la couleur héritée (nth-child) et on renforce avec un glow +
+   sous-ligne pour bien indiquer la section active. */
+[id$="-nav-titles"] .vic-nav-title.active {
+  font-weight: 700;
+  text-shadow: 0 0 10px currentColor, 0 0 18px currentColor;
+  position: relative;
+}
+[id$="-nav-titles"] .vic-nav-title.active::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -6px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  box-shadow: 0 0 8px currentColor;
+}
+[id$="-nav-titles"] .vic-nav-title { cursor: pointer; }

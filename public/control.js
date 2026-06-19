@@ -12375,7 +12375,32 @@ function initScrollNav(scrollAreaId, navTitlesId) {
   });
 }
 
-initScrollNav('sb-scroll-area',      'sb-nav-titles');
+// ── Section-tabs : variante onglets — n'affiche qu'une section à la fois ──
+// Le clic sur un .vic-nav-title masque toutes les sections sauf la cible.
+// Plus pratique que le scroll continu quand il y a beaucoup de sections.
+function initSectionTabs(scrollAreaId, navTitlesId) {
+  const scrollArea = document.getElementById(scrollAreaId);
+  const navEl = document.getElementById(navTitlesId);
+  if (!scrollArea || !navEl) return;
+  const titles = Array.from(navEl.querySelectorAll('.vic-nav-title'));
+  if (!titles.length) return;
+  const sections = titles.map(t => document.getElementById(t.dataset.target)).filter(Boolean);
+  function activate(targetId) {
+    titles.forEach(t => t.classList.toggle('active', t.dataset.target === targetId));
+    sections.forEach(s => { s.style.display = (s.id === targetId) ? '' : 'none'; });
+    scrollArea.scrollTop = 0;
+  }
+  navEl.addEventListener('wheel', e => { e.preventDefault(); scrollArea.scrollBy({ top: e.deltaY }); }, { passive: false });
+  navEl.addEventListener('click', e => {
+    const title = e.target.closest('.vic-nav-title');
+    if (!title) return;
+    activate(title.dataset.target);
+  });
+  // Initial : afficher la 1re section uniquement
+  activate(titles[0].dataset.target);
+}
+
+initSectionTabs('sb-scroll-area',      'sb-nav-titles');
 initScrollNav('caster-cust-scroll-area', 'caster-cust-nav-titles');
 initScrollNav('vic-scroll-area',     'vic-nav-titles');
 initScrollNav('vs-scroll-area',      'vs-nav-titles');
