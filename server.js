@@ -116,6 +116,21 @@ app.use((req, res, next) => {
 });
 
 
+// Favicon inline (évite le 404 + l'indicateur de chargement permanent du navigateur).
+// SVG simple aux couleurs néon de Leitmotiv, encodé une fois pour toutes.
+const _FAVICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' +
+  '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+  '<stop offset="0" stop-color="#22f0ff"/><stop offset="1" stop-color="#9d6cff"/>' +
+  '</linearGradient></defs>' +
+  '<rect width="64" height="64" rx="12" fill="#02030e"/>' +
+  '<text x="32" y="44" font-family="Orbitron,Arial,sans-serif" font-size="32" font-weight="900" ' +
+  'text-anchor="middle" fill="url(#g)">L</text></svg>';
+app.get('/favicon.ico', (req, res) => {
+  res.set('Content-Type', 'image/svg+xml');
+  res.set('Cache-Control', 'public, max-age=86400');
+  res.send(_FAVICON_SVG);
+});
+
 app.use('/full', express.static(path.join(__dirname, 'public', 'full'), { maxAge: '7d' }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/companion', express.static(path.join(__dirname, 'companion')));
