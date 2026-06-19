@@ -154,6 +154,32 @@ body.sb-event-stack-vertical .eb-left {
 /* Miroir P1/P2 — inverse l'ordre dans players-container */
 body.sb-mirror .players-container { flex-direction: row-reverse; }
 
+/* Position du score « Au-dessus » — score-center passe en bande full-width
+   au-dessus des deux cartes joueur (flex-wrap + order:-1 + flex-basis:100%).
+   Les bordures latérales et le min-width sont remis à zéro car le bloc passe
+   en largeur 100%. */
+body.sb-score-above .players-container {
+  flex-wrap: wrap;
+}
+body.sb-score-above .players-container > .score-center {
+  order: -1;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid var(--smash-border);
+}
+/* Le score-box doit s'étaler horizontalement quand il est en bande pleine */
+body.sb-score-above .players-container > .score-center .score-box {
+  justify-content: center;
+  gap: 22px;
+  padding: 8px 14px;
+}
+body.sb-score-above .players-container > .score-center .series-dots {
+  padding: 4px 12px 8px;
+}
+
 .player-left {
   flex-direction: row;
   border-bottom: 3px solid var(--p1-color, var(--smash-red));
