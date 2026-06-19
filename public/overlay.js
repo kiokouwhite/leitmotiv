@@ -773,20 +773,35 @@ function update(s) {
     p2Sep.style.display = 'none';
   }
 
-  // Player flags
+  // Player flags — avec option placeholder (Customisation > Scoreboard > Drapeaux).
+  // Quand s.placeholderFlags === true et qu'aucun drapeau n'est sélectionné,
+  // on affiche un SVG gris « ? » pour visualiser la position/taille en preview
+  // sans coller un vrai pays. Ce flag n'est qu'un aide visuel — il n'est pas
+  // envoyé à OBS si l'utilisatrice le coche ; coupe-le avant de streamer.
+  const FLAG_PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 34">' +
+    '<defs><pattern id="d" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+    '<line x1="0" y1="0" x2="0" y2="6" stroke="rgba(255,255,255,0.18)" stroke-width="3"/></pattern></defs>' +
+    '<rect width="52" height="34" fill="#3a3a4e"/><rect width="52" height="34" fill="url(#d)"/>' +
+    '<text x="26" y="23" font-family="Russo One, Arial, sans-serif" font-size="18" font-weight="700" ' +
+    'text-anchor="middle" fill="rgba(255,255,255,0.6)">?</text>' +
+    '<rect x="0.5" y="0.5" width="51" height="33" fill="none" stroke="rgba(255,255,255,0.2)"/></svg>'
+  );
   const p1FlagImg = document.getElementById('p1-flag-img');
   const p2FlagImg = document.getElementById('p2-flag-img');
   if (p1FlagImg) {
     const f1 = s.player1?.flag;
-    if (f1) { p1FlagImg.src = '/' + f1; p1FlagImg.style.display = 'block'; }
-    else { p1FlagImg.style.display = 'none'; }
+    if (f1)                     { p1FlagImg.src = '/' + f1;       p1FlagImg.style.display = 'block'; }
+    else if (s.placeholderFlags) { p1FlagImg.src = FLAG_PLACEHOLDER; p1FlagImg.style.display = 'block'; }
+    else                         { p1FlagImg.style.display = 'none'; }
     sb.style.setProperty('--p1-flag-x', (s.player1?.flagOffsetX ?? 0) + 'px');
     sb.style.setProperty('--p1-flag-y', (s.player1?.flagOffsetY ?? 0) + 'px');
   }
   if (p2FlagImg) {
     const f2 = s.player2?.flag;
-    if (f2) { p2FlagImg.src = '/' + f2; p2FlagImg.style.display = 'block'; }
-    else { p2FlagImg.style.display = 'none'; }
+    if (f2)                     { p2FlagImg.src = '/' + f2;       p2FlagImg.style.display = 'block'; }
+    else if (s.placeholderFlags) { p2FlagImg.src = FLAG_PLACEHOLDER; p2FlagImg.style.display = 'block'; }
+    else                         { p2FlagImg.style.display = 'none'; }
     sb.style.setProperty('--p2-flag-x', (s.player2?.flagOffsetX ?? 0) + 'px');
     sb.style.setProperty('--p2-flag-y', (s.player2?.flagOffsetY ?? 0) + 'px');
   }

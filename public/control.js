@@ -111,6 +111,9 @@ function syncFromState(s) {
   updateHidePlayerColorsBtn(s.hidePlayerColors === true);
   updateCharDisplayModeBtn(s.charDisplayMode || 'normal');
   if (s.charDisplayMode) state.charDisplayMode = s.charDisplayMode;
+  // Drapeaux placeholder : restaure la case depuis l'état (par défaut OFF)
+  const phFlags = document.getElementById('placeholder-flags');
+  if (phFlags) phFlags.checked = s.placeholderFlags === true;
   // Lot 1 : visibilités individuelles — restaure les checkboxes depuis l'état
   [
     ['show-event-name',  'showEventName'],
@@ -451,6 +454,8 @@ function buildStateFromForm() {
     showTag:        document.getElementById('show-tag')?.checked !== false,
     showCharacter:  document.getElementById('show-character')?.checked !== false,
     showSeed:       document.getElementById('show-seed')?.checked !== false,
+    // Drapeaux placeholder (preview) : affiche un SVG gris quand aucun drapeau n'est sélectionné
+    placeholderFlags: document.getElementById('placeholder-flags')?.checked === true,
     // Lot 2 : logo central enrichi + écart entre cartes
     centerLogoSize:          parseInt(document.getElementById('center-logo-size-num')?.value ?? 52),
     centerLogoOffsetY:       parseInt(document.getElementById('center-logo-offset-y-num')?.value ?? 0),
@@ -2859,6 +2864,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
 [
   'show-event-name', 'show-tournament', 'show-format', 'show-round',
   'show-flags', 'show-pronouns', 'show-tag', 'show-character', 'show-seed',
+  'placeholder-flags',
 ].forEach(id => {
   const cb = document.getElementById(id);
   if (cb) cb.addEventListener('change', () => emitState(buildStateFromForm()));
