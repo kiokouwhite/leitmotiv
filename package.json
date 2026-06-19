@@ -1,6 +1,6 @@
 {
   "name": "psmash",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Smash Bros Ultimate overlay",
   "main": "server.js",
   "scripts": {
