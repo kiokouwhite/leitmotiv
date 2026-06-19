@@ -6183,6 +6183,8 @@ h1, .section-header h2, .custom-card h3,
 #sb-scroll-area > :nth-child(8) { --gold: #ff5e5e; --neon-cyan: #ff5e5e; } /* Particules – rouge */
 
 /* Centre les cartes de thèmes dans chaque section quand la ligne n'est pas
-   pleine (Custom, Spécial avec 1 carte) — sans rien casser quand la ligne
-   est saturée (Ambiances & Lieux avec 8 cartes). */
-#themes-grid { justify-content: center; }
+   pleine. Au runtime, JS rebuild la structure : #themes-grid disparaît et
+   chaque section devient un .themes-grid imbriqué sous #themes-cust-grid.
+   `safe center` = center quand ça rentre, flex-start quand ça déborde (évite
+   que les cartes à gauche soient clippées par overflow:hidden de l'inner). */
+#themes-cust-grid .themes-grid { justify-content: safe center; }
