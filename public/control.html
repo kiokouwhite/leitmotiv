@@ -10,6 +10,45 @@
   <link rel="stylesheet" href="control.css" />
 </head>
 <body>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  S4 : Bannière de mise à jour + modal changelog            -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="update-banner" class="update-banner" style="display:none">
+  <span class="update-banner-icon">↻</span>
+  <span class="update-banner-text">
+    Nouvelle version disponible — <strong id="update-banner-version">vX.Y.Z</strong>
+  </span>
+  <button id="btn-update-open" class="btn btn-sm" style="background:#fff;color:#0b0b16;border:0;font-weight:600">Voir</button>
+  <button id="btn-update-dismiss" class="update-banner-close" title="Ignorer cette version">×</button>
+</div>
+
+<div id="update-modal" class="update-overlay" style="display:none">
+  <div class="update-modal-card">
+    <div class="update-modal-header">
+      <h2 style="margin:0;font-size:18px">Mise à jour disponible</h2>
+      <button id="btn-update-close" class="update-modal-close" title="Fermer">×</button>
+    </div>
+    <div class="update-modal-meta">
+      <span><strong>Version actuelle :</strong> <code id="update-current">—</code></span>
+      <span style="margin-left:12px"><strong>Nouvelle version :</strong> <code id="update-latest">—</code></span>
+    </div>
+    <div class="update-modal-section">
+      <h3 style="font-size:13px;margin:0 0 6px 0;color:var(--text-muted)">Notes de version</h3>
+      <pre id="update-notes" class="update-notes">—</pre>
+      <a id="update-link" href="#" target="_blank" rel="noopener" style="font-size:12px">Voir sur GitHub ↗</a>
+    </div>
+    <div id="update-progress" class="update-progress" style="display:none">
+      <div class="update-progress-bar"><div id="update-progress-fill"></div></div>
+      <span id="update-progress-text">Préparation…</span>
+    </div>
+    <div class="update-modal-actions">
+      <button id="btn-update-apply" class="btn btn-primary">Mettre à jour maintenant</button>
+      <button id="btn-update-later" class="btn btn-outline">Plus tard</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════════════════════════════════════════════════ -->
 <!--  SETUP MODAL — configuration initiale du tournoi          -->
 <!-- ══════════════════════════════════════════════════════════ -->

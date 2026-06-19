@@ -12499,3 +12499,125 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
   setTimeout(fitScoreboard, 200);
   setTimeout(fitScoreboard, 700);
 })();
+
+// ══════════════════════════════════════════════════════════════════════
+// S4 : Système de mise à jour Leitmotiv (GitHub Releases)
+//
+// - GET /api/update/status au boot puis sur 'updateStatus' du socket
+// - Affiche la bannière sticky si available && !dismissed
+// - Modal avec changelog + bouton « Mettre à jour maintenant »
+// - Pendant l'update : phases download → extract → apply → npm-install
+//   reçues via socket. À la fin, le serveur sort avec code 42 et start.bat
+//   le relance — la page perd la connexion socket ~5s puis se reconnecte.
+// ══════════════════════════════════════════════════════════════════════
+(function () {
+  const banner    = document.getElementById('update-banner');
+  const bannerVer = document.getElementById('update-banner-version');
+  const btnOpen   = document.getElementById('btn-update-open');
+  const btnClose  = document.getElementById('btn-update-close');
+  const btnLater  = document.getElementById('btn-update-later');
+  const btnApply  = document.getElementById('btn-update-apply');
+  const btnDismiss = document.getElementById('btn-update-dismiss');
+  const modal     = document.getElementById('update-modal');
+  const elCurrent = document.getElementById('update-current');
+  const elLatest  = document.getElementById('update-latest');
+  const elNotes   = document.getElementById('update-notes');
+  const elLink    = document.getElementById('update-link');
+  const elProgress = document.getElementById('update-progress');
+  const elProgFill = document.getElementById('update-progress-fill');
+  const elProgText = document.getElementById('update-progress-text');
+  if (!banner || !modal) return;
+
+  let _state = null;
+
+  function showBanner(s) {
+    if (!s || !s.available || s.dismissed) { banner.style.display = 'none'; return; }
+    bannerVer.textContent = 'v' + s.latest;
+    banner.style.display = 'flex';
+  }
+
+  function openModal(s) {
+    if (!s) return;
+    elCurrent.textContent = 'v' + s.current;
+    elLatest.textContent  = 'v' + s.latest;
+    elNotes.textContent   = (s.release && s.release.body) || '(pas de notes)';
+    elLink.href           = (s.release && s.release.htmlUrl) || '#';
+    elProgress.style.display = 'none';
+    elProgFill.style.width = '0%';
+    btnApply.disabled = false;
+    btnApply.textContent = 'Mettre à jour maintenant';
+    modal.style.display = 'flex';
+  }
+  function closeModal() { modal.style.display = 'none'; }
+
+  async function refreshStatus() {
+    try {
+      const r = await fetch('/api/update/status');
+      _state = await r.json();
+      showBanner(_state);
+    } catch (e) { /* offline ou auth manquante → silencieux */ }
+  }
+
+  btnOpen.addEventListener('click', () => openModal(_state));
+  btnLater.addEventListener('click', closeModal);
+  btnClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+  btnDismiss.addEventListener('click', async () => {
+    if (!_state) return;
+    try { await fetch('/api/update/dismiss', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ version: _state.latest }) }); } catch (_) {}
+    banner.style.display = 'none';
+    if (_state) _state.dismissed = true;
+  });
+
+  btnApply.addEventListener('click', async () => {
+    btnApply.disabled = true;
+    btnApply.textContent = 'Mise à jour en cours…';
+    elProgress.style.display = 'block';
+    elProgFill.style.width = '5%';
+    elProgText.textContent = 'Démarrage…';
+    try {
+      await fetch('/api/update/apply', { method: 'POST' });
+      // À partir de là, on attend les phases via socket. Le serveur va quitter
+      // peu après — la page perdra le socket, puis se reconnectera (start.bat
+      // relance le serveur sur code 42).
+    } catch (e) {
+      btnApply.disabled = false;
+      btnApply.textContent = 'Mettre à jour maintenant';
+      elProgText.textContent = 'Erreur : ' + e.message;
+    }
+  });
+
+  if (typeof socket !== 'undefined' && socket && socket.on) {
+    socket.on('updateStatus', (payload) => {
+      if (!payload) return;
+      if (payload.phase) {
+        const map = { download: ['Téléchargement…', 25],
+                      extract:  ['Extraction…',      50],
+                      apply:    ['Application…',     70],
+                      'npm-install': ['Installation des dépendances…', 90],
+                      done:     ['Redémarrage…',     100],
+                      error:    ['Erreur : ' + (payload.error || ''), 0] };
+        const [t, w] = map[payload.phase] || ['…', 50];
+        elProgText.textContent = t;
+        elProgFill.style.width = w + '%';
+        if (payload.phase === 'done') {
+          // Le serveur va sortir. On poll /api/update/status toutes les 2s,
+          // dès que ça répond, on reload la page.
+          const poll = setInterval(async () => {
+            try {
+              const r = await fetch('/api/update/status', { cache: 'no-store' });
+              if (r.ok) { clearInterval(poll); location.reload(); }
+            } catch (_) {}
+          }, 2000);
+        }
+      } else {
+        // payload = état complet (refresh push depuis le serveur).
+        _state = payload;
+        showBanner(_state);
+      }
+    });
+  }
+
+  refreshStatus();
+})();

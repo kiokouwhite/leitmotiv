@@ -9,6 +9,7 @@ const crypto = require('crypto');
 const rateLimit = require('express-rate-limit');
 const auth = require('./auth-state'); // S1 : module central d'authentification (hash + rotation à chaud)
 const remoteAccess = require('./remote-access'); // S3 : tunnel ngrok intégré (module additif isolé)
+const updater = require('./update-checker'); // S4 : check + DL + apply mises à jour GitHub (release v1.0.0+)
 const { mountRemote3DS } = require('./remote-3ds'); // télécommande de score « 3DS only » (module additif isolé)
 
 const RULESETS_FILE      = path.join(__dirname, 'data', 'rulesets.json');
@@ -85,6 +86,7 @@ const io = new Server(server, {
 
 // S3 : pousse les mises à jour de statut ngrok à tous les clients /control en live.
 remoteAccess.setStatusEmitter((status) => { io.emit('remoteAccessUpdate', status); });
+updater.setEmitter((payload) => { io.emit('updateStatus', payload); });
 
 app.use(express.json({ limit: '25mb' }));
 
@@ -4382,6 +4384,42 @@ app.post('/api/remote-access/stop', async (req, res) => {
 
 // ─── Start ────────────────────────────────────────────────────────────────────
 
+// S4 : endpoints update — status (read-only), check (force re-poll), apply, dismiss.
+app.get('/api/update/status', async (req, res) => {
+  try { res.json(await updater.getUpdateState()); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.post('/api/update/check', async (req, res) => {
+  try { res.json(await updater.checkNow()); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.post('/api/update/dismiss', (req, res) => {
+  const v = (req.body && req.body.version) || '';
+  if (!v) return res.status(400).json({ error: 'version requise' });
+  updater.dismissVersion(v);
+  res.json({ ok: true, dismissed: v });
+});
+app.post('/api/update/apply', async (req, res) => {
+  try {
+    // Lance l'update en arrière-plan, puis quitte le process avec le code
+    // de restart. Le wrapper start.bat relance le serveur, qui repart avec
+    // la nouvelle version.
+    res.json({ ok: true, status: 'started' });
+    setTimeout(async () => {
+      try {
+        const state = await updater.getUpdateState({ force: true });
+        await updater.applyUpdate({ release: state.release });
+        console.log('[update] applied — exiting with code', updater.RESTART_EXIT_CODE);
+        process.exit(updater.RESTART_EXIT_CODE);
+      } catch (e) {
+        console.error('[update] FAILED:', e.message);
+        // On émet l'erreur via socket — le client peut la montrer.
+        try { updater.setEmitter && io.emit('updateStatus', { phase: 'error', error: e.message }); } catch (_) {}
+      }
+    }, 150);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 // S3 : ferme proprement le tunnel ngrok sur SIGINT/SIGTERM/SIGBREAK (Ctrl+C, etc.).
 remoteAccess.installShutdownHandlers();
 
@@ -4406,6 +4444,9 @@ server.listen(PORT, '0.0.0.0', () => {
 
   // S3 : autostart du tunnel ngrok si configuré. Fire-and-forget pour ne pas
   // bloquer le boot — logge son propre bloc d'URL quand le tunnel est prêt.
+  // S4 : démarre la boucle de check des mises à jour (5s + toutes les 6h).
+  updater.startBackgroundChecks();
+
   remoteAccess.startIfConfigured(PORT)
     .then((url) => {
       if (!url) return;
