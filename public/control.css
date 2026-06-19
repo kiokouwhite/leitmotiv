@@ -6161,11 +6161,12 @@ h1, .section-header h2, .custom-card h3,
 }
 [id$="-nav-titles"] .vic-nav-title { cursor: pointer; }
 
-/* En mode onglets (Scoreboard) : pas de barre verticale colorée à gauche des
-   sections. Le titre actif (.vic-nav-title.active) avec son glow et sa
-   sous-ligne suffit à indiquer la section courante. On garde le subtle
-   tint de fond (rgba .05) pour l'identité visuelle. */
-#sb-scroll-area > :nth-child(n) {
+/* En mode onglets (Scoreboard) ou en grid centré (Thèmes) : pas de barre
+   verticale colorée à gauche des sections ni de border-top. Le titre actif
+   (.vic-nav-title.active) ou le titre coloré de section suffit à indiquer
+   la couleur. On garde le subtle tint de fond (rgba .05) pour l'identité. */
+#sb-scroll-area > :nth-child(n),
+#themes-scroll-area > :nth-child(n) {
   border-left: none;
   border-top: none;
 }
