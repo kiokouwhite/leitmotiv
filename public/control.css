@@ -6220,3 +6220,28 @@ h1, .section-header h2, .custom-card h3,
 #themes-scroll-area > :nth-child(7) { --gold: #44ddff; --neon-cyan: #44ddff; }
 #themes-scroll-area > :nth-child(8) { --gold: #ff5e5e; --neon-cyan: #ff5e5e; }
 #themes-scroll-area > :nth-child(9) { --gold: #a8e84e; --neon-cyan: #a8e84e; }
+
+/* ── Theme color swatches à côté des color pickers ─────────────────── */
+.theme-swatches {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.theme-swatch {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.theme-swatch:hover {
+  transform: scale(1.18);
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(var(--gold-rgb, 34, 240, 255), 0.4), inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+}
+.theme-swatch:focus { outline: 2px solid var(--gold); outline-offset: 1px; }

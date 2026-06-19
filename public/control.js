@@ -12838,3 +12838,99 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
   // Couvre les wraps créés dynamiquement (mountPreview, master preview, etc.)
   new MutationObserver(() => injectAll()).observe(document.body, { subtree: true, childList: true });
 })();
+
+// ══════════════════════════════════════════════════════════════════════
+// Swatches des couleurs du thème actif à côté de chaque color picker
+//
+// À côté de chaque <input type="color"> dans l'onglet Customisation, on
+// injecte une mini-palette (5 swatches) qui reflète les couleurs du thème
+// courant : Fond, Event, Tag, Pseudo, Pronoms. Clic sur un swatch →
+// applique cette couleur dans le picker, qui émet 'input' normalement.
+//
+// Quand le thème change (state.overlayTheme), les swatches sont rafraîchis
+// pour refléter la nouvelle palette.
+// ══════════════════════════════════════════════════════════════════════
+(function () {
+  const FIELDS = [
+    { key: 'sbBgColor',      label: 'Fond du scoreboard' },
+    { key: 'eventTextColor', label: 'Texte de l\'event' },
+    { key: 'tagColor',       label: 'Couleur du tag/sponsor' },
+    { key: 'nameColor',      label: 'Couleur du pseudo' },
+    { key: 'pronounsColor',  label: 'Couleur des pronoms' },
+  ];
+
+  function currentThemePalette() {
+    // THEMES est un const top-level dans ce même fichier (control.js:4000).
+    const key = (window.state && state.overlayTheme) || 'default';
+    const t = (typeof THEMES !== 'undefined' && THEMES[key]) || (typeof THEMES !== 'undefined' && THEMES['default']) || {};
+    return FIELDS.map(f => ({ color: t[f.key], label: f.label })).filter(s => s.color);
+  }
+
+  function renderSwatchesIn(row, palette) {
+    row.innerHTML = '';
+    palette.forEach(s => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'theme-swatch';
+      btn.title = s.label + ' — ' + s.color.toUpperCase();
+      btn.style.background = s.color;
+      btn.addEventListener('click', () => {
+        const input = row._target;
+        if (!input) return;
+        input.value = s.color;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      row.appendChild(btn);
+    });
+  }
+
+  function injectAll() {
+    const tab = document.getElementById('tab-themes');
+    if (!tab) return;
+    const palette = currentThemePalette();
+    tab.querySelectorAll('input[type="color"]').forEach(input => {
+      let row = input.nextElementSibling;
+      if (!row || !row.classList || !row.classList.contains('theme-swatches')) {
+        row = document.createElement('span');
+        row.className = 'theme-swatches';
+        row.title = 'Couleurs du thème actif — clic pour appliquer';
+        input.after(row);
+      }
+      row._target = input;
+      renderSwatchesIn(row, palette);
+    });
+  }
+
+  function refreshAll() {
+    const tab = document.getElementById('tab-themes');
+    if (!tab) return;
+    const palette = currentThemePalette();
+    tab.querySelectorAll('.theme-swatches').forEach(row => {
+      if (row._target) renderSwatchesIn(row, palette);
+    });
+  }
+
+  // Premier passage au boot + après chaque mutation du DOM (modal custom etc.)
+  injectAll();
+  new MutationObserver(() => injectAll()).observe(
+    document.getElementById('tab-themes') || document.body,
+    { subtree: true, childList: true }
+  );
+
+  // Rafraîchir quand le thème change. Le socket 'stateUpdate' est l'événement
+  // canonique, mais on hook aussi sur le clic des cartes preset pour réagir
+  // instantanément (avant l'aller-retour socket).
+  let _lastTheme = (window.state && state.overlayTheme) || 'default';
+  function maybeRefresh() {
+    const t = (window.state && state.overlayTheme) || 'default';
+    if (t !== _lastTheme) { _lastTheme = t; refreshAll(); }
+  }
+  if (typeof socket !== 'undefined' && socket && socket.on) {
+    socket.on('stateUpdate', () => setTimeout(maybeRefresh, 50));
+  }
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.theme-preset-card');
+    if (card && card.dataset.theme) setTimeout(maybeRefresh, 100);
+  });
+})();
