@@ -3275,38 +3275,14 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
   function scalePreviewWrap(wrap) {
     const frame = wrap.querySelector('.overlay-preview-frame');
     if (!frame) return;
+    // Toujours afficher la TOTALITÉ du canvas 1920×1080 — pas d'auto-crop.
+    // Ce que voit OBS = ce que voit la preview (juste réduit pour tenir
+    // dans la largeur du conteneur). Pour zoomer dedans, le bouton
+    // « 🔍 Plein cadre » ouvre une modal avec l'iframe à taille native.
     const scale = wrap.offsetWidth / 1920;
     frame.style.transformOrigin = 'top left';
-    // Recadrage auto : ne montrer que la zone utile de l'overlay (évite le grand vide).
-    // On mesure les bornes verticales du contenu dans l'iframe (même origine).
-    let cropTop = 0, cropH = 1080;
-    try {
-      const doc = frame.contentDocument;
-      if (doc && doc.body) {
-        const win = doc.defaultView;
-        let top = 1080, bottom = 0;
-        doc.body.querySelectorAll('*').forEach(el => {
-          const s = win.getComputedStyle(el);
-          if (s.display === 'none' || s.visibility === 'hidden' || parseFloat(s.opacity) === 0) return;
-          const r = el.getBoundingClientRect();
-          if (r.width < 2 || r.height < 2) return;
-          if (r.width >= 1919 && r.height >= 1079) return; // ignore les conteneurs plein écran
-          if (r.top < top) top = r.top;
-          if (r.bottom > bottom) bottom = r.bottom;
-        });
-        const h = bottom - top;
-        // Recadrer seulement les overlays partiels (barre, coin…) ; laisser le plein écran intact.
-        // h trop petit = iframe pas encore rendue → on garde le plein cadre (pas de recadrage).
-        if (h > 40 && h < 648) {
-          cropTop = Math.max(0, Math.floor(top) - 14);
-          cropH   = Math.min(1080 - cropTop, Math.ceil(bottom) - cropTop + 14);
-        }
-      }
-    } catch (e) { /* iframe pas prête → plein cadre */ }
-    frame.style.transform = cropTop
-      ? `translateY(${-cropTop * scale}px) scale(${scale})`
-      : `scale(${scale})`;
-    wrap.style.height = Math.round(cropH * scale) + 'px';
+    frame.style.transform = `scale(${scale})`;
+    wrap.style.height = Math.round(1080 * scale) + 'px';
   }
   function scaleAllPreviews() {
     document.querySelectorAll('.overlay-preview-wrap').forEach(scalePreviewWrap);
@@ -12730,7 +12706,16 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
     // Recharge l'iframe à l'URL demandée (les overlays se reconnectent au socket et se mettent à jour live).
     if (frame.src !== url) frame.src = url;
     modal.style.display = 'flex';
-    requestAnimationFrame(fitToViewport);
+    // Ouvre en taille réelle 1:1 par défaut — c'est ce qu'OBS verra.
+    // Le bouton « ⤢ Adapter » dans la toolbar permet de revenir au fit-to-window.
+    requestAnimationFrame(() => {
+      setZoom(1);
+      // Centrer le canvas dans le viewport
+      requestAnimationFrame(() => {
+        viewport.scrollLeft = Math.max(0, (canvas.offsetWidth  - viewport.clientWidth)  / 2);
+        viewport.scrollTop  = Math.max(0, (canvas.offsetHeight - viewport.clientHeight) / 2);
+      });
+    });
   }
   function close() {
     modal.style.display = 'none';
