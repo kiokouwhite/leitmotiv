@@ -12885,18 +12885,21 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
     });
   }
 
+  // IDEMPOTENT : ne crée la row + ne renderise QUE pour les color inputs
+  // qui n'ont pas encore de .theme-swatches voisin. Crucial pour ne pas
+  // boucler avec MutationObserver (chaque renderSwatchesIn déclenche des
+  // mutations qui re-déclenchent l'observer).
   function injectAll() {
     const tab = document.getElementById('tab-themes');
     if (!tab) return;
     const palette = currentThemePalette();
     tab.querySelectorAll('input[type="color"]').forEach(input => {
-      let row = input.nextElementSibling;
-      if (!row || !row.classList || !row.classList.contains('theme-swatches')) {
-        row = document.createElement('span');
-        row.className = 'theme-swatches';
-        row.title = 'Couleurs du thème actif — clic pour appliquer';
-        input.after(row);
-      }
+      const next = input.nextElementSibling;
+      if (next && next.classList && next.classList.contains('theme-swatches')) return; // déjà fait
+      const row = document.createElement('span');
+      row.className = 'theme-swatches';
+      row.title = 'Couleurs du thème actif — clic pour appliquer';
+      input.after(row);
       row._target = input;
       renderSwatchesIn(row, palette);
     });
@@ -12911,9 +12914,17 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
     });
   }
 
-  // Premier passage au boot + après chaque mutation du DOM (modal custom etc.)
+  // Premier passage au boot.
   injectAll();
-  new MutationObserver(() => injectAll()).observe(
+  // L'observer ne couvre que les color inputs AJOUTÉS dynamiquement (modal
+  // custom). Il appelle injectAll qui est idempotent → pas de boucle.
+  // Debounce léger pour éviter les rafales pendant le rendu initial.
+  let _injectTimer = null;
+  const _observer = new MutationObserver(() => {
+    if (_injectTimer) return;
+    _injectTimer = setTimeout(() => { _injectTimer = null; injectAll(); }, 150);
+  });
+  _observer.observe(
     document.getElementById('tab-themes') || document.body,
     { subtree: true, childList: true }
   );
