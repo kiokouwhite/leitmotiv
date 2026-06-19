@@ -591,7 +591,17 @@
       <div class="match-subpanel" id="sb-sub-custom">
         <section class="section" style="padding:0">
 
-          <div style="display:flex;height:700px;overflow:hidden">
+          <div style="display:flex;flex-direction:column;height:700px;overflow:hidden">
+
+            <!-- Bouton « Réinitialiser » — DOIT rester HORS de #sb-scroll-area :
+                 les couleurs de section sont calées sur :nth-child(N) du
+                 scroll-area, donc tout enfant supplémentaire décalerait
+                 toutes les sections d'un cran (Affichage en orange, etc.). -->
+            <div style="padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0">
+              <button id="btn-sb-reset" class="btn btn-outline btn-sm" style="width:100%">↺ Réinitialiser le scoreboard</button>
+            </div>
+
+            <div style="display:flex;flex:1;min-height:0;overflow:hidden">
 
             <!-- Titres verticaux -->
             <div id="sb-nav-titles" style="width:30px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 0;gap:28px;border-right:1px solid var(--border);background:var(--surface)">
@@ -607,13 +617,6 @@
 
             <!-- Config scrollable -->
             <div id="sb-scroll-area" style="flex:1;min-width:0;overflow-y:auto;position:relative">
-
-              <!-- Bouton « Réinitialiser » — remet tous les contrôles de customisation
-                   (visibilités, logo, géométrie, tailles, event-bar, ancrage)
-                   à leurs valeurs par défaut et repasse au preset Classique. -->
-              <div style="position:sticky;top:0;z-index:5;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface)">
-                <button id="btn-sb-reset" class="btn btn-outline btn-sm" style="width:100%">↺ Réinitialiser le scoreboard</button>
-              </div>
 
               <!-- Affichage (options déplacées depuis l'onglet Scoreboard) -->
               <div id="sb-sect-affichage" style="padding:16px">
@@ -1126,7 +1129,8 @@
               </div>
             </div>
 
-          </div>
+            </div><!-- /inner row (nav + scroll + preview) -->
+          </div><!-- /outer flex-column (reset + inner row) -->
         </section>
       </div><!-- /sb-sub-custom -->
 
