@@ -5832,7 +5832,10 @@ h1, .section-header h2, .custom-card h3,
 /* Le bouton vit dans #tab-nav-desktop après "Paramètres", ancré à droite.
    Couleur orange/ambré + pulse léger pour attirer l'œil sans agresser. */
 .tab-update-btn {
-  margin-left: auto;       /* pousse à droite dans le flex container .tab-nav */
+  /* Pas de margin-left:auto — sinon ça pousse à droite et 1) brise le
+     centrage de la nav, 2) entre en collision avec le ▲ (toggle-navs).
+     On reste dans le groupe centré, juste séparé de Paramètres par un gap. */
+  margin-left: 18px;
   align-self: center;
   display: inline-flex;
   align-items: center;
