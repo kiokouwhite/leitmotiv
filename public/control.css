@@ -6161,15 +6161,22 @@ h1, .section-header h2, .custom-card h3,
 }
 [id$="-nav-titles"] .vic-nav-title { cursor: pointer; }
 
-/* En mode onglets (Scoreboard) ou en grid centré (Thèmes) : pas de barre
-   verticale colorée à gauche des sections ni de border-top. Le titre actif
-   (.vic-nav-title.active) ou le titre coloré de section suffit à indiquer
-   la couleur. On garde le subtle tint de fond (rgba .05) pour l'identité. */
+/* Pas de barre verticale colorée à gauche des sections (Scoreboard et Thèmes).
+   Le titre actif ou le titre coloré centré suffit à indiquer la couleur. */
 #sb-scroll-area > :nth-child(n),
 #themes-scroll-area > :nth-child(n) {
   border-left: none;
+}
+
+/* Mode onglets Scoreboard : une seule section visible à la fois → le
+   border-top n'a aucun sens (pas de section au-dessus). On le retire. */
+#sb-scroll-area > :nth-child(n) {
   border-top: none;
 }
+/* Les sections de thèmes restent empilées verticalement → le border-top
+   coloré de chacune sert de séparateur horizontal entre catégories.
+   On le conserve (rien à faire ici, la règle [id$="-scroll-area"] reste
+   active pour themes-scroll-area). */
 
 /* Couleur de section pilotée par l'onglet actif — chaque section override
    --gold (cyan néon par défaut) avec sa propre couleur, et tout le contenu
