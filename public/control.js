@@ -12504,21 +12504,24 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
 // S4 : Système de mise à jour Leitmotiv (GitHub Releases)
 //
 // - GET /api/update/status au boot puis sur 'updateStatus' du socket
-// - Affiche la bannière sticky si available && !dismissed
-// - Modal avec changelog + bouton « Mettre à jour maintenant »
+// - Affiche #tab-update-btn (dans tab-nav, à droite) si available && !dismissed
+// - Cliquer le bouton ouvre #update-modal avec changelog + bouton apply
 // - Pendant l'update : phases download → extract → apply → npm-install
 //   reçues via socket. À la fin, le serveur sort avec code 42 et start.bat
 //   le relance — la page perd la connexion socket ~5s puis se reconnecte.
+//
+// Mode test : ouvrir le control panel avec ?test-update=1 OU cliquer
+// window._lmTestUpdate() dans la console → injecte un state mock pour voir
+// le bouton + modal sans attendre une vraie release.
 // ══════════════════════════════════════════════════════════════════════
 (function () {
-  const banner    = document.getElementById('update-banner');
-  const bannerVer = document.getElementById('update-banner-version');
-  const btnOpen   = document.getElementById('btn-update-open');
-  const btnClose  = document.getElementById('btn-update-close');
-  const btnLater  = document.getElementById('btn-update-later');
-  const btnApply  = document.getElementById('btn-update-apply');
-  const btnDismiss = document.getElementById('btn-update-dismiss');
-  const modal     = document.getElementById('update-modal');
+  const tabBtn   = document.getElementById('tab-update-btn');
+  const tabVer   = document.getElementById('tab-update-version');
+  const testBtn  = document.getElementById('tab-update-test-btn');
+  const btnClose = document.getElementById('btn-update-close');
+  const btnLater = document.getElementById('btn-update-later');
+  const btnApply = document.getElementById('btn-update-apply');
+  const modal    = document.getElementById('update-modal');
   const elCurrent = document.getElementById('update-current');
   const elLatest  = document.getElementById('update-latest');
   const elNotes   = document.getElementById('update-notes');
@@ -12526,14 +12529,16 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
   const elProgress = document.getElementById('update-progress');
   const elProgFill = document.getElementById('update-progress-fill');
   const elProgText = document.getElementById('update-progress-text');
-  if (!banner || !modal) return;
+  if (!tabBtn || !modal) return;
 
   let _state = null;
+  // Détecte le mode test (URL ?test-update=1)
+  const TEST_MODE = new URLSearchParams(location.search).has('test-update');
 
-  function showBanner(s) {
-    if (!s || !s.available || s.dismissed) { banner.style.display = 'none'; return; }
-    bannerVer.textContent = 'v' + s.latest;
-    banner.style.display = 'flex';
+  function showButton(s) {
+    if (!s || !s.available || s.dismissed) { tabBtn.style.display = 'none'; return; }
+    tabVer.textContent = 'v' + s.latest;
+    tabBtn.style.display = 'inline-flex';
   }
 
   function openModal(s) {
@@ -12550,27 +12555,57 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
   }
   function closeModal() { modal.style.display = 'none'; }
 
+  // Injecte un state mock pour faire apparaître le bouton + modal sans
+  // attendre une vraie release. Exposé en global pour la console aussi.
+  function injectMockState() {
+    _state = {
+      current: '1.0.1',
+      latest: '9.9.9',
+      available: true,
+      dismissed: false,
+      release: {
+        tagName: 'v9.9.9',
+        name: 'v9.9.9 — Test factice',
+        body: '## Aperçu — ceci est un mock\n\n- Bouton de notif affiché\n- Modal ouvert avec ce changelog\n- Le bouton « Mettre à jour maintenant » n\'est pas branché en mode test (sécurité)',
+        htmlUrl: 'https://github.com/kiokouwhite/leitmotiv',
+        publishedAt: new Date(2026, 5, 19).toISOString(),
+      },
+      lastCheckAt: new Date(2026, 5, 19).toISOString(),
+    };
+    showButton(_state);
+  }
+  window._lmTestUpdate = injectMockState;
+
   async function refreshStatus() {
     try {
       const r = await fetch('/api/update/status');
       _state = await r.json();
-      showBanner(_state);
+      showButton(_state);
     } catch (e) { /* offline ou auth manquante → silencieux */ }
   }
 
-  btnOpen.addEventListener('click', () => openModal(_state));
+  tabBtn.addEventListener('click', () => openModal(_state));
   btnLater.addEventListener('click', closeModal);
   btnClose.addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-  btnDismiss.addEventListener('click', async () => {
-    if (!_state) return;
-    try { await fetch('/api/update/dismiss', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ version: _state.latest }) }); } catch (_) {}
-    banner.style.display = 'none';
-    if (_state) _state.dismissed = true;
-  });
-
   btnApply.addEventListener('click', async () => {
+    // En mode test, ne lance PAS l'update réelle — c'est juste un aperçu UI.
+    if (_state && _state.release && _state.release.tagName === 'v9.9.9') {
+      btnApply.disabled = true;
+      btnApply.textContent = '(mock) update factice';
+      elProgress.style.display = 'block';
+      let pct = 5;
+      const phases = ['Téléchargement…', 'Extraction…', 'Application…', 'Installation des dépendances…', 'Redémarrage…'];
+      let i = 0;
+      const tick = setInterval(() => {
+        pct = Math.min(100, pct + 18);
+        elProgFill.style.width = pct + '%';
+        elProgText.textContent = phases[Math.min(i++, phases.length - 1)];
+        if (pct >= 100) { clearInterval(tick); setTimeout(closeModal, 800); }
+      }, 600);
+      return;
+    }
     btnApply.disabled = true;
     btnApply.textContent = 'Mise à jour en cours…';
     elProgress.style.display = 'block';
@@ -12578,15 +12613,18 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
     elProgText.textContent = 'Démarrage…';
     try {
       await fetch('/api/update/apply', { method: 'POST' });
-      // À partir de là, on attend les phases via socket. Le serveur va quitter
-      // peu après — la page perdra le socket, puis se reconnectera (start.bat
-      // relance le serveur sur code 42).
     } catch (e) {
       btnApply.disabled = false;
       btnApply.textContent = 'Mettre à jour maintenant';
       elProgText.textContent = 'Erreur : ' + e.message;
     }
   });
+
+  // Bouton TEST : affiché si ?test-update=1, déclenche injectMockState au clic.
+  if (testBtn) {
+    if (TEST_MODE) testBtn.style.display = 'inline-flex';
+    testBtn.addEventListener('click', injectMockState);
+  }
 
   if (typeof socket !== 'undefined' && socket && socket.on) {
     socket.on('updateStatus', (payload) => {
@@ -12602,8 +12640,6 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
         elProgText.textContent = t;
         elProgFill.style.width = w + '%';
         if (payload.phase === 'done') {
-          // Le serveur va sortir. On poll /api/update/status toutes les 2s,
-          // dès que ça répond, on reload la page.
           const poll = setInterval(async () => {
             try {
               const r = await fetch('/api/update/status', { cache: 'no-store' });
@@ -12612,12 +12648,12 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
           }, 2000);
         }
       } else {
-        // payload = état complet (refresh push depuis le serveur).
         _state = payload;
-        showBanner(_state);
+        showButton(_state);
       }
     });
   }
 
-  refreshStatus();
+  if (TEST_MODE) injectMockState();
+  else refreshStatus();
 })();

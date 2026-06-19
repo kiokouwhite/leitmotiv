@@ -12,17 +12,9 @@
 <body>
 
 <!-- ══════════════════════════════════════════════════════════ -->
-<!--  S4 : Bannière de mise à jour + modal changelog            -->
+<!--  S4 : Modal de mise à jour (le bouton trigger est dans la  -->
+<!--  tab-nav, voir #tab-update-btn plus bas)                   -->
 <!-- ══════════════════════════════════════════════════════════ -->
-<div id="update-banner" class="update-banner" style="display:none">
-  <span class="update-banner-icon">↻</span>
-  <span class="update-banner-text">
-    Nouvelle version disponible — <strong id="update-banner-version">vX.Y.Z</strong>
-  </span>
-  <button id="btn-update-open" class="btn btn-sm" style="background:#fff;color:#0b0b16;border:0;font-weight:600">Voir</button>
-  <button id="btn-update-dismiss" class="update-banner-close" title="Ignorer cette version">×</button>
-</div>
-
 <div id="update-modal" class="update-overlay" style="display:none">
   <div class="update-modal-card">
     <div class="update-modal-header">
@@ -357,6 +349,16 @@
     <button class="tab-btn" data-tab="custom">OBS</button>
     <button class="tab-btn" data-tab="chars" style="display:none">Personnages</button>
     <button class="tab-btn" data-tab="parametres">Paramètres</button>
+    <!-- S4 : bouton de mise à jour, ancré à droite, masqué par défaut. Affiché
+         par control.js dès que /api/update/status renvoie available && !dismissed.
+         Cliquer ouvre #update-modal (le bouton × est dans le coin du modal). -->
+    <button id="tab-update-btn" class="tab-update-btn" style="display:none" title="Nouvelle version disponible — cliquer pour voir le changelog">
+      <span class="tab-update-icon" aria-hidden="true">⚠</span>
+      <span>MISE À JOUR&nbsp;<span id="tab-update-version">v?.?.?</span></span>
+    </button>
+    <!-- S4 : bouton TEST (caché en prod via .display = 'none' sauf si on lance
+         control panel avec ?test-update=1 ou via le bouton du panneau Paramètres). -->
+    <button id="tab-update-test-btn" class="tab-update-test-btn" style="display:none" title="Simuler une mise à jour disponible">🔧 Test</button>
   </nav>
 
   <!-- TAB SELECT (mobile) -->

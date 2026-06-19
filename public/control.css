@@ -5827,45 +5827,78 @@ h1, .section-header h2, .custom-card h3,
   box-shadow: 0 0 12px rgba(34,240,255,.25);
 }
 
-/* ── S4 : Bannière + modal de mise à jour ──────────────────────────── */
-.update-banner {
-  position: sticky;
-  top: 0;
-  z-index: 9000;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  background: linear-gradient(90deg, #c87800, #e89c2c);
-  color: #0b0b16;
-  font-size: 13px;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0,0,0,.4);
-}
-.update-banner-icon {
-  font-size: 16px;
+/* ── S4 : Bouton de mise à jour dans tab-nav + modal changelog ─────── */
+
+/* Le bouton vit dans #tab-nav-desktop après "Paramètres", ancré à droite.
+   Couleur orange/ambré + pulse léger pour attirer l'œil sans agresser. */
+.tab-update-btn {
+  margin-left: auto;       /* pousse à droite dans le flex container .tab-nav */
+  align-self: center;
   display: inline-flex;
-  width: 22px;
-  height: 22px;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #c87800 0%, #e89c2c 60%, #ffb347 100%);
+  color: #1a0d00;
+  border: 1px solid rgba(255,179,71,.85);
+  border-radius: 6px;
+  font-family: 'Rajdhani', 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow:
+    0 0 0 0 rgba(232,156,44,.7),
+    0 1px 8px rgba(0,0,0,.35);
+  animation: tab-update-pulse 2.2s ease-in-out infinite;
+  transition: filter .15s ease, transform .15s ease;
+}
+.tab-update-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+.tab-update-btn:active { transform: translateY(0); }
+.tab-update-icon {
+  font-size: 14px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,.18);
+  width: 18px;
+  height: 18px;
+  background: rgba(0,0,0,.22);
   border-radius: 50%;
+  font-weight: 800;
 }
-.update-banner-text { flex: 1; }
-.update-banner-text strong { font-weight: 800; }
-.update-banner-close {
+@keyframes tab-update-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 0 rgba(232,156,44,.0),
+      0 1px 8px rgba(0,0,0,.35);
+  }
+  50% {
+    box-shadow:
+      0 0 18px 4px rgba(232,156,44,.55),
+      0 1px 8px rgba(0,0,0,.35);
+  }
+}
+
+/* Bouton test : violet, petit, à côté du bouton update. Visible uniquement
+   en mode test (?test-update=1 ou via le panneau Paramètres). */
+.tab-update-test-btn {
+  align-self: center;
+  margin-left: 6px;
+  padding: 4px 10px;
   background: transparent;
-  border: 0;
-  color: #0b0b16;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 4px;
+  color: #c77dff;
+  border: 1px dashed rgba(199,125,255,.7);
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 600;
+  cursor: pointer;
 }
-.update-banner-close:hover { background: rgba(0,0,0,.12); }
+.tab-update-test-btn:hover { background: rgba(199,125,255,.1); }
 
 .update-overlay {
   position: fixed;
