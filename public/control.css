@@ -6160,3 +6160,12 @@ h1, .section-header h2, .custom-card h3,
   box-shadow: 0 0 8px currentColor;
 }
 [id$="-nav-titles"] .vic-nav-title { cursor: pointer; }
+
+/* En mode onglets (Scoreboard) : pas de barre verticale colorée à gauche des
+   sections. Le titre actif (.vic-nav-title.active) avec son glow et sa
+   sous-ligne suffit à indiquer la section courante. On garde le subtle
+   tint de fond (rgba .05) pour l'identité visuelle. */
+#sb-scroll-area > :nth-child(n) {
+  border-left: none;
+  border-top: none;
+}
