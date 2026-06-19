@@ -6188,3 +6188,27 @@ h1, .section-header h2, .custom-card h3,
    `safe center` = center quand ça rentre, flex-start quand ça déborde (évite
    que les cartes à gauche soient clippées par overflow:hidden de l'inner). */
 #themes-cust-grid .themes-grid { justify-content: safe center; }
+
+/* Titres de section centrés (grid 3-cols : [vide | titre centré | voir tout]).
+   Garde le bouton « Voir tout » à droite quand présent. */
+#themes-cust-grid .themes-sect-head {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+#themes-cust-grid .themes-sect-head .themes-sect-title { grid-column: 2; text-align: center; }
+#themes-cust-grid .themes-sect-head .themes-sect-more  { grid-column: 3; justify-self: end; }
+
+/* Couleur de chaque titre de section assortie à son nav title équivalent
+   (même schéma de couleurs que [id$="-scroll-area"] > :nth-child(N)).
+   On override --gold par section : .themes-sect-title et .themes-sect-more
+   l'utilisent déjà via var(--gold), donc tout suit en cascade. */
+#themes-scroll-area > :nth-child(1) { --gold: #4e9eff; --neon-cyan: #4e9eff; }
+#themes-scroll-area > :nth-child(2) { --gold: #ff9f3f; --neon-cyan: #ff9f3f; }
+#themes-scroll-area > :nth-child(3) { --gold: #3fc89f; --neon-cyan: #3fc89f; }
+#themes-scroll-area > :nth-child(4) { --gold: #ff4f8f; --neon-cyan: #ff4f8f; }
+#themes-scroll-area > :nth-child(5) { --gold: #af6fff; --neon-cyan: #af6fff; }
+#themes-scroll-area > :nth-child(6) { --gold: #ffdd44; --neon-cyan: #ffdd44; }
+#themes-scroll-area > :nth-child(7) { --gold: #44ddff; --neon-cyan: #44ddff; }
+#themes-scroll-area > :nth-child(8) { --gold: #ff5e5e; --neon-cyan: #ff5e5e; }
+#themes-scroll-area > :nth-child(9) { --gold: #a8e84e; --neon-cyan: #a8e84e; }
