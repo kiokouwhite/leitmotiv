@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>PSO – Cam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="cam.css" />
+  <link rel="stylesheet" href="/pso-transition.css" />
+</head>
+<body>
+
+  <div id="cam-root" class="cam-root hidden pso-surface">
+
+    <!-- Label -->
+    <div class="cam-label" id="cam-label">CAM</div>
+
+    <!-- Cadre décoratif -->
+    <div class="cam-frame">
+      <div class="cam-glow"></div>
+      <div class="cam-inner">
+        <span class="cc cc-tl"></span>
+        <span class="cc cc-tr"></span>
+        <span class="cc cc-bl"></span>
+        <span class="cc cc-br"></span>
+        <span class="ct ct-t"></span>
+        <span class="ct ct-b"></span>
+        <span class="ct ct-l"></span>
+        <span class="ct ct-r"></span>
+        <div class="cam-cut-tl"></div>
+        <div class="cam-cut-br"></div>
+      </div>
+    </div>
+
+    <!-- Barre d'infos joueur(s) -->
+    <div class="cam-info hidden" id="cam-info">
+
+      <!-- Joueur 1 -->
+      <div class="cam-info-slot" id="cam-info-slot-p1">
+        <img class="cam-info-char" id="cam-info-char-p1" src="" alt="" />
+        <div class="cam-info-text">
+          <div class="cam-info-main">
+            <span class="cam-info-tag"      id="cam-info-tag-p1"></span>
+            <span class="cam-info-name"     id="cam-info-name-p1"></span>
+            <span class="cam-info-pronouns" id="cam-info-pronouns-p1"></span>
+            <span class="cam-info-seed"     id="cam-info-seed-p1"></span>
+          </div>
+          <div class="cam-info-social" id="cam-info-social-p1"></div>
+        </div>
+      </div>
+
+      <!-- Séparateur (mode "les deux") -->
+      <div class="cam-info-sep" id="cam-info-sep"></div>
+
+      <!-- Joueur 2 -->
+      <div class="cam-info-slot" id="cam-info-slot-p2">
+        <img class="cam-info-char" id="cam-info-char-p2" src="" alt="" />
+        <div class="cam-info-text">
+          <div class="cam-info-main">
+            <span class="cam-info-tag"      id="cam-info-tag-p2"></span>
+            <span class="cam-info-name"     id="cam-info-name-p2"></span>
+            <span class="cam-info-pronouns" id="cam-info-pronouns-p2"></span>
+            <span class="cam-info-seed"     id="cam-info-seed-p2"></span>
+          </div>
+          <div class="cam-info-social" id="cam-info-social-p2"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CAM 2 -->
+  <div id="cam2-root" class="cam2-root hidden">
+    <div class="cam-label cam2-label" id="cam2-label">CAM 2</div>
+    <div class="cam2-frame">
+      <div class="cam-glow"></div>
+      <div class="cam-inner">
+        <span class="cc cc-tl"></span>
+        <span class="cc cc-tr"></span>
+        <span class="cc cc-bl"></span>
+        <span class="cc cc-br"></span>
+        <span class="ct ct-t"></span>
+        <span class="ct ct-b"></span>
+        <span class="ct ct-l"></span>
+        <span class="ct ct-r"></span>
+        <div class="cam-cut-tl"></div>
+        <div class="cam-cut-br"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/texture.js"></script>
+  <script src="cam.js"></script>
+  <script>window.PSO_T = { id: 'cam', root: '#cam-root' };</script>
+  <script src="/pso-transition.js"></script>
+</body>
+</html>

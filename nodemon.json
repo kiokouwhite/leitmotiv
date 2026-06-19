@@ -1,0 +1,12 @@
+{
+  "//": "Redémarrage auto du serveur. On NE surveille QUE le code serveur (server.js + remote-3ds.js). Tout le reste (config.json, data/, public/, uploads) est écrit par le serveur lui-même ou rechargeable par F5 -> à ignorer, sinon boucle de redémarrages.",
+  "watch": ["server.js", "remote-3ds.js"],
+  "ext": "js",
+  "ignore": [
+    "config.json",
+    "data/**",
+    "public/**",
+    "node_modules/**"
+  ],
+  "delay": 800
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>PSO — Master Overlay</title>
+  <style>
+    html, body { margin: 0; padding: 0; width: 1920px; height: 1080px; background: transparent; overflow: hidden; }
+    #master-layers { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+    .master-frame {
+      position: absolute; inset: 0;
+      width: 1920px; height: 1080px;
+      border: 0; margin: 0; padding: 0;
+      background: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div id="master-layers"></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/master.js"></script>
+</body>
+</html>

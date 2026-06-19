@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>PSO – Scoreboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="overlay.css" />
+  <link rel="stylesheet" href="/pso-transition.css" />
+</head>
+<body>
+  <div id="scoreboard" class="scoreboard pso-surface">
+
+    <!-- Logo défilant (thèmes custom) -->
+    <div class="theme-logo-bg" id="theme-logo-bg"></div>
+
+    <!-- Particules canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Barre événement (partagée) -->
+    <div class="event-bar">
+      <span id="event-name">TOURNAMENT</span>
+      <span class="sep">·</span>
+      <span id="event-stage">Grand Final</span>
+      <span class="sep">·</span>
+      <span id="format-info">Bo3</span>
+      <span class="sep" id="current-stage-sep" style="display:none">·</span>
+      <span id="current-stage-name"></span>
+    </div>
+
+    <!-- Layout complet -->
+    <div class="full-layout">
+      <div class="players-container">
+        <div class="player player-left" id="player1-block">
+          <div class="player-character" id="p1-character">
+            <div class="char-placeholder" id="p1-char-placeholder">?</div>
+            <img id="p1-char-img" alt="" style="display:none" />
+          </div>
+          <div class="player-info">
+            <div class="player-name" id="p1-name">PLAYER 1</div>
+          </div>
+          <img id="p1-flag-img" class="player-flag player-flag-left" src="" alt="" style="display:none" />
+        </div>
+        <div class="score-center">
+          <div class="score-box">
+            <div class="dots-col-left" id="p1-dots-col"></div>
+            <span class="score" id="p1-score">0</span>
+            <div class="center-logo-area">
+              <span class="score-vs" id="score-vs">VS</span>
+              <img id="center-logo-img" src="" alt="" style="display:none" />
+            </div>
+            <span class="score" id="p2-score">0</span>
+            <div class="dots-col-right" id="p2-dots-col"></div>
+          </div>
+          <div class="series-dots">
+            <div class="dots-left" id="p1-dots"></div>
+            <div class="dots-right" id="p2-dots"></div>
+          </div>
+        </div>
+        <div class="player player-right" id="player2-block">
+          <div class="player-info">
+            <div class="player-name" id="p2-name">PLAYER 2</div>
+          </div>
+          <div class="player-character" id="p2-character">
+            <div class="char-placeholder" id="p2-char-placeholder">?</div>
+            <img id="p2-char-img" alt="" style="display:none" />
+          </div>
+          <img id="p2-flag-img" class="player-flag player-flag-right" src="" alt="" style="display:none" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Layout slim -->
+    <div class="slim-layout">
+      <div class="slim-bar">
+        <div class="slim-player slim-left" id="player1-block-slim">
+          <img class="slim-stock-icon" id="p1-stock-icon" src="" alt="" style="display:none" />
+          <div class="slim-icon-sep" id="p1-icon-sep" style="display:none"></div>
+          <span class="slim-name" id="p1-name-slim">PLAYER 1</span>
+        </div>
+        <div class="slim-scores">
+          <span class="slim-score" id="p1-score-slim">0</span>
+          <div class="slim-center-logo">
+            <span class="slim-vs" id="slim-vs">VS</span>
+            <img id="center-logo-img-slim" src="" alt="" style="display:none" />
+          </div>
+          <span class="slim-score" id="p2-score-slim">0</span>
+        </div>
+        <div class="slim-player slim-right" id="player2-block-slim">
+          <span class="slim-name" id="p2-name-slim">PLAYER 2</span>
+          <div class="slim-icon-sep" id="p2-icon-sep" style="display:none"></div>
+          <img class="slim-stock-icon" id="p2-stock-icon" src="" alt="" style="display:none" />
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Lower-third : overlay indépendant (hors scoreboard) -->
+  <div id="lt-layout" class="lt-layout">
+
+    <!-- Panneau Joueur 1 (gauche) -->
+    <div class="lt-panel lt-panel-left" id="lt-p1">
+      <div class="lt-pronouns-badge" id="lt-p1-pronouns"></div>
+      <div class="lt-inner">
+        <div class="lt-flag-box" id="lt-p1-flag-box">
+          <img class="lt-flag-img" id="lt-p1-flag-img" src="" alt="" style="display:none" />
+          <span class="lt-flag-code" id="lt-p1-flag-code"></span>
+        </div>
+        <div class="lt-info">
+          <span class="lt-tag" id="lt-p1-tag"></span>
+          <span class="lt-name" id="lt-p1-name">PLAYER 1</span>
+        </div>
+        <div class="lt-score" id="lt-p1-score">0</div>
+      </div>
+      <div class="lt-social-bar" id="lt-p1-social-bar">
+        <span class="lt-social-text" id="lt-p1-social-text"></span>
+      </div>
+    </div>
+
+    <!-- Panneau Joueur 2 (droite) -->
+    <div class="lt-panel lt-panel-right" id="lt-p2">
+      <div class="lt-pronouns-badge lt-pronouns-right" id="lt-p2-pronouns"></div>
+      <div class="lt-inner">
+        <div class="lt-flag-box" id="lt-p2-flag-box">
+          <img class="lt-flag-img" id="lt-p2-flag-img" src="" alt="" style="display:none" />
+          <span class="lt-flag-code" id="lt-p2-flag-code"></span>
+        </div>
+        <div class="lt-info">
+          <span class="lt-tag" id="lt-p2-tag"></span>
+          <span class="lt-name" id="lt-p2-name">PLAYER 2</span>
+        </div>
+        <div class="lt-score" id="lt-p2-score">0</div>
+      </div>
+      <div class="lt-social-bar" id="lt-p2-social-bar">
+        <span class="lt-social-text" id="lt-p2-social-text"></span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Layout preset « Coin compact » : bloc dédié alimenté par overlay.js applyCompactCorner().
+       Visible quand body.sb-layout-compact-corner, masqué sinon (CSS dans overlay.css). -->
+  <div id="sb-compact-corner">
+    <div class="cc-header"><span id="cc-event">TOURNAMENT</span></div>
+    <div class="cc-rows">
+      <div class="cc-row cc-row-1">
+        <img class="cc-portrait" id="cc-p1-portrait" alt="" />
+        <span class="cc-name" id="cc-p1-name">PLAYER 1</span>
+        <img class="cc-flag" id="cc-p1-flag" alt="" />
+        <span class="cc-score cc-score-1" id="cc-p1-score">0</span>
+      </div>
+      <div class="cc-row cc-row-2">
+        <img class="cc-portrait" id="cc-p2-portrait" alt="" />
+        <span class="cc-name" id="cc-p2-name">PLAYER 2</span>
+        <img class="cc-flag" id="cc-p2-flag" alt="" />
+        <span class="cc-score cc-score-2" id="cc-p2-score">0</span>
+      </div>
+    </div>
+    <div class="cc-footer">
+      <span id="cc-stage">Grand Final</span>
+      <span class="cc-sep">·</span>
+      <span id="cc-format">Bo3</span>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/texture.js"></script>
+  <script src="particle-engine.js"></script>
+  <script src="overlay.js"></script>
+  <script>window.PSO_T = { id: 'scoreboard', root: '#scoreboard' };</script>
+  <script src="/pso-transition.js"></script>
+</body>
+</html>

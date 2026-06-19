@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>PSO – Prochains Matchs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="upcoming.css"/>
+  <link rel="stylesheet" href="/pso-transition.css"/>
+</head>
+<body>
+
+<div id="uc-root">
+
+  <!-- Zone gauche : label + cadre transparent pour OBS -->
+  <div id="uc-frame-zone">
+    <span id="uc-frame-label"></span>
+    <div id="uc-frame-box">
+      <span class="uc-corner uc-corner--tl"></span>
+      <span class="uc-corner uc-corner--tr"></span>
+      <span class="uc-corner uc-corner--bl"></span>
+      <span class="uc-corner uc-corner--br"></span>
+    </div>
+  </div>
+
+  <!-- Panel droit : titre au-dessus + cadre avec les matchs -->
+  <div id="uc-panel-wrap">
+    <div id="uc-panel-top">
+      <span id="uc-phase-label">PROCHAINS MATCHS</span>
+      <span id="uc-count-label"></span>
+    </div>
+    <div id="uc-panel">
+      <span class="uc-corner uc-corner--tl"></span>
+      <span class="uc-corner uc-corner--tr"></span>
+      <span class="uc-corner uc-corner--bl"></span>
+      <span class="uc-corner uc-corner--br"></span>
+      <div id="uc-viewport"></div>
+      <div id="uc-nav"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="upcoming.js"></script>
+<script>window.PSO_T = { id: 'upcoming', root: '#uc-root' };</script>
+<script src="/pso-transition.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+# ── Dépendances ─────────────────────────────────────
+node_modules/
+
+# ── Données utilisateur (config + état persistant) ──
+config.json
+data/
+public/data/
+
+# ── Assets locaux (textures + logos personnalisés) ──
+public/textures/
+public/logos/
+
+# ── Secrets ─────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+ngrok.txt
+
+# ── Outils & IDE ────────────────────────────────────
+.claude/
+.vscode/
+.idea/
+
+# ── Notes personnelles ──────────────────────────────
+Nouveau Document texte.txt
+
+# ── Fichiers OS / sauvegardes / temporaires ─────────
+.DS_Store
+Thumbs.db
+*.log
+*.bak
+*.tmp
+*.swp
+
+# ── Build artifacts 3DS ─────────────────────────────
+3ds-remote/build/
+3ds-remote/*.cia
+3ds-remote/*.3dsx
+3ds-remote/*.elf
