@@ -42,6 +42,29 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════════════ -->
+<!--  Plein cadre — iframe 1920×1080 native + zoom + pan       -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="preview-fs-modal" class="preview-fs-overlay" style="display:none">
+  <div class="preview-fs-toolbar">
+    <span class="preview-fs-title" id="preview-fs-title">Plein cadre — Aperçu</span>
+    <div class="preview-fs-zoom-group">
+      <button class="preview-fs-btn" id="preview-fs-zoom-out" title="Dézoomer (molette ↓)">−</button>
+      <span class="preview-fs-zoom-val" id="preview-fs-zoom-val">100%</span>
+      <button class="preview-fs-btn" id="preview-fs-zoom-in" title="Zoomer (molette ↑)">+</button>
+    </div>
+    <button class="preview-fs-btn" id="preview-fs-fit" title="Adapter à la fenêtre">⤢ Adapter</button>
+    <button class="preview-fs-btn" id="preview-fs-100" title="Taille réelle 1920×1080">1:1</button>
+    <button class="preview-fs-btn preview-fs-close-btn" id="preview-fs-close" title="Fermer (Échap)">×</button>
+  </div>
+  <div class="preview-fs-viewport" id="preview-fs-viewport">
+    <div class="preview-fs-canvas" id="preview-fs-canvas">
+      <iframe id="preview-fs-iframe" class="preview-fs-iframe"></iframe>
+    </div>
+  </div>
+  <div class="preview-fs-hint">Glisser pour déplacer · Molette pour zoomer · Échap pour fermer</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
 <!--  SETUP MODAL — configuration initiale du tournoi          -->
 <!-- ══════════════════════════════════════════════════════════ -->
 <div id="setup-modal" class="setup-overlay" style="display:none">

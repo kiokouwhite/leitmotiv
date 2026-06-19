@@ -12660,3 +12660,165 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
   if (TEST_MODE) injectMockState();
   else refreshStatus();
 })();
+
+// ══════════════════════════════════════════════════════════════════════
+// Preview plein cadre — chaque .overlay-preview-wrap reçoit un bouton
+// « 🔍 Plein cadre » qui ouvre une modal avec l'iframe à taille native
+// 1920×1080, zoomable (boutons + molette) et déplaçable (drag).
+//
+// La modal a sa propre iframe : on copie juste l'URL de l'iframe d'origine
+// (data-src ou src) pour ne pas perturber l'aperçu compact.
+// ══════════════════════════════════════════════════════════════════════
+(function () {
+  const modal     = document.getElementById('preview-fs-modal');
+  const viewport  = document.getElementById('preview-fs-viewport');
+  const canvas    = document.getElementById('preview-fs-canvas');
+  const frame     = document.getElementById('preview-fs-iframe');
+  const elTitle   = document.getElementById('preview-fs-title');
+  const elZoomVal = document.getElementById('preview-fs-zoom-val');
+  const btnIn     = document.getElementById('preview-fs-zoom-in');
+  const btnOut    = document.getElementById('preview-fs-zoom-out');
+  const btnFit    = document.getElementById('preview-fs-fit');
+  const btn100    = document.getElementById('preview-fs-100');
+  const btnClose  = document.getElementById('preview-fs-close');
+  if (!modal || !frame) return;
+
+  const W = 1920, H = 1080;
+  const MIN = 0.1, MAX = 3;
+  let zoom = 1;
+
+  function applyZoom() {
+    frame.style.transform = `scale(${zoom})`;
+    canvas.style.width  = Math.round(W * zoom) + 'px';
+    canvas.style.height = Math.round(H * zoom) + 'px';
+    elZoomVal.textContent = Math.round(zoom * 100) + '%';
+  }
+  function setZoom(z, anchorClientX, anchorClientY) {
+    z = Math.max(MIN, Math.min(MAX, z));
+    if (z === zoom) return;
+    // Si un point d'ancrage (souris) est fourni, on zoome autour de lui en
+    // ajustant scrollLeft/scrollTop pour que le point sous le curseur reste fixe.
+    let anchor = null;
+    if (anchorClientX != null) {
+      const rect = viewport.getBoundingClientRect();
+      const px = anchorClientX - rect.left + viewport.scrollLeft;
+      const py = anchorClientY - rect.top  + viewport.scrollTop;
+      anchor = { px, py, ratio: z / zoom };
+    }
+    zoom = z;
+    applyZoom();
+    if (anchor) {
+      viewport.scrollLeft = anchor.px * anchor.ratio - (anchorClientX - viewport.getBoundingClientRect().left);
+      viewport.scrollTop  = anchor.py * anchor.ratio - (anchorClientY - viewport.getBoundingClientRect().top);
+    }
+  }
+  function fitToViewport() {
+    const pad = 32;
+    const w = viewport.clientWidth  - pad;
+    const h = viewport.clientHeight - pad;
+    setZoom(Math.min(w / W, h / H));
+    // Re-centrer après fit
+    requestAnimationFrame(() => {
+      viewport.scrollLeft = Math.max(0, (canvas.offsetWidth  - viewport.clientWidth)  / 2);
+      viewport.scrollTop  = Math.max(0, (canvas.offsetHeight - viewport.clientHeight) / 2);
+    });
+  }
+
+  function open(url, title) {
+    if (!url) return;
+    elTitle.textContent = title || 'Plein cadre — Aperçu';
+    // Recharge l'iframe à l'URL demandée (les overlays se reconnectent au socket et se mettent à jour live).
+    if (frame.src !== url) frame.src = url;
+    modal.style.display = 'flex';
+    requestAnimationFrame(fitToViewport);
+  }
+  function close() {
+    modal.style.display = 'none';
+    // Décharge l'iframe pour libérer ses ressources (RAF / socket / particules).
+    frame.src = 'about:blank';
+  }
+
+  // ── Contrôles toolbar ────────────────────────────────────────────────
+  btnIn.addEventListener('click',  () => setZoom(zoom * 1.25));
+  btnOut.addEventListener('click', () => setZoom(zoom / 1.25));
+  btnFit.addEventListener('click', fitToViewport);
+  btn100.addEventListener('click', () => setZoom(1));
+  btnClose.addEventListener('click', close);
+
+  // ── Échap pour fermer ────────────────────────────────────────────────
+  document.addEventListener('keydown', (e) => {
+    if (modal.style.display === 'flex' && e.key === 'Escape') close();
+  });
+
+  // ── Molette pour zoomer (autour du curseur) ──────────────────────────
+  viewport.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+    setZoom(zoom * factor, e.clientX, e.clientY);
+  }, { passive: false });
+
+  // ── Drag-to-pan ──────────────────────────────────────────────────────
+  let pan = null;
+  viewport.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return;
+    pan = { x: e.clientX, y: e.clientY, sl: viewport.scrollLeft, st: viewport.scrollTop };
+    viewport.classList.add('is-panning');
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (!pan) return;
+    viewport.scrollLeft = pan.sl - (e.clientX - pan.x);
+    viewport.scrollTop  = pan.st - (e.clientY - pan.y);
+  });
+  window.addEventListener('mouseup', () => {
+    if (!pan) return;
+    pan = null;
+    viewport.classList.remove('is-panning');
+  });
+
+  // Re-fit quand la fenêtre est resize tant que la modal est ouverte.
+  window.addEventListener('resize', () => { if (modal.style.display === 'flex') fitToViewport(); });
+
+  // ── Injection des boutons trigger sur chaque .overlay-preview-wrap ──
+  // Le label de chaque overlay vient soit du data-src de l'iframe, soit d'un
+  // mapping connu. On utilise une seule passe au boot + un MutationObserver
+  // pour couvrir les wraps créés dynamiquement (cf. mountPreview / master).
+  const URL_LABELS = {
+    '/overlay':   'Scoreboard',
+    '/master':    'Master Overlay',
+    '/casters':   'Casters',
+    '/stageveto': 'Stage Veto',
+    '/nextmatch': 'Next Match',
+    '/vs-screen': 'VS Screen',
+    '/victory':   'Victory',
+  };
+  function urlFromWrap(wrap) {
+    const f = wrap.querySelector('iframe');
+    if (!f) return null;
+    // Préfère data-src (utilisé par le lazy-loader), sinon src.
+    return f.getAttribute('data-src') || f.getAttribute('src') || null;
+  }
+  function ensureTrigger(wrap) {
+    if (!wrap.classList?.contains('overlay-preview-wrap')) return;
+    if (wrap.querySelector('.preview-fs-trigger')) return;
+    const url = urlFromWrap(wrap);
+    if (!url || url === 'about:blank') return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'preview-fs-trigger';
+    btn.title = 'Voir en plein cadre 1920×1080 avec zoom';
+    btn.textContent = '🔍 Plein cadre';
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      open(url, 'Plein cadre — ' + (URL_LABELS[url] || url));
+    });
+    wrap.appendChild(btn);
+  }
+  function injectAll() {
+    document.querySelectorAll('.overlay-preview-wrap').forEach(ensureTrigger);
+  }
+  injectAll();
+  // Couvre les wraps créés dynamiquement (mountPreview, master preview, etc.)
+  new MutationObserver(() => injectAll()).observe(document.body, { subtree: true, childList: true });
+})();

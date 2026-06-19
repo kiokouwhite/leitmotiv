@@ -5990,3 +5990,151 @@ h1, .section-header h2, .custom-card h3,
   gap: 8px;
   justify-content: flex-end;
 }
+
+/* ── Preview plein cadre 1920×1080 + zoom + pan ───────────────────── */
+
+/* Bouton trigger injecté en absolute dans chaque .overlay-preview-wrap. */
+.preview-fs-trigger {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  background: rgba(20, 14, 40, 0.85);
+  border: 1px solid rgba(34, 240, 255, 0.45);
+  color: var(--neon-cyan, #22f0ff);
+  font-family: 'Rajdhani', 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .2s ease, background .15s ease;
+  backdrop-filter: blur(2px);
+}
+.overlay-preview-wrap { position: relative; }
+.overlay-preview-wrap:hover .preview-fs-trigger,
+.preview-fs-trigger:focus { opacity: 1; }
+.preview-fs-trigger:hover { background: rgba(34, 240, 255, 0.18); }
+
+/* Modal plein écran */
+.preview-fs-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9700;
+  background: rgba(2, 3, 14, 0.96);
+  display: flex;
+  flex-direction: column;
+}
+.preview-fs-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: linear-gradient(180deg, rgba(20, 14, 40, 0.95), rgba(20, 14, 40, 0.85));
+  border-bottom: 1px solid var(--border, #2a2a3e);
+  flex-shrink: 0;
+}
+.preview-fs-title {
+  flex: 1;
+  font-family: 'Orbitron', 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--text-muted, #8a8aa8);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.preview-fs-zoom-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface2, #16161e);
+  border: 1px solid var(--border, #2a2a3e);
+  border-radius: 5px;
+  padding: 2px;
+}
+.preview-fs-zoom-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  min-width: 52px;
+  text-align: center;
+  color: var(--neon-cyan, #22f0ff);
+  user-select: none;
+}
+.preview-fs-btn {
+  background: var(--surface2, #16161e);
+  border: 1px solid var(--border, #2a2a3e);
+  color: var(--text, #f0eef8);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .12s ease, border-color .12s ease;
+}
+.preview-fs-zoom-group .preview-fs-btn {
+  border: 0;
+  padding: 2px 9px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.preview-fs-btn:hover { background: var(--surface, #0b0b16); border-color: var(--neon-cyan, #22f0ff); }
+.preview-fs-close-btn {
+  color: #ff5577;
+  border-color: rgba(255, 85, 119, 0.5);
+  font-size: 18px;
+  font-weight: 700;
+  padding: 2px 11px;
+  line-height: 1;
+}
+.preview-fs-close-btn:hover { background: rgba(255, 85, 119, 0.12); border-color: #ff5577; }
+
+/* Viewport scrollable. Damier subtil pour repérer les zones transparentes. */
+.preview-fs-viewport {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  background-color: #050310;
+  background-image:
+    linear-gradient(45deg, rgba(255,255,255,0.025) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.025) 75%, rgba(255,255,255,0.025)),
+    linear-gradient(45deg, rgba(255,255,255,0.025) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.025) 75%, rgba(255,255,255,0.025));
+  background-position: 0 0, 12px 12px;
+  background-size: 24px 24px;
+  cursor: grab;
+}
+.preview-fs-viewport.is-panning { cursor: grabbing; }
+
+/* Container qui prend la taille SCALÉE (1920*scale × 1080*scale) pour que
+   overflow:auto donne des barres de scroll cohérentes quand on zoome. */
+.preview-fs-canvas {
+  position: relative;
+  margin: auto;
+}
+.preview-fs-iframe {
+  display: block;
+  width: 1920px;
+  height: 1080px;
+  border: 0;
+  transform-origin: top left;
+  background: #000;
+  box-shadow: 0 0 0 1px rgba(34, 240, 255, 0.15), 0 0 30px rgba(0, 0, 0, 0.7);
+  pointer-events: none; /* on bloque les clics dans l'iframe pour que le drag sur le viewport marche partout */
+}
+
+.preview-fs-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: rgba(240, 238, 248, 0.4);
+  background: rgba(20, 14, 40, 0.75);
+  padding: 4px 12px;
+  border-radius: 12px;
+  pointer-events: none;
+  letter-spacing: 0.5px;
+}
