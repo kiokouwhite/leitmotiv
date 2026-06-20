@@ -606,11 +606,11 @@
             <!-- Titres verticaux -->
             <div id="sb-nav-titles" style="width:30px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 0;gap:28px;border-right:1px solid var(--border);background:var(--surface)">
               <span class="vic-nav-title" data-target="sb-sect-affichage">Affichage</span>
+              <span class="vic-nav-title" data-target="sb-sect-position">Position</span>
               <span class="vic-nav-title" data-target="sb-sect-logo">Logo</span>
               <span class="vic-nav-title" data-target="sb-sect-drapeaux">Drapeaux</span>
               <span class="vic-nav-title" data-target="sb-sect-fond">Fond</span>
               <span class="vic-nav-title" data-target="sb-sect-style">Style</span>
-              <span class="vic-nav-title" data-target="sb-sect-position">Position</span>
               <span class="vic-nav-title" data-target="sb-sect-textes">Textes</span>
               <span class="vic-nav-title" data-target="sb-sect-particules">Particules</span>
             </div>
@@ -639,6 +639,172 @@
                     <label class="vis-toggle"><input type="checkbox" id="show-tag" checked /><span>Tag / sponsor</span></label>
                     <label class="vis-toggle"><input type="checkbox" id="show-character" checked /><span>Personnage</span></label>
                     <label class="vis-toggle"><input type="checkbox" id="show-seed" checked /><span>Seed (#N)</span></label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Position -->
+              <div id="sb-sect-position" style="padding:0 16px 16px">
+                <div class="custom-grid">
+                  <div class="custom-card">
+                    <h3>Position &amp; Taille</h3>
+                    <div class="form-group" style="margin-bottom:8px">
+                      <label>Ancrage vertical</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="sb-anchor-btn theme-btn active" data-anchor="top" style="font-size:11px;padding:3px 8px;flex:1">↑ Haut</button>
+                        <button class="sb-anchor-btn theme-btn" data-anchor="middle" style="font-size:11px;padding:3px 8px;flex:1">⇔ Milieu</button>
+                        <button class="sb-anchor-btn theme-btn" data-anchor="bottom" style="font-size:11px;padding:3px 8px;flex:1">↓ Bas</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Taille %</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="sb-scale-range" min="50" max="200" value="100" step="1" />
+                        <input type="number" id="sb-scale-num" min="50" max="200" value="100" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>X px</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="sb-x-range" min="-960" max="960" value="0" step="1" />
+                        <input type="number" id="sb-x-num" min="-960" max="960" value="0" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Y px</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="sb-y-range" min="-200" max="600" value="0" step="1" />
+                        <input type="number" id="sb-y-num" min="-200" max="600" value="0" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Écart P1↔P2</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="players-gap-range" min="0" max="400" value="0" step="2" />
+                        <input type="number" id="players-gap-num" min="0" max="400" value="0" step="2" style="width:58px" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="custom-card">
+                    <h3>Lower Third</h3>
+                    <div class="form-group" style="margin-bottom:8px">
+                      <button id="btn-lt-toggle" class="btn btn-outline btn-sm" style="width:100%">Lower Third : OFF</button>
+                    </div>
+                    <div id="lt-position-card" style="display:none">
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Hauteur px</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="lt-bottom-range" min="0" max="500" value="150" step="1" />
+                          <input type="number" id="lt-bottom-num" min="0" max="500" value="150" step="1" style="width:58px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label>Marges px</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="lt-padding-x-range" min="0" max="400" value="60" step="4" />
+                          <input type="number" id="lt-padding-x-num" min="0" max="400" value="60" step="4" style="width:58px" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-top:12px;margin-bottom:0">
+                      <label>Position barre</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="event-bar-pos-btn theme-btn active" data-pos="top" style="font-size:13px;padding:4px 14px;flex:1">↑ Haut</button>
+                        <button class="event-bar-pos-btn theme-btn" data-pos="bottom" style="font-size:13px;padding:4px 14px;flex:1">↓ Bas</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="custom-card">
+                    <h3>Barre événement</h3>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Taille px</label>
+                      <input type="number" id="event-text-size" value="12" min="8" max="32" style="width:60px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 6px;text-align:center" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Couleur</label>
+                      <input type="color" id="event-text-color" value="#EAB830" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Col. gauche %</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="eb-left-width-range" min="0" max="50" value="0" step="1" />
+                        <input type="number" id="eb-left-width-num" min="0" max="50" value="0" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Col. droite %</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="eb-right-width-range" min="0" max="50" value="0" step="1" />
+                        <input type="number" id="eb-right-width-num" min="0" max="50" value="0" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Align. gauche</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="eb-left-align-btn theme-btn active" data-align="left" style="font-size:11px;padding:3px 8px;flex:1">⇤</button>
+                        <button class="eb-left-align-btn theme-btn" data-align="center" style="font-size:11px;padding:3px 8px;flex:1">⇔</button>
+                        <button class="eb-left-align-btn theme-btn" data-align="right" style="font-size:11px;padding:3px 8px;flex:1">⇥</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Empilement</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="eb-stack-btn theme-btn active" data-stack="inline" style="font-size:11px;padding:3px 8px;flex:1">— Inline</button>
+                        <button class="eb-stack-btn theme-btn" data-stack="vertical" style="font-size:11px;padding:3px 8px;flex:1">| Vertical</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Séparateur</label>
+                      <select id="eb-sep-style" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                        <option value="dot">·  Point</option>
+                        <option value="pipe">|  Barre verticale</option>
+                        <option value="slash">/  Slash</option>
+                        <option value="dash">—  Tiret</option>
+                        <option value="none">∅  Aucun</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="custom-card">
+                    <h3>Géométrie des cartes</h3>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Largeur min</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="player-min-width-range" min="160" max="720" value="320" step="4" />
+                        <input type="number" id="player-min-width-num" min="160" max="720" value="320" step="4" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Hauteur (0=auto)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="sb-height-range" min="0" max="260" value="0" step="1" />
+                        <input type="number" id="sb-height-num" min="0" max="260" value="0" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Border-radius</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="player-card-radius-range" min="0" max="40" value="0" step="1" />
+                        <input type="number" id="player-card-radius-num" min="0" max="40" value="0" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Padding</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="player-card-padding-range" min="0" max="40" value="12" step="1" />
+                        <input type="number" id="player-card-padding-num" min="0" max="40" value="12" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Ombre intensité</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="sb-shadow-range" min="0" max="64" value="32" step="1" />
+                        <input type="number" id="sb-shadow-num" min="0" max="64" value="32" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Ombre couleur</label>
+                      <input type="color" id="sb-shadow-color" value="#000000" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -878,172 +1044,6 @@
                       <input type="checkbox" id="swap-players" />
                       Inverser J1 ↔ J2 (miroir)
                     </label>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Position -->
-              <div id="sb-sect-position" style="padding:0 16px 16px">
-                <div class="custom-grid">
-                  <div class="custom-card">
-                    <h3>Position &amp; Taille</h3>
-                    <div class="form-group" style="margin-bottom:8px">
-                      <label>Ancrage vertical</label>
-                      <div style="display:flex;gap:4px;margin-top:4px">
-                        <button class="sb-anchor-btn theme-btn active" data-anchor="top" style="font-size:11px;padding:3px 8px;flex:1">↑ Haut</button>
-                        <button class="sb-anchor-btn theme-btn" data-anchor="middle" style="font-size:11px;padding:3px 8px;flex:1">⇔ Milieu</button>
-                        <button class="sb-anchor-btn theme-btn" data-anchor="bottom" style="font-size:11px;padding:3px 8px;flex:1">↓ Bas</button>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Taille %</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-scale-range" min="50" max="200" value="100" step="1" />
-                        <input type="number" id="sb-scale-num" min="50" max="200" value="100" step="1" style="width:54px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>X px</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-x-range" min="-960" max="960" value="0" step="1" />
-                        <input type="number" id="sb-x-num" min="-960" max="960" value="0" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Y px</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-y-range" min="-200" max="600" value="0" step="1" />
-                        <input type="number" id="sb-y-num" min="-200" max="600" value="0" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Écart P1↔P2</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="players-gap-range" min="0" max="400" value="0" step="2" />
-                        <input type="number" id="players-gap-num" min="0" max="400" value="0" step="2" style="width:58px" />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="custom-card">
-                    <h3>Lower Third</h3>
-                    <div class="form-group" style="margin-bottom:8px">
-                      <button id="btn-lt-toggle" class="btn btn-outline btn-sm" style="width:100%">Lower Third : OFF</button>
-                    </div>
-                    <div id="lt-position-card" style="display:none">
-                      <div class="form-group" style="margin-bottom:7px">
-                        <label>Hauteur px</label>
-                        <div class="logo-particles-row">
-                          <input type="range" id="lt-bottom-range" min="0" max="500" value="150" step="1" />
-                          <input type="number" id="lt-bottom-num" min="0" max="500" value="150" step="1" style="width:58px" />
-                        </div>
-                      </div>
-                      <div class="form-group" style="margin:0">
-                        <label>Marges px</label>
-                        <div class="logo-particles-row">
-                          <input type="range" id="lt-padding-x-range" min="0" max="400" value="60" step="4" />
-                          <input type="number" id="lt-padding-x-num" min="0" max="400" value="60" step="4" style="width:58px" />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-top:12px;margin-bottom:0">
-                      <label>Position barre</label>
-                      <div style="display:flex;gap:4px;margin-top:4px">
-                        <button class="event-bar-pos-btn theme-btn active" data-pos="top" style="font-size:13px;padding:4px 14px;flex:1">↑ Haut</button>
-                        <button class="event-bar-pos-btn theme-btn" data-pos="bottom" style="font-size:13px;padding:4px 14px;flex:1">↓ Bas</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="custom-card">
-                    <h3>Barre événement</h3>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Taille px</label>
-                      <input type="number" id="event-text-size" value="12" min="8" max="32" style="width:60px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 6px;text-align:center" />
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Couleur</label>
-                      <input type="color" id="event-text-color" value="#EAB830" />
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Col. gauche %</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="eb-left-width-range" min="0" max="50" value="0" step="1" />
-                        <input type="number" id="eb-left-width-num" min="0" max="50" value="0" step="1" style="width:54px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Col. droite %</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="eb-right-width-range" min="0" max="50" value="0" step="1" />
-                        <input type="number" id="eb-right-width-num" min="0" max="50" value="0" step="1" style="width:54px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Align. gauche</label>
-                      <div style="display:flex;gap:4px;margin-top:4px">
-                        <button class="eb-left-align-btn theme-btn active" data-align="left" style="font-size:11px;padding:3px 8px;flex:1">⇤</button>
-                        <button class="eb-left-align-btn theme-btn" data-align="center" style="font-size:11px;padding:3px 8px;flex:1">⇔</button>
-                        <button class="eb-left-align-btn theme-btn" data-align="right" style="font-size:11px;padding:3px 8px;flex:1">⇥</button>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Empilement</label>
-                      <div style="display:flex;gap:4px;margin-top:4px">
-                        <button class="eb-stack-btn theme-btn active" data-stack="inline" style="font-size:11px;padding:3px 8px;flex:1">— Inline</button>
-                        <button class="eb-stack-btn theme-btn" data-stack="vertical" style="font-size:11px;padding:3px 8px;flex:1">| Vertical</button>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Séparateur</label>
-                      <select id="eb-sep-style" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
-                        <option value="dot">·  Point</option>
-                        <option value="pipe">|  Barre verticale</option>
-                        <option value="slash">/  Slash</option>
-                        <option value="dash">—  Tiret</option>
-                        <option value="none">∅  Aucun</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="custom-card">
-                    <h3>Géométrie des cartes</h3>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Largeur min</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="player-min-width-range" min="160" max="720" value="320" step="4" />
-                        <input type="number" id="player-min-width-num" min="160" max="720" value="320" step="4" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Hauteur (0=auto)</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-height-range" min="0" max="260" value="0" step="1" />
-                        <input type="number" id="sb-height-num" min="0" max="260" value="0" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Border-radius</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="player-card-radius-range" min="0" max="40" value="0" step="1" />
-                        <input type="number" id="player-card-radius-num" min="0" max="40" value="0" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Padding</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="player-card-padding-range" min="0" max="40" value="12" step="1" />
-                        <input type="number" id="player-card-padding-num" min="0" max="40" value="12" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Ombre intensité</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-shadow-range" min="0" max="64" value="32" step="1" />
-                        <input type="number" id="sb-shadow-num" min="0" max="64" value="32" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Ombre couleur</label>
-                      <input type="color" id="sb-shadow-color" value="#000000" />
-                    </div>
                   </div>
                 </div>
               </div>
