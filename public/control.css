@@ -5342,10 +5342,16 @@ div:has(> [id$="-nav-titles"]):has(.overlay-preview-wrap) {
   padding: 11px 16px !important;
   height: auto !important;
 }
-/* Aperçu en direct : colonne de droite, centré verticalement dans la hauteur dispo */
+/* Aperçu en direct : colonne de droite, étirée sur toute la hauteur de la
+   cellule (avec overflow:hidden sur le pane lui-même). On a renoncé à
+   align-self:center : quand la preview est trop haute (cf full canvas 1920×
+   1080 sans auto-crop), le centrage fait déborder en HAUT et en BAS,
+   donc la preview passe par-dessus la nav. Stretch + overflow clip propre. */
 div:has(> [id$="-nav-titles"]):has(.overlay-preview-wrap) > div:last-child {
   grid-area: preview !important;
-  align-self: center !important;
+  align-self: stretch !important;
+  min-height: 0 !important;       /* permet à overflow:hidden de fonctionner dans grid */
+  overflow-y: auto !important;     /* scroll vertical si trop haut, plutôt que déborder */
   border-top: none !important;
   border-left: 1px solid var(--border) !important;
 }
