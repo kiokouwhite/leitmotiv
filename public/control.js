@@ -3039,22 +3039,24 @@ document.getElementById('logo-particles-num').addEventListener('change', functio
   emitState(buildStateFromForm());
 });
 
-// Scoreboard scale/position sliders — sync range ↔ number and emit
+// Scoreboard scale/position sliders — sync range ↔ number and emit.
+// Optional chaining sur addEventListener car les sliders lt-* peuvent ne plus
+// exister depuis qu'on a retiré la carte Lower Third (cf commit 327d02e).
 [
   { id: 'sb-scale',      min: 50,   max: 200 },
   { id: 'sb-x',          min: -960, max: 960 },
   { id: 'sb-y',          min: -200, max: 600 },
-  { id: 'lt-bottom',     min: 0,    max: 500 },
-  { id: 'lt-padding-x',  min: 0,    max: 400 },
 ].forEach(({ id, min, max }) => {
-  document.getElementById(id + '-range').addEventListener('input', function () {
-    document.getElementById(id + '-num').value = this.value;
+  document.getElementById(id + '-range')?.addEventListener('input', function () {
+    const num = document.getElementById(id + '-num');
+    if (num) num.value = this.value;
     emitState(buildStateFromForm());
   });
-  document.getElementById(id + '-num').addEventListener('change', function () {
+  document.getElementById(id + '-num')?.addEventListener('change', function () {
     let v = Math.min(max, Math.max(min, parseInt(this.value) || 0));
     this.value = v;
-    document.getElementById(id + '-range').value = v;
+    const rng = document.getElementById(id + '-range');
+    if (rng) rng.value = v;
     emitState(buildStateFromForm());
   });
 });
