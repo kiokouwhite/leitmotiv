@@ -757,10 +757,13 @@
     const stageInput = document.getElementById('stage') || document.getElementById('event-stage');
     if (stageInput && round) { stageInput.value = round; stageInput.dispatchEvent(new Event('input', { bubbles: true })); }
 
-    // Nom de l'event → champ "Événement"
-    if (currentEventName) {
+    // Nom du tournoi → champ "Événement" (préféré au nom de l'event/bracket,
+    // qui décrit le jeu ex. « Smash Ultimate Singles » plutôt que l'édition
+    // ex. « GENESIS X »). Fallback sur currentEventName si pas de tournoi.
+    const _evName = tournamentName || currentEventName;
+    if (_evName) {
       const evInput = document.getElementById('event-name');
-      if (evInput) { evInput.value = currentEventName; evInput.dispatchEvent(new Event('input', { bubbles: true })); }
+      if (evInput) { evInput.value = _evName; evInput.dispatchEvent(new Event('input', { bubbles: true })); }
     }
 
     // Logo du tournoi → champ center-logo
