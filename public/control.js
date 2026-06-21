@@ -302,9 +302,10 @@ function syncFromState(s) {
     b.classList.toggle('active', b.dataset.orientation === (s.dotsOrientation || 'row'));
   });
 
-  // Event bar position buttons
+  // Event bar position buttons (compat : 'top' / 'bottom' legacy → '*-center')
+  const _ebPosNorm = (p => p === 'top' ? 'top-center' : p === 'bottom' ? 'bottom-center' : (p || 'top-center'))(s.eventBarPosition);
   document.querySelectorAll('.event-bar-pos-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.pos === (s.eventBarPosition || 'top'));
+    b.classList.toggle('active', b.dataset.pos === _ebPosNorm);
   });
 
   // Textes joueurs
@@ -449,7 +450,7 @@ function buildStateFromForm() {
     overlayStyle: state.overlayStyle || 'full',
     scoreDisplay: state.scoreDisplay || 'numbers',
     dotsOrientation: state.dotsOrientation || 'row',
-    eventBarPosition: state.eventBarPosition || 'top',
+    eventBarPosition: state.eventBarPosition || 'top-center',
     tagColor: document.getElementById('tag-color')?.value || '#E8B830',
     nameColor: document.getElementById('name-color')?.value || '#F0EEF8',
     pronounsColor: document.getElementById('pronouns-color')?.value || '#5A5A7A',
@@ -3027,7 +3028,7 @@ const SCOREBOARD_DEFAULTS = {
   eventBarBgColor: '#0E0E12', eventBarBgOpacity: 100,
   eventBarBorderColor: '#EAB830', eventBarBorderWidth: 2,
   eventBarPaddingX: 32, eventBarGap: 10, eventBarBevel: 12, eventBarDetach: 0,
-  eventBarMode: 'attached', eventBarOffsetX: 0, eventBarOffsetY: 0,
+  eventBarPosition: 'top-center', eventBarMode: 'attached', eventBarOffsetX: 0, eventBarOffsetY: 0,
   // Lot 5
   sbAnchorY: 'top',
   sbScale: 100, sbX: 0, sbY: 0,

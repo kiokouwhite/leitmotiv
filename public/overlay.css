@@ -523,20 +523,25 @@ body.sb-logo-shape-hex .slim-center-logo img    { clip-path: polygon(25% 5%, 75%
   margin-top: var(--event-bar-detach, 0px);
 }
 
-/* Lot 6 — barre événement détachée : sort du flow flex du scoreboard et
-   se positionne librement via X/Y (relatif au coin haut-gauche du scoreboard). */
+/* Lot 6 — barre événement détachée : sort du flow flex du scoreboard et se
+   positionne sur l'un des 9 points d'ancrage (coins + milieux) du scoreboard.
+   X/Y sont des décalages en direction CSS absolue (X+ = droite, Y+ = bas)
+   à partir du point d'ancrage choisi via [data-anchor]. */
 .event-bar.eb-detached {
   position: absolute;
-  left: 50%;
-  top: var(--eb-offset-y, 0px);
-  transform: translateX(calc(-50% + var(--eb-offset-x, 0px)));
   margin: 0;
   z-index: 2;
 }
-.scoreboard.event-bar-bottom .event-bar.eb-detached {
-  top: auto;
-  bottom: calc(var(--eb-offset-y, 0px) * -1);
-}
+.event-bar.eb-detached:not([data-anchor]),
+.event-bar.eb-detached[data-anchor="top-center"]    { top:0; left:50%;  transform: translate(calc(-50% + var(--eb-offset-x, 0px)), var(--eb-offset-y, 0px)); }
+.event-bar.eb-detached[data-anchor="top-left"]      { top:0; left:0;    transform: translate(var(--eb-offset-x, 0px), var(--eb-offset-y, 0px)); }
+.event-bar.eb-detached[data-anchor="top-right"]     { top:0; right:0;   transform: translate(var(--eb-offset-x, 0px), var(--eb-offset-y, 0px)); }
+.event-bar.eb-detached[data-anchor="middle-left"]   { top:50%; left:0;  transform: translate(var(--eb-offset-x, 0px), calc(-50% + var(--eb-offset-y, 0px))); }
+.event-bar.eb-detached[data-anchor="middle-center"] { top:50%; left:50%; transform: translate(calc(-50% + var(--eb-offset-x, 0px)), calc(-50% + var(--eb-offset-y, 0px))); }
+.event-bar.eb-detached[data-anchor="middle-right"]  { top:50%; right:0; transform: translate(var(--eb-offset-x, 0px), calc(-50% + var(--eb-offset-y, 0px))); }
+.event-bar.eb-detached[data-anchor="bottom-left"]   { top:auto; bottom:0; left:0;  transform: translate(var(--eb-offset-x, 0px), var(--eb-offset-y, 0px)); }
+.event-bar.eb-detached[data-anchor="bottom-center"] { top:auto; bottom:0; left:50%; transform: translate(calc(-50% + var(--eb-offset-x, 0px)), var(--eb-offset-y, 0px)); }
+.event-bar.eb-detached[data-anchor="bottom-right"]  { top:auto; bottom:0; right:0; transform: translate(var(--eb-offset-x, 0px), var(--eb-offset-y, 0px)); }
 
 /* ── Toggle layouts ───────────────────────────────────────────── */
 

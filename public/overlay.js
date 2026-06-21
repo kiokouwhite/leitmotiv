@@ -452,7 +452,13 @@ function update(s) {
   ['numbers', 'dots'].forEach(d => {
     sb.classList.toggle('score-display-' + d, _scoreDisplay === d);
   });
-  sb.classList.toggle('event-bar-bottom', s.eventBarPosition === 'bottom');
+  // Position 9-points (top/middle/bottom × left/center/right) + legacy 'top'/'bottom'
+  const _ebPos = s.eventBarPosition === 'top' ? 'top-center'
+              : s.eventBarPosition === 'bottom' ? 'bottom-center'
+              : (s.eventBarPosition || 'top-center');
+  const _ebRow = _ebPos.split('-')[0];
+  sb.classList.toggle('event-bar-bottom', _ebRow === 'bottom');
+  document.querySelectorAll('.event-bar').forEach(b => { b.dataset.anchor = _ebPos; });
 
   // Theme class
   ['default', 'cyberpunk', 'synthwave', 'midnight', 'egypt', 'city', 'eco', 'water', 'fire',
