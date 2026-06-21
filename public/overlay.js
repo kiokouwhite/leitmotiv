@@ -753,6 +753,11 @@ function update(s) {
   sb.style.setProperty('--tag-color', s.tagColor || '#E8B830');
   sb.style.setProperty('--name-color', s.nameColor || '#F0EEF8');
   sb.style.setProperty('--pronouns-color', s.pronounsColor || '#5A5A7A');
+  // Onglet Score — couleur/taille du chiffre + VS + dots remplis
+  if (s.scoreColor)     sb.style.setProperty('--score-color',    s.scoreColor);
+  if (s.scoreVsColor)   sb.style.setProperty('--score-vs-color', s.scoreVsColor);
+  sb.style.setProperty('--score-font-size', (s.scoreFontSize ?? 52) + 'px');
+  if (s.dotColor)       sb.style.setProperty('--dot-color',      s.dotColor);
 
   // Colors — full layout
   const c1 = s.hidePlayerColors ? 'transparent' : s.player1.color;

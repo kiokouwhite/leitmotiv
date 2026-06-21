@@ -184,14 +184,14 @@ body.sb-score-in-cards .player-left > .score {
   margin-left: auto;
   padding: 0 18px;
   align-self: center;
-  font-size: 40px;
+  font-size: var(--score-font-size, 40px);
   line-height: 1;
 }
 body.sb-score-in-cards .player-right > .score {
   margin-right: auto;
   padding: 0 18px;
   align-self: center;
-  font-size: 40px;
+  font-size: var(--score-font-size, 40px);
   line-height: 1;
 }
 /* Le score-box ne contient plus que dots-col + center-logo-area (VS) + dots-col :
@@ -437,7 +437,7 @@ body.sb-logo-shape-hex .slim-center-logo img    { clip-path: polygon(25% 5%, 75%
 
 .score {
   font-family: var(--custom-font, 'Russo One'), sans-serif;
-  font-size: 52px;
+  font-size: var(--score-font-size, 52px);
   color: var(--score-color, var(--smash-white));
   min-width: 44px;
   text-align: center;
@@ -447,7 +447,7 @@ body.sb-logo-shape-hex .slim-center-logo img    { clip-path: polygon(25% 5%, 75%
 .score-vs {
   font-family: 'Russo One', sans-serif;
   font-size: 20px;
-  color: var(--smash-gold);
+  color: var(--score-vs-color, var(--smash-gold));
   letter-spacing: 3px;
   padding-bottom: 4px;
 }

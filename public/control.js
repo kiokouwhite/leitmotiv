@@ -330,6 +330,18 @@ function syncFromState(s) {
   if (tagEl) tagEl.value = s.tagColor || '#E8B830';
   if (nameEl) nameEl.value = s.nameColor || '#F0EEF8';
   if (pronounsEl) pronounsEl.value = s.pronounsColor || '#5A5A7A';
+  // Onglet Score — apparence du chiffre + VS + dots
+  const _scCol = document.getElementById('score-color');
+  if (_scCol) _scCol.value = s.scoreColor || '#F0EEF8';
+  const _scVs  = document.getElementById('score-vs-color');
+  if (_scVs) _scVs.value = s.scoreVsColor || '#E8B830';
+  const _dotCol = document.getElementById('dot-color');
+  if (_dotCol) _dotCol.value = s.dotColor || '#E8B830';
+  const _scSizeRng = document.getElementById('score-font-size-range');
+  const _scSizeNum = document.getElementById('score-font-size-num');
+  const _scSizeVal = s.scoreFontSize ?? 52;
+  if (_scSizeRng) _scSizeRng.value = _scSizeVal;
+  if (_scSizeNum) _scSizeNum.value = _scSizeVal;
 
   // Event bar
   const etSizeEl = document.getElementById('event-text-size');
@@ -469,6 +481,11 @@ function buildStateFromForm() {
     tagColor: document.getElementById('tag-color')?.value || '#E8B830',
     nameColor: document.getElementById('name-color')?.value || '#F0EEF8',
     pronounsColor: document.getElementById('pronouns-color')?.value || '#5A5A7A',
+    // Onglet Score : apparence du chiffre + VS + dots
+    scoreColor:    document.getElementById('score-color')?.value || '#F0EEF8',
+    scoreVsColor:  document.getElementById('score-vs-color')?.value || '#E8B830',
+    scoreFontSize: parseInt(document.getElementById('score-font-size-num')?.value ?? 52),
+    dotColor:      document.getElementById('dot-color')?.value || '#E8B830',
     eventTextSize: parseInt(document.getElementById('event-text-size')?.value ?? 12),
     eventTextColor: document.getElementById('event-text-color')?.value || '#5A5A7A',
     sbBgColor: document.getElementById('sb-bg-color')?.value || '#0E0E12',
@@ -2965,6 +2982,8 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   'event-bar-offset-x', 'event-bar-offset-y',
   'event-bar-shadow-opacity', 'event-bar-shadow-blur', 'event-bar-shadow-distance',
   'event-bar-shadow-spread', 'event-bar-shadow-angle',
+  // Onglet Score
+  'score-font-size',
 ].forEach(idBase => {
   const rng = document.getElementById(idBase + '-range');
   // Le num input n'a pas toujours le suffixe -num (ex. event-text-size).
@@ -2977,7 +2996,9 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
 ['center-logo-shape', 'center-logo-glow-color', 'sb-shadow-color', 'eb-sep-style',
  // Lot 6 : onglet Événement — color pickers + select
  'event-text-glow-color', 'event-bar-bg-color', 'event-bar-border-color',
- 'event-bar-shadow-color', 'event-bar-shadow-blend'].forEach(id => {
+ 'event-bar-shadow-color', 'event-bar-shadow-blend',
+ // Onglet Score — color pickers
+ 'score-color', 'score-vs-color', 'dot-color'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => emitState(buildStateFromForm()));
 });
@@ -3050,6 +3071,7 @@ const SCOREBOARD_DEFAULTS = {
   sbShadowIntensity: 32, sbShadowColor: '#000000',
   characterSize: 100, nameFontSize: 24, tagFontSize: 16,
   scorePositionMode: 'between', swapPlayers: false, cardsSeparated: false,
+  scoreColor: '#F0EEF8', scoreVsColor: '#E8B830', scoreFontSize: 52, dotColor: '#E8B830',
   // Lot 4
   eventBarLeftWidth: 0, eventBarRightWidth: 0,
   eventBarLeftAlign: 'left', eventStacking: 'inline', eventSlotSeparator: 'dot',
@@ -6184,7 +6206,7 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
     }
     if (cmPreview) cmPreview.addEventListener('load', () => setTimeout(scaleCustomPreview, 50));
     window.addEventListener('resize', scaleCustomPreview);
-    const RELOC = ['sb-sect-scoreboard', 'sb-sect-particules']; // Scoreboard (contient aussi Fond/Texture/Textes maintenant), Particules
+    const RELOC = ['sb-sect-score', 'sb-sect-scoreboard', 'sb-sect-particules']; // Score, Scoreboard (contient aussi Fond/Texture/Textes), Particules
 
     // Sélecteur de police : l'overlay applique state.fontFamily (--custom-font, charge la Google Font si besoin)
     const FONTS = ['Russo One', 'Inter', 'Bebas Neue', 'Oswald', 'Rajdhani', 'Anton', 'Teko', 'Montserrat'];
