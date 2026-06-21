@@ -184,6 +184,35 @@ function syncFromState(s) {
   document.querySelectorAll('.eb-stack-btn').forEach(b => b.classList.toggle('active', b.dataset.stack === ebStack));
   const sepSel = document.getElementById('eb-sep-style');
   if (sepSel) sepSel.value = s.eventSlotSeparator || 'dot';
+  // Lot 6 — onglet Événement
+  const ebCase = s.eventTextTransform || 'uppercase';
+  document.querySelectorAll('.eb-case-btn').forEach(b => b.classList.toggle('active', b.dataset.case === ebCase));
+  const ebWeight = String(s.eventTextWeight ?? 600);
+  document.querySelectorAll('.eb-weight-btn').forEach(b => b.classList.toggle('active', b.dataset.weight === ebWeight));
+  [
+    ['event-text-size',         'eventTextSize',         12],
+    ['event-letter-spacing',    'eventLetterSpacing',    3],
+    ['event-text-glow',         'eventTextGlow',         0],
+    ['event-bar-bg-opacity',    'eventBarBgOpacity',     100],
+    ['event-bar-border-width',  'eventBarBorderWidth',   2],
+    ['event-bar-padding-x',     'eventBarPaddingX',      32],
+    ['event-bar-gap',           'eventBarGap',           10],
+    ['event-bar-bevel',         'eventBarBevel',         12],
+  ].forEach(([idBase, field, def]) => {
+    const v = (s[field] != null) ? s[field] : def;
+    const rng = document.getElementById(idBase + '-range');
+    const num = document.getElementById(idBase + '-num') || document.getElementById(idBase);
+    if (rng) rng.value = v;
+    if (num) num.value = v;
+  });
+  [
+    ['event-text-glow-color',   'eventTextGlowColor',    '#EAB830'],
+    ['event-bar-bg-color',      'eventBarBgColor',       '#0E0E12'],
+    ['event-bar-border-color',  'eventBarBorderColor',   '#EAB830'],
+  ].forEach(([id, field, def]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = s[field] || def;
+  });
   const bg2 = document.getElementById('sb-bg-color-2');
   if (bg2 && s.sbBgColor2) { bg2.value = s.sbBgColor2; state.sbBgColor2Active = true; }
   else if (s.sbBgColor2 === '' || s.sbBgColor2 == null) state.sbBgColor2Active = false;
@@ -485,6 +514,19 @@ function buildStateFromForm() {
     eventStacking:       document.querySelector('.eb-stack-btn.active')?.dataset.stack || 'inline',
     eventSlotSeparator:  document.getElementById('eb-sep-style')?.value || 'dot',
     sbBgColor2:          (state.sbBgColor2Active === false ? '' : (document.getElementById('sb-bg-color-2')?.value || '')),
+    // Lot 6 : onglet Événement — typo + chrome de la barre
+    eventTextTransform:  document.querySelector('.eb-case-btn.active')?.dataset.case   || 'uppercase',
+    eventTextWeight:     parseInt(document.querySelector('.eb-weight-btn.active')?.dataset.weight || 600),
+    eventLetterSpacing:  parseInt(document.getElementById('event-letter-spacing-num')?.value ?? 3),
+    eventTextGlow:       parseInt(document.getElementById('event-text-glow-num')?.value ?? 0),
+    eventTextGlowColor:  document.getElementById('event-text-glow-color')?.value || '#EAB830',
+    eventBarBgColor:     document.getElementById('event-bar-bg-color')?.value || '#0E0E12',
+    eventBarBgOpacity:   parseInt(document.getElementById('event-bar-bg-opacity-num')?.value ?? 100),
+    eventBarBorderColor: document.getElementById('event-bar-border-color')?.value || '#EAB830',
+    eventBarBorderWidth: parseInt(document.getElementById('event-bar-border-width-num')?.value ?? 2),
+    eventBarPaddingX:    parseInt(document.getElementById('event-bar-padding-x-num')?.value ?? 32),
+    eventBarGap:         parseInt(document.getElementById('event-bar-gap-num')?.value ?? 10),
+    eventBarBevel:       parseInt(document.getElementById('event-bar-bevel-num')?.value ?? 12),
   };
 }
 
@@ -2881,6 +2923,10 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   'sb-shadow', 'character-size', 'name-font-size', 'tag-font-size',
   // Lot 4 : event-bar
   'eb-left-width', 'eb-right-width',
+  // Lot 6 : onglet Événement — sliders typo + chrome de la barre
+  'event-text-size', 'event-letter-spacing', 'event-text-glow',
+  'event-bar-bg-opacity', 'event-bar-border-width',
+  'event-bar-padding-x', 'event-bar-gap', 'event-bar-bevel',
 ].forEach(idBase => {
   const rng = document.getElementById(idBase + '-range');
   const num = document.getElementById(idBase + '-num');
@@ -2889,13 +2935,16 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   rng.addEventListener('input', () => sync(rng));
   num.addEventListener('input', () => sync(num));
 });
-['center-logo-shape', 'center-logo-glow-color', 'sb-shadow-color', 'eb-sep-style'].forEach(id => {
+['center-logo-shape', 'center-logo-glow-color', 'sb-shadow-color', 'eb-sep-style',
+ // Lot 6 : onglet Événement — color pickers
+ 'event-text-glow-color', 'event-bar-bg-color', 'event-bar-border-color'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => emitState(buildStateFromForm()));
 });
 
-// Lot 4 + Lot 5 : multi-toggles (alignement gauche + empilement + ancrage vertical).
-[['.eb-left-align-btn', 'align'], ['.eb-stack-btn', 'stack'], ['.sb-anchor-btn', 'anchor']].forEach(([sel]) => {
+// Lot 4 + Lot 5 + Lot 6 : multi-toggles (alignement, empilement, ancrage, casse, graisse).
+[['.eb-left-align-btn', 'align'], ['.eb-stack-btn', 'stack'], ['.sb-anchor-btn', 'anchor'],
+ ['.eb-case-btn', 'case'], ['.eb-weight-btn', 'weight']].forEach(([sel]) => {
   document.querySelectorAll(sel).forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll(sel).forEach(b => b.classList.remove('active'));
@@ -2962,6 +3011,12 @@ const SCOREBOARD_DEFAULTS = {
   eventBarLeftWidth: 0, eventBarRightWidth: 0,
   eventBarLeftAlign: 'left', eventStacking: 'inline', eventSlotSeparator: 'dot',
   sbBgColor2: '',
+  // Lot 6 : onglet Événement — typo + chrome de la barre
+  eventTextTransform: 'uppercase', eventTextWeight: 600, eventLetterSpacing: 3,
+  eventTextGlow: 0, eventTextGlowColor: '#EAB830',
+  eventBarBgColor: '#0E0E12', eventBarBgOpacity: 100,
+  eventBarBorderColor: '#EAB830', eventBarBorderWidth: 2,
+  eventBarPaddingX: 32, eventBarGap: 10, eventBarBevel: 12,
   // Lot 5
   sbAnchorY: 'top',
   sbScale: 100, sbX: 0, sbY: 0,

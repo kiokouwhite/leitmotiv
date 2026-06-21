@@ -607,6 +607,7 @@
             <div id="sb-nav-titles" style="width:30px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 0;gap:28px;border-right:1px solid var(--border);background:var(--surface)">
               <span class="vic-nav-title" data-target="sb-sect-affichage">Affichage</span>
               <span class="vic-nav-title" data-target="sb-sect-position">Position</span>
+              <span class="vic-nav-title" data-target="sb-sect-evenement">Événement</span>
               <span class="vic-nav-title" data-target="sb-sect-logo">Logo</span>
               <span class="vic-nav-title" data-target="sb-sect-drapeaux">Drapeaux</span>
               <span class="vic-nav-title" data-target="sb-sect-fond">Fond</span>
@@ -686,63 +687,6 @@
                     </div>
                   </div>
                   <div class="custom-card">
-                    <h3>Barre événement</h3>
-                    <div class="form-group" style="margin-bottom:8px">
-                      <label>Position</label>
-                      <div style="display:flex;gap:4px;margin-top:4px">
-                        <button class="event-bar-pos-btn theme-btn active" data-pos="top" style="font-size:13px;padding:4px 14px;flex:1">↑ Haut</button>
-                        <button class="event-bar-pos-btn theme-btn" data-pos="bottom" style="font-size:13px;padding:4px 14px;flex:1">↓ Bas</button>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Taille px</label>
-                      <input type="number" id="event-text-size" value="12" min="8" max="32" style="width:60px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 6px;text-align:center" />
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Couleur</label>
-                      <input type="color" id="event-text-color" value="#EAB830" />
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Col. gauche %</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="eb-left-width-range" min="0" max="50" value="0" step="1" />
-                        <input type="number" id="eb-left-width-num" min="0" max="50" value="0" step="1" style="width:54px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Col. droite %</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="eb-right-width-range" min="0" max="50" value="0" step="1" />
-                        <input type="number" id="eb-right-width-num" min="0" max="50" value="0" step="1" style="width:54px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Align. gauche</label>
-                      <div style="display:flex;gap:4px;margin-top:4px">
-                        <button class="eb-left-align-btn theme-btn active" data-align="left" style="font-size:11px;padding:3px 8px;flex:1">⇤</button>
-                        <button class="eb-left-align-btn theme-btn" data-align="center" style="font-size:11px;padding:3px 8px;flex:1">⇔</button>
-                        <button class="eb-left-align-btn theme-btn" data-align="right" style="font-size:11px;padding:3px 8px;flex:1">⇥</button>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Empilement</label>
-                      <div style="display:flex;gap:4px;margin-top:4px">
-                        <button class="eb-stack-btn theme-btn active" data-stack="inline" style="font-size:11px;padding:3px 8px;flex:1">— Inline</button>
-                        <button class="eb-stack-btn theme-btn" data-stack="vertical" style="font-size:11px;padding:3px 8px;flex:1">| Vertical</button>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Séparateur</label>
-                      <select id="eb-sep-style" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
-                        <option value="dot">·  Point</option>
-                        <option value="pipe">|  Barre verticale</option>
-                        <option value="slash">/  Slash</option>
-                        <option value="dash">—  Tiret</option>
-                        <option value="none">∅  Aucun</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="custom-card">
                     <h3>Géométrie des cartes</h3>
                     <div class="form-group" style="margin-bottom:7px">
                       <label>Largeur min</label>
@@ -784,6 +728,167 @@
                       <input type="color" id="sb-shadow-color" value="#000000" />
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <!-- Événement (tout ce qui touche à la barre événement) -->
+              <div id="sb-sect-evenement" style="padding:0 16px 16px">
+                <div class="custom-grid">
+
+                  <!-- ─── Disposition ───────────────────────────── -->
+                  <div class="custom-card">
+                    <h3>Disposition</h3>
+                    <div class="form-group" style="margin-bottom:8px">
+                      <label>Position</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="event-bar-pos-btn theme-btn active" data-pos="top" style="font-size:13px;padding:4px 14px;flex:1">↑ Haut</button>
+                        <button class="event-bar-pos-btn theme-btn" data-pos="bottom" style="font-size:13px;padding:4px 14px;flex:1">↓ Bas</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Col. gauche %</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="eb-left-width-range" min="0" max="50" value="0" step="1" />
+                        <input type="number" id="eb-left-width-num" min="0" max="50" value="0" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Col. droite %</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="eb-right-width-range" min="0" max="50" value="0" step="1" />
+                        <input type="number" id="eb-right-width-num" min="0" max="50" value="0" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Align. col. gauche</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="eb-left-align-btn theme-btn active" data-align="left" style="font-size:11px;padding:3px 8px;flex:1">⇤</button>
+                        <button class="eb-left-align-btn theme-btn" data-align="center" style="font-size:11px;padding:3px 8px;flex:1">⇔</button>
+                        <button class="eb-left-align-btn theme-btn" data-align="right" style="font-size:11px;padding:3px 8px;flex:1">⇥</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Empilement</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="eb-stack-btn theme-btn active" data-stack="inline" style="font-size:11px;padding:3px 8px;flex:1">— Inline</button>
+                        <button class="eb-stack-btn theme-btn" data-stack="vertical" style="font-size:11px;padding:3px 8px;flex:1">| Vertical</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Séparateur</label>
+                      <select id="eb-sep-style" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                        <option value="dot">·  Point</option>
+                        <option value="pipe">|  Barre verticale</option>
+                        <option value="slash">/  Slash</option>
+                        <option value="dash">—  Tiret</option>
+                        <option value="bullet">•  Puce</option>
+                        <option value="diamond">◆  Losange</option>
+                        <option value="star">★  Étoile</option>
+                        <option value="none">∅  Aucun</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- ─── Texte ─────────────────────────────────── -->
+                  <div class="custom-card">
+                    <h3>Texte</h3>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Taille px</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-text-size-range" min="8" max="32" value="12" step="1" />
+                        <input type="number" id="event-text-size" value="12" min="8" max="32" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Casse</label>
+                      <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap">
+                        <button class="eb-case-btn theme-btn" data-case="none" style="font-size:11px;padding:3px 8px;flex:1">Aa</button>
+                        <button class="eb-case-btn theme-btn active" data-case="uppercase" style="font-size:11px;padding:3px 8px;flex:1">AA</button>
+                        <button class="eb-case-btn theme-btn" data-case="lowercase" style="font-size:11px;padding:3px 8px;flex:1">aa</button>
+                        <button class="eb-case-btn theme-btn" data-case="capitalize" style="font-size:11px;padding:3px 8px;flex:1">Aa..</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Graisse</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="eb-weight-btn theme-btn" data-weight="400" style="font-size:11px;padding:3px 8px;flex:1;font-weight:400">Normal</button>
+                        <button class="eb-weight-btn theme-btn active" data-weight="600" style="font-size:11px;padding:3px 8px;flex:1;font-weight:600">Semi</button>
+                        <button class="eb-weight-btn theme-btn" data-weight="700" style="font-size:11px;padding:3px 8px;flex:1;font-weight:700">Bold</button>
+                        <button class="eb-weight-btn theme-btn" data-weight="900" style="font-size:11px;padding:3px 8px;flex:1;font-weight:900">Black</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Espacement lettres</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-letter-spacing-range" min="0" max="10" value="3" step="1" />
+                        <input type="number" id="event-letter-spacing-num" min="0" max="10" value="3" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Couleur texte</label>
+                      <input type="color" id="event-text-color" value="#EAB830" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Lueur intensité</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-text-glow-range" min="0" max="20" value="0" step="1" />
+                        <input type="number" id="event-text-glow-num" min="0" max="20" value="0" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Lueur couleur</label>
+                      <input type="color" id="event-text-glow-color" value="#EAB830" />
+                    </div>
+                  </div>
+
+                  <!-- ─── Style barre ───────────────────────────── -->
+                  <div class="custom-card">
+                    <h3>Style de la barre</h3>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Fond couleur</label>
+                      <input type="color" id="event-bar-bg-color" value="#0E0E12" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Fond opacité %</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-bg-opacity-range" min="0" max="100" value="100" step="1" />
+                        <input type="number" id="event-bar-bg-opacity-num" min="0" max="100" value="100" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Bordure couleur</label>
+                      <input type="color" id="event-bar-border-color" value="#EAB830" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Bordure épaisseur</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-border-width-range" min="0" max="8" value="2" step="1" />
+                        <input type="number" id="event-bar-border-width-num" min="0" max="8" value="2" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Padding horizontal</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-padding-x-range" min="8" max="64" value="32" step="1" />
+                        <input type="number" id="event-bar-padding-x-num" min="8" max="64" value="32" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Espace entre slots</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-gap-range" min="0" max="40" value="10" step="1" />
+                        <input type="number" id="event-bar-gap-num" min="0" max="40" value="10" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Biseaux (px)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-bevel-range" min="0" max="32" value="12" step="1" />
+                        <input type="number" id="event-bar-bevel-num" min="0" max="32" value="12" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 

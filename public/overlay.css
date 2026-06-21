@@ -67,20 +67,21 @@ body.sb-anchor-bottom .scoreboard {
 /* ── Event bar ───────────────────────────────────────────────── */
 
 .event-bar {
-  background: var(--sb-bg, var(--smash-bg));
-  border-bottom: 2px solid var(--smash-gold);
+  background: var(--event-bar-bg, var(--sb-bg, var(--smash-bg)));
+  border-bottom: var(--event-bar-border-width, 2px) solid var(--event-bar-border-color, var(--smash-gold));
   color: var(--event-text-color, var(--smash-muted));
   font-size: var(--event-text-size, 12px);
-  font-weight: 600;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  padding: 5px 32px;
+  font-weight: var(--event-text-weight, 600);
+  letter-spacing: var(--event-letter-spacing, 3px);
+  text-transform: var(--event-text-transform, uppercase);
+  text-shadow: var(--event-text-shadow, none);
+  padding: 5px var(--event-bar-padding-x, 32px);
   display: flex;
-  gap: 10px;
+  gap: var(--event-bar-gap, 10px);
   align-items: center;
   justify-content: center;
   text-align: center;
-  clip-path: polygon(12px 0%, calc(100% - 12px) 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(var(--event-bar-bevel, 12px) 0%, calc(100% - var(--event-bar-bevel, 12px)) 0%, 100% 100%, 0% 100%);
   white-space: nowrap;
 }
 

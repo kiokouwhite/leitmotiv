@@ -630,6 +630,31 @@ function update(s) {
   sb.style.setProperty('--flag-w', fw + 'px');
   sb.style.setProperty('--flag-h', Math.round(fw * 34 / 52) + 'px');
   sb.style.setProperty('--event-text-color', s.eventTextColor || '#5A5A7A');
+
+  // Lot 6 : onglet Événement — typo + chrome de la barre. Toutes les valeurs
+  // ont des défauts qui reproduisent le rendu d'origine (avant onglet).
+  sb.style.setProperty('--event-text-weight',    s.eventTextWeight ?? 600);
+  sb.style.setProperty('--event-letter-spacing', (s.eventLetterSpacing ?? 3) + 'px');
+  const _txTrans = ['none','uppercase','lowercase','capitalize'].includes(s.eventTextTransform) ? s.eventTextTransform : 'uppercase';
+  sb.style.setProperty('--event-text-transform', _txTrans);
+  const _glow = parseInt(s.eventTextGlow ?? 0);
+  sb.style.setProperty('--event-text-shadow', _glow > 0 ? `0 0 ${_glow}px ${s.eventTextGlowColor || s.eventTextColor || '#EAB830'}` : 'none');
+  // Fond barre : combine couleur + opacité en rgba()
+  const _bgHex = (s.eventBarBgColor || '').replace('#','');
+  if (_bgHex.length === 6) {
+    const _br = parseInt(_bgHex.substring(0,2), 16);
+    const _bg = parseInt(_bgHex.substring(2,4), 16);
+    const _bb = parseInt(_bgHex.substring(4,6), 16);
+    const _ba = (s.eventBarBgOpacity ?? 100) / 100;
+    sb.style.setProperty('--event-bar-bg', `rgba(${_br},${_bg},${_bb},${_ba})`);
+  } else {
+    sb.style.removeProperty('--event-bar-bg');
+  }
+  sb.style.setProperty('--event-bar-border-color', s.eventBarBorderColor || '#EAB830');
+  sb.style.setProperty('--event-bar-border-width', (s.eventBarBorderWidth ?? 2) + 'px');
+  sb.style.setProperty('--event-bar-padding-x',    (s.eventBarPaddingX ?? 32) + 'px');
+  sb.style.setProperty('--event-bar-gap',          (s.eventBarGap ?? 10) + 'px');
+  sb.style.setProperty('--event-bar-bevel',        (s.eventBarBevel ?? 12) + 'px');
   sb.style.setProperty('--tag-color', s.tagColor || '#E8B830');
   sb.style.setProperty('--name-color', s.nameColor || '#F0EEF8');
   sb.style.setProperty('--pronouns-color', s.pronounsColor || '#5A5A7A');
