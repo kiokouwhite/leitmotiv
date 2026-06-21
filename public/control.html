@@ -602,7 +602,6 @@
               <span class="vic-nav-title" data-target="sb-sect-evenement">Événement</span>
               <span class="vic-nav-title" data-target="sb-sect-logo">Logo</span>
               <span class="vic-nav-title" data-target="sb-sect-drapeaux">Drapeaux</span>
-              <span class="vic-nav-title" data-target="sb-sect-textes">Textes</span>
               <span class="vic-nav-title" data-target="sb-sect-particules">Particules</span>
             </div>
 
@@ -846,6 +845,51 @@
                         <input type="checkbox" id="swap-players" />
                         Inverser J1 ↔ J2 (miroir)
                       </label>
+                    </div>
+                  </div>
+
+                  <!-- Couleurs des textes (déplacé depuis l'ex-onglet Textes) -->
+                  <div class="custom-card">
+                    <h3>Couleurs des textes</h3>
+                    <div style="display:flex;gap:16px;flex-wrap:wrap">
+                      <div class="form-group" style="margin:0">
+                        <label>Tag</label>
+                        <input type="color" id="tag-color" value="#E8B830" />
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label>Pseudo</label>
+                        <input type="color" id="name-color" value="#F0EEF8" />
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label>Pronoms</label>
+                        <input type="color" id="pronouns-color" value="#5A5A7A" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tailles textes/portrait (déplacé depuis l'ex-onglet Textes) -->
+                  <div class="custom-card">
+                    <h3>Tailles</h3>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Portrait perso</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="character-size-range" min="40" max="200" value="100" step="2" />
+                        <input type="number" id="character-size-num" min="40" max="200" value="100" step="2" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Nom joueur</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="name-font-size-range" min="12" max="48" value="24" step="1" />
+                        <input type="number" id="name-font-size-num" min="12" max="48" value="24" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Tag joueur</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="tag-font-size-range" min="8" max="28" value="16" step="1" />
+                        <input type="number" id="tag-font-size-num" min="8" max="28" value="16" step="1" style="width:58px" />
+                      </div>
                     </div>
                   </div>
 
@@ -1259,51 +1303,6 @@
                           <input type="number" id="p2-flag-y-num" min="-200" max="200" value="0" style="width:52px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 4px;text-align:center" />
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Textes -->
-              <div id="sb-sect-textes" style="padding:0 16px 16px">
-                <div class="custom-card">
-                  <h3>Couleurs des textes</h3>
-                  <div style="display:flex;gap:16px;flex-wrap:wrap">
-                    <div class="form-group" style="margin:0">
-                      <label>Tag</label>
-                      <input type="color" id="tag-color" value="#E8B830" />
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Pseudo</label>
-                      <input type="color" id="name-color" value="#F0EEF8" />
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Pronoms</label>
-                      <input type="color" id="pronouns-color" value="#5A5A7A" />
-                    </div>
-                  </div>
-                </div>
-                <div class="custom-card" style="margin-top:12px">
-                  <h3>Tailles</h3>
-                  <div class="form-group" style="margin-bottom:7px">
-                    <label>Portrait perso</label>
-                    <div class="logo-particles-row">
-                      <input type="range" id="character-size-range" min="40" max="200" value="100" step="2" />
-                      <input type="number" id="character-size-num" min="40" max="200" value="100" step="2" style="width:58px" />
-                    </div>
-                  </div>
-                  <div class="form-group" style="margin-bottom:7px">
-                    <label>Nom joueur</label>
-                    <div class="logo-particles-row">
-                      <input type="range" id="name-font-size-range" min="12" max="48" value="24" step="1" />
-                      <input type="number" id="name-font-size-num" min="12" max="48" value="24" step="1" style="width:58px" />
-                    </div>
-                  </div>
-                  <div class="form-group" style="margin:0">
-                    <label>Tag joueur</label>
-                    <div class="logo-particles-row">
-                      <input type="range" id="tag-font-size-range" min="8" max="28" value="16" step="1" />
-                      <input type="number" id="tag-font-size-num" min="8" max="28" value="16" step="1" style="width:58px" />
                     </div>
                   </div>
                 </div>

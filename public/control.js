@@ -6184,7 +6184,7 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
     }
     if (cmPreview) cmPreview.addEventListener('load', () => setTimeout(scaleCustomPreview, 50));
     window.addEventListener('resize', scaleCustomPreview);
-    const RELOC = ['sb-sect-scoreboard', 'sb-sect-textes', 'sb-sect-particules']; // Scoreboard (contient maintenant aussi Fond/Texture), Textes, Particules
+    const RELOC = ['sb-sect-scoreboard', 'sb-sect-particules']; // Scoreboard (contient aussi Fond/Texture/Textes maintenant), Particules
 
     // Sélecteur de police : l'overlay applique state.fontFamily (--custom-font, charge la Google Font si besoin)
     const FONTS = ['Russo One', 'Inter', 'Bebas Neue', 'Oswald', 'Rajdhani', 'Anton', 'Teko', 'Montserrat'];
