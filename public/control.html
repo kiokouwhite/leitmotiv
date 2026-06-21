@@ -659,18 +659,11 @@
                       <input type="number" id="sb-x-num" min="-960" max="960" value="0" step="1" style="width:58px" />
                     </div>
                   </div>
-                  <div class="form-group" style="margin-bottom:7px">
+                  <div class="form-group" style="margin:0">
                     <label>Y px</label>
                     <div class="logo-particles-row">
                       <input type="range" id="sb-y-range" min="-200" max="600" value="0" step="1" />
                       <input type="number" id="sb-y-num" min="-200" max="600" value="0" step="1" style="width:58px" />
-                    </div>
-                  </div>
-                  <div class="form-group" style="margin:0">
-                    <label>Écart P1↔P2</label>
-                    <div class="logo-particles-row">
-                      <input type="range" id="players-gap-range" min="0" max="400" value="0" step="2" />
-                      <input type="number" id="players-gap-num" min="0" max="400" value="0" step="2" style="width:58px" />
                     </div>
                   </div>
                 </div>
@@ -769,7 +762,7 @@
                     </div>
                   </div>
 
-                  <!-- Disposition (position du score + miroir) -->
+                  <!-- Disposition (position du score + séparation + miroir) -->
                   <div class="custom-card">
                     <h3>Disposition</h3>
                     <div class="form-group" style="margin-bottom:8px">
@@ -777,6 +770,13 @@
                       <div style="display:flex;gap:4px;margin-top:4px">
                         <button class="score-pos-btn theme-btn active" data-pos="between" style="font-size:13px;padding:4px 10px;flex:1">⇆ Entre</button>
                         <button class="score-pos-btn theme-btn" data-pos="above" style="font-size:13px;padding:4px 10px;flex:1">↑ Au-dessus</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Séparation cartes (px)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="players-gap-range" min="0" max="800" value="0" step="2" />
+                        <input type="number" id="players-gap-num" min="0" max="800" value="0" step="2" style="width:58px" />
                       </div>
                     </div>
                     <div class="form-group" style="margin:0">
