@@ -177,6 +177,29 @@ body.sb-cards-separated .players-container > .score-center {
   border-radius: var(--player-card-radius, 8px);
 }
 
+/* Score dans les cartes — le JS déplace p1-score à la fin de player1-block et
+   p2-score au début de player2-block. CSS aligne chaque score sur le côté
+   intérieur de sa carte (P1 → bord droit, P2 → bord gauche) façon TSH. */
+body.sb-score-in-cards .player-left > .score {
+  margin-left: auto;
+  padding: 0 18px;
+  align-self: center;
+  font-size: 40px;
+  line-height: 1;
+}
+body.sb-score-in-cards .player-right > .score {
+  margin-right: auto;
+  padding: 0 18px;
+  align-self: center;
+  font-size: 40px;
+  line-height: 1;
+}
+/* Le score-box ne contient plus que dots-col + center-logo-area (VS) + dots-col :
+   on rétrécit pour que seul VS soit visible au centre. */
+body.sb-score-in-cards .score-box {
+  min-width: 0;
+}
+
 
 /* ── Player blocks ───────────────────────────────────────────── */
 

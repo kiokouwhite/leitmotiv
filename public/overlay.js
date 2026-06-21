@@ -603,8 +603,26 @@ function update(s) {
   sb.style.setProperty('--name-font-size',       (s.nameFontSize ?? 24) + 'px');
   sb.style.setProperty('--tag-font-size',        (s.tagFontSize ?? 16) + 'px');
   // Position du score — classe body sb-score-<between|above>
-  const scorePos = (s.scorePositionMode === 'above') ? 'above' : 'between';
-  document.body.classList.toggle('sb-score-above',   scorePos === 'above');
+  const scorePos = ['above','in-cards'].includes(s.scorePositionMode) ? s.scorePositionMode : 'between';
+  document.body.classList.toggle('sb-score-above',    scorePos === 'above');
+  document.body.classList.toggle('sb-score-in-cards', scorePos === 'in-cards');
+  // Mode in-cards : déplace les <span class="score"> dans chaque carte joueur
+  // (p1-score à la fin de player1-block, p2-score au début de player2-block)
+  // pour reproduire le rendu façon TSH. Mémorise le parent d'origine pour
+  // restaurer quand on revient à 'between' ou 'above'.
+  const _p1Sc = document.getElementById('p1-score');
+  const _p2Sc = document.getElementById('p2-score');
+  const _p1Cd = document.getElementById('player1-block');
+  const _p2Cd = document.getElementById('player2-block');
+  if (_p1Sc && !_p1Sc._origParent) { _p1Sc._origParent = _p1Sc.parentElement; _p1Sc._origNext = _p1Sc.nextSibling; }
+  if (_p2Sc && !_p2Sc._origParent) { _p2Sc._origParent = _p2Sc.parentElement; _p2Sc._origNext = _p2Sc.nextSibling; }
+  if (scorePos === 'in-cards') {
+    if (_p1Sc && _p1Cd && _p1Sc.parentElement !== _p1Cd) _p1Cd.appendChild(_p1Sc);
+    if (_p2Sc && _p2Cd && _p2Sc.parentElement !== _p2Cd) _p2Cd.insertBefore(_p2Sc, _p2Cd.firstChild);
+  } else {
+    if (_p1Sc?._origParent && _p1Sc.parentElement !== _p1Sc._origParent) _p1Sc._origParent.insertBefore(_p1Sc, _p1Sc._origNext);
+    if (_p2Sc?._origParent && _p2Sc.parentElement !== _p2Sc._origParent) _p2Sc._origParent.insertBefore(_p2Sc, _p2Sc._origNext);
+  }
   document.body.classList.toggle('sb-score-between', scorePos === 'between');
   // Miroir P1 ↔ P2
   document.body.classList.toggle('sb-mirror', s.swapPlayers === true);
