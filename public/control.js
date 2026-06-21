@@ -13011,10 +13011,132 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
 })();
 
 // ══════════════════════════════════════════════════════════════════════
-// Swatches des couleurs du thème : REVERTED temporairement.
-// La 1re version créait une boucle infinie via MutationObserver qui
-// gelait la page. Une 2e version idempotente bloquait encore les clics
-// (cause non identifiée). Je rollback à zéro pour débloquer et je
-// réimplémenterai plus prudemment plus tard (probablement sans observer,
-// juste re-render explicite sur clic de carte preset).
+// Swatches des couleurs du thème — v3
+// V1 : MutationObserver → boucle infinie.
+// V2 : observer retiré mais clics bloqués (cause jamais identifiée).
+// V3 :
+//   • Pas de MutationObserver — injection unique au load, refresh
+//     déclenché par event delegation sur les clicks de presets.
+//   • Pas de position:absolute/fixed — juste inline-flex à côté du
+//     picker, donc impossible de recouvrir un autre élément cliquable.
+//   • Boutons type="button" pour ne pas submit un form.
+//   • e.preventDefault + e.stopPropagation UNIQUEMENT sur le click de
+//     swatch — le listener doc-level ne stoppe rien, il observe.
+//   • Kill switch : window.DISABLE_THEME_SWATCHES = true depuis la
+//     console et tout l'IIFE no-op.
 // ══════════════════════════════════════════════════════════════════════
+(function () {
+  if (window.DISABLE_THEME_SWATCHES) return;
+
+  const SWATCH_VARS = [
+    { v: '--sb-bg',            label: 'Fond' },
+    { v: '--name-color',       label: 'Nom' },
+    { v: '--tag-color',        label: 'Tag' },
+    { v: '--pronouns-color',   label: 'Pronoms' },
+    { v: '--event-text-color', label: 'Texte event' },
+    { v: '--smash-gold',       label: 'Accent' },
+  ];
+
+  function normalizeToHex(str) {
+    str = (str || '').trim();
+    if (!str) return null;
+    if (/^#[0-9a-f]{6}$/i.test(str)) return str.toLowerCase();
+    if (/^#[0-9a-f]{3}$/i.test(str)) {
+      return ('#' + str[1]+str[1]+str[2]+str[2]+str[3]+str[3]).toLowerCase();
+    }
+    const m = str.match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/i);
+    if (!m) return null;
+    const toHex = n => ('0' + Math.max(0, Math.min(255, Math.round(parseFloat(n)))).toString(16)).slice(-2);
+    return ('#' + toHex(m[1]) + toHex(m[2]) + toHex(m[3])).toLowerCase();
+  }
+
+  function getThemePalette() {
+    const sb = document.getElementById('scoreboard');
+    const root = sb || document.documentElement;
+    const cs = getComputedStyle(root);
+    return SWATCH_VARS.map(x => ({
+      label: x.label,
+      hex:   normalizeToHex(cs.getPropertyValue(x.v)),
+    }));
+  }
+
+  function ensureSwatches(input) {
+    try {
+      if (!input || input.type !== 'color') return;
+      if (input.dataset.themeSwatchesSet === '1') return;
+      input.dataset.themeSwatchesSet = '1';
+      const container = document.createElement('span');
+      container.className = 'theme-swatches';
+      container.setAttribute('role', 'group');
+      container.setAttribute('aria-label', 'Couleurs du thème');
+      SWATCH_VARS.forEach((s, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'theme-swatch';
+        btn.title = s.label;
+        btn.dataset.idx = i;
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const hex = btn.dataset.color;
+          if (!hex) return;
+          input.value = hex;
+          input.dispatchEvent(new Event('input',  { bubbles: true }));
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        container.appendChild(btn);
+      });
+      input.insertAdjacentElement('afterend', container);
+    } catch (err) {
+      console.warn('[swatches] ensureSwatches failed:', err);
+    }
+  }
+
+  function refreshSwatchColors() {
+    try {
+      const palette = getThemePalette();
+      document.querySelectorAll('.theme-swatches').forEach(container => {
+        container.querySelectorAll('.theme-swatch').forEach((btn, i) => {
+          const p = palette[i];
+          if (!p || !p.hex) {
+            btn.style.display = 'none';
+            btn.dataset.color = '';
+          } else {
+            btn.style.display = '';
+            btn.dataset.color = p.hex;
+            btn.style.backgroundColor = p.hex;
+          }
+        });
+      });
+    } catch (err) {
+      console.warn('[swatches] refresh failed:', err);
+    }
+  }
+
+  function injectAll() {
+    document.querySelectorAll('input[type=color]').forEach(ensureSwatches);
+    refreshSwatchColors();
+  }
+
+  // Init unique. Petit délai pour laisser le thème initial s'appliquer.
+  function boot() { setTimeout(injectAll, 150); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+  // Refresh des couleurs quand l'utilisateur clique un preset de thème ou
+  // de scoreboard. Le listener N'EMPÊCHE RIEN — il observe et planifie
+  // un refresh une fois le thème propagé sur #scoreboard.
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.sb-preset-card, .theme-card, .theme-preset-card')) {
+      setTimeout(refreshSwatchColors, 200);
+    }
+  }, { passive: true });
+
+  // API publique pour que applyTheme/applyThemePreset (ou la console)
+  // puissent forcer un refresh à n'importe quel moment.
+  window._refreshThemeSwatches = refreshSwatchColors;
+  window._injectThemeSwatches  = injectAll;
+})();

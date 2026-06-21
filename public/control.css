@@ -6077,6 +6077,35 @@ h1, .section-header h2, .custom-card h3,
   justify-content: center;
 }
 
+/* Swatches couleurs du thème — injectés à côté de chaque <input type=color>.
+   Inline-flex pour rester sur la même ligne que le picker, pas de position
+   absolute (cf. commentaire v3 dans control.js : éviter le click-block). */
+.theme-swatches {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.theme-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  background: transparent;
+  transition: transform 0.1s ease, border-color 0.1s ease;
+}
+.theme-swatch:hover {
+  transform: scale(1.18);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+.theme-swatch:focus-visible {
+  outline: 2px solid var(--gold, #22f0ff);
+  outline-offset: 1px;
+}
+
 /* Modal plein écran */
 .preview-fs-overlay {
   position: fixed;
