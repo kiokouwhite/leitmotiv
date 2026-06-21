@@ -6129,7 +6129,7 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
     }
     if (cmPreview) cmPreview.addEventListener('load', () => setTimeout(scaleCustomPreview, 50));
     window.addEventListener('resize', scaleCustomPreview);
-    const RELOC = ['sb-sect-fond', 'sb-sect-style', 'sb-sect-textes', 'sb-sect-particules']; // Fond, Style, Textes, Particules
+    const RELOC = ['sb-sect-fond', 'sb-sect-scoreboard', 'sb-sect-textes', 'sb-sect-particules']; // Fond, Scoreboard (ex-Style), Textes, Particules
 
     // Sélecteur de police : l'overlay applique state.fontFamily (--custom-font, charge la Google Font si besoin)
     const FONTS = ['Russo One', 'Inter', 'Bebas Neue', 'Oswald', 'Rajdhani', 'Anton', 'Teko', 'Montserrat'];

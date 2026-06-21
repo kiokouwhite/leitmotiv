@@ -606,12 +606,12 @@
             <!-- Titres verticaux -->
             <div id="sb-nav-titles" style="width:30px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 0;gap:28px;border-right:1px solid var(--border);background:var(--surface)">
               <span class="vic-nav-title" data-target="sb-sect-affichage">Affichage</span>
+              <span class="vic-nav-title" data-target="sb-sect-scoreboard">Scoreboard</span>
               <span class="vic-nav-title" data-target="sb-sect-position">Position</span>
               <span class="vic-nav-title" data-target="sb-sect-evenement">Événement</span>
               <span class="vic-nav-title" data-target="sb-sect-logo">Logo</span>
               <span class="vic-nav-title" data-target="sb-sect-drapeaux">Drapeaux</span>
               <span class="vic-nav-title" data-target="sb-sect-fond">Fond</span>
-              <span class="vic-nav-title" data-target="sb-sect-style">Style</span>
               <span class="vic-nav-title" data-target="sb-sect-textes">Textes</span>
               <span class="vic-nav-title" data-target="sb-sect-particules">Particules</span>
             </div>
@@ -641,6 +641,108 @@
                     <label class="vis-toggle"><input type="checkbox" id="show-character" checked /><span>Personnage</span></label>
                     <label class="vis-toggle"><input type="checkbox" id="show-seed" checked /><span>Seed (#N)</span></label>
                   </div>
+                </div>
+              </div>
+
+              <!-- Scoreboard (tout ce qui concerne le visuel des cartes joueurs + scores) -->
+              <div id="sb-sect-scoreboard" style="padding:0 16px 16px">
+                <div class="custom-grid">
+
+                  <!-- Layout — style d'affichage -->
+                  <div class="custom-card">
+                    <h3>Style d'affichage</h3>
+                    <div class="theme-btn-row" style="margin-bottom:8px;flex-wrap:wrap;gap:4px">
+                      <button class="overlay-style-btn theme-btn active" data-style="full" style="font-size:11px;padding:4px 10px">Full ▬</button>
+                      <button class="overlay-style-btn theme-btn" data-style="slim" style="font-size:11px;padding:4px 10px">Slim —</button>
+                      <button class="overlay-style-btn theme-btn" data-style="full-rounded" style="font-size:11px;padding:4px 10px">Full ◉</button>
+                      <button class="overlay-style-btn theme-btn" data-style="compact-rounded" style="font-size:11px;padding:4px 10px">Compact ◉</button>
+                      <button class="overlay-style-btn theme-btn" data-style="lower-third" style="font-size:11px;padding:4px 10px">Lower ↓</button>
+                    </div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                      <button class="score-display-btn theme-btn active" data-display="numbers" style="font-size:11px;padding:4px 10px;flex:1">123</button>
+                      <button class="score-display-btn theme-btn" data-display="dots" style="font-size:11px;padding:4px 10px;flex:1">◉ Points</button>
+                      <button class="dots-orientation-btn theme-btn active" data-orientation="row" style="font-size:11px;padding:4px 10px;flex:1">— Ligne</button>
+                      <button class="dots-orientation-btn theme-btn" data-orientation="column" style="font-size:11px;padding:4px 10px;flex:1">| Col.</button>
+                    </div>
+                  </div>
+
+                  <!-- Géométrie des cartes (déplacé depuis Position) -->
+                  <div class="custom-card">
+                    <h3>Géométrie des cartes</h3>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Largeur min</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="player-min-width-range" min="160" max="720" value="320" step="4" />
+                        <input type="number" id="player-min-width-num" min="160" max="720" value="320" step="4" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Hauteur (0=auto)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="sb-height-range" min="0" max="260" value="0" step="1" />
+                        <input type="number" id="sb-height-num" min="0" max="260" value="0" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Border-radius</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="player-card-radius-range" min="0" max="40" value="0" step="1" />
+                        <input type="number" id="player-card-radius-num" min="0" max="40" value="0" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Padding</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="player-card-padding-range" min="0" max="40" value="12" step="1" />
+                        <input type="number" id="player-card-padding-num" min="0" max="40" value="12" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Ombre intensité</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="sb-shadow-range" min="0" max="64" value="32" step="1" />
+                        <input type="number" id="sb-shadow-num" min="0" max="64" value="32" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Ombre couleur</label>
+                      <input type="color" id="sb-shadow-color" value="#000000" />
+                    </div>
+                  </div>
+
+                  <!-- Couleurs joueurs (accents) -->
+                  <div class="custom-card">
+                    <h3>Couleurs joueurs</h3>
+                    <div style="display:flex;gap:16px;flex-wrap:wrap">
+                      <div class="form-group" style="margin:0">
+                        <label>Accent J1</label>
+                        <input type="color" id="p1-accent-color" value="#E83030" />
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label>Accent J2</label>
+                        <input type="color" id="p2-accent-color" value="#3070E8" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Disposition (position du score + miroir) -->
+                  <div class="custom-card">
+                    <h3>Disposition</h3>
+                    <div class="form-group" style="margin-bottom:8px">
+                      <label>Position du score</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="score-pos-btn theme-btn active" data-pos="between" style="font-size:13px;padding:4px 10px;flex:1">⇆ Entre</button>
+                        <button class="score-pos-btn theme-btn" data-pos="above" style="font-size:13px;padding:4px 10px;flex:1">↑ Au-dessus</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                        <input type="checkbox" id="swap-players" />
+                        Inverser J1 ↔ J2 (miroir)
+                      </label>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
@@ -684,48 +786,6 @@
                         <input type="range" id="players-gap-range" min="0" max="400" value="0" step="2" />
                         <input type="number" id="players-gap-num" min="0" max="400" value="0" step="2" style="width:58px" />
                       </div>
-                    </div>
-                  </div>
-                  <div class="custom-card">
-                    <h3>Géométrie des cartes</h3>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Largeur min</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="player-min-width-range" min="160" max="720" value="320" step="4" />
-                        <input type="number" id="player-min-width-num" min="160" max="720" value="320" step="4" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Hauteur (0=auto)</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-height-range" min="0" max="260" value="0" step="1" />
-                        <input type="number" id="sb-height-num" min="0" max="260" value="0" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Border-radius</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="player-card-radius-range" min="0" max="40" value="0" step="1" />
-                        <input type="number" id="player-card-radius-num" min="0" max="40" value="0" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Padding</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="player-card-padding-range" min="0" max="40" value="12" step="1" />
-                        <input type="number" id="player-card-padding-num" min="0" max="40" value="12" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Ombre intensité</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-shadow-range" min="0" max="64" value="32" step="1" />
-                        <input type="number" id="sb-shadow-num" min="0" max="64" value="32" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Ombre couleur</label>
-                      <input type="color" id="sb-shadow-color" value="#000000" />
                     </div>
                   </div>
                 </div>
@@ -1192,54 +1252,6 @@
                 </div>
               </div>
 
-              <!-- Style -->
-              <div id="sb-sect-style" style="padding:0 16px 16px">
-                <div class="custom-card">
-                  <h3>Style d'affichage</h3>
-                  <div class="theme-btn-row" style="margin-bottom:8px;flex-wrap:wrap;gap:4px">
-                    <button class="overlay-style-btn theme-btn active" data-style="full" style="font-size:11px;padding:4px 10px">Full ▬</button>
-                    <button class="overlay-style-btn theme-btn" data-style="slim" style="font-size:11px;padding:4px 10px">Slim —</button>
-                    <button class="overlay-style-btn theme-btn" data-style="full-rounded" style="font-size:11px;padding:4px 10px">Full ◉</button>
-                    <button class="overlay-style-btn theme-btn" data-style="compact-rounded" style="font-size:11px;padding:4px 10px">Compact ◉</button>
-                    <button class="overlay-style-btn theme-btn" data-style="lower-third" style="font-size:11px;padding:4px 10px">Lower ↓</button>
-                  </div>
-                  <div style="display:flex;gap:6px">
-                    <button class="score-display-btn theme-btn active" data-display="numbers" style="font-size:11px;padding:4px 10px;flex:1">123</button>
-                    <button class="score-display-btn theme-btn" data-display="dots" style="font-size:11px;padding:4px 10px;flex:1">◉ Points</button>
-                    <button class="dots-orientation-btn theme-btn active" data-orientation="row" style="font-size:11px;padding:4px 10px;flex:1">— Ligne</button>
-                    <button class="dots-orientation-btn theme-btn" data-orientation="column" style="font-size:11px;padding:4px 10px;flex:1">| Col.</button>
-                  </div>
-                </div>
-                <div class="custom-card" style="margin-top:12px">
-                  <h3>Couleurs joueurs</h3>
-                  <div style="display:flex;gap:16px;flex-wrap:wrap">
-                    <div class="form-group" style="margin:0">
-                      <label>Accent J1</label>
-                      <input type="color" id="p1-accent-color" value="#E83030" />
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Accent J2</label>
-                      <input type="color" id="p2-accent-color" value="#3070E8" />
-                    </div>
-                  </div>
-                </div>
-                <div class="custom-card" style="margin-top:12px">
-                  <h3>Disposition</h3>
-                  <div class="form-group" style="margin-bottom:8px">
-                    <label>Position du score</label>
-                    <div style="display:flex;gap:4px;margin-top:4px">
-                      <button class="score-pos-btn theme-btn active" data-pos="between" style="font-size:13px;padding:4px 10px;flex:1">⇆ Entre</button>
-                      <button class="score-pos-btn theme-btn" data-pos="above" style="font-size:13px;padding:4px 10px;flex:1">↑ Au-dessus</button>
-                    </div>
-                  </div>
-                  <div class="form-group" style="margin:0">
-                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
-                      <input type="checkbox" id="swap-players" />
-                      Inverser J1 ↔ J2 (miroir)
-                    </label>
-                  </div>
-                </div>
-              </div>
 
               <!-- Textes -->
               <div id="sb-sect-textes" style="padding:0 16px 16px">

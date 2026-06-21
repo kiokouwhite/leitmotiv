@@ -5284,29 +5284,29 @@ body.regie-mode [data-subpanel$="-preview"] {
 [id$="-nav-titles"] .vic-nav-title:nth-child(1) { color: #4e9eff; }
 [id$="-scroll-area"] > :nth-child(1) { border-left: 3px solid #4e9eff; background: rgba(78,158,255,0.05); }
 
-/* Couleur 2 → orange (Position) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(2) { color: #ff9f3f; }
-[id$="-scroll-area"] > :nth-child(2) { border-left: 3px solid #ff9f3f; background: rgba(255,159,63,0.05); border-top: 2px solid #ff9f3f; }
+/* Couleur 2 → jaune (Scoreboard — recyclé de l'ex-Style) */
+[id$="-nav-titles"] .vic-nav-title:nth-child(2) { color: #ffdd44; }
+[id$="-scroll-area"] > :nth-child(2) { border-left: 3px solid #ffdd44; background: rgba(255,221,68,0.05); border-top: 2px solid #ffdd44; }
 
-/* Couleur 3 → magenta (Événement) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(3) { color: #ff44dd; }
-[id$="-scroll-area"] > :nth-child(3) { border-left: 3px solid #ff44dd; background: rgba(255,68,221,0.05); border-top: 2px solid #ff44dd; }
+/* Couleur 3 → orange (Position) */
+[id$="-nav-titles"] .vic-nav-title:nth-child(3) { color: #ff9f3f; }
+[id$="-scroll-area"] > :nth-child(3) { border-left: 3px solid #ff9f3f; background: rgba(255,159,63,0.05); border-top: 2px solid #ff9f3f; }
 
-/* Couleur 4 → vert (Logo) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(4) { color: #3fc89f; }
-[id$="-scroll-area"] > :nth-child(4) { border-left: 3px solid #3fc89f; background: rgba(63,200,159,0.05); border-top: 2px solid #3fc89f; }
+/* Couleur 4 → magenta (Événement) */
+[id$="-nav-titles"] .vic-nav-title:nth-child(4) { color: #ff44dd; }
+[id$="-scroll-area"] > :nth-child(4) { border-left: 3px solid #ff44dd; background: rgba(255,68,221,0.05); border-top: 2px solid #ff44dd; }
 
-/* Couleur 5 → rose (Drapeaux) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(5) { color: #ff4f8f; }
-[id$="-scroll-area"] > :nth-child(5) { border-left: 3px solid #ff4f8f; background: rgba(255,79,143,0.05); border-top: 2px solid #ff4f8f; }
+/* Couleur 5 → vert (Logo) */
+[id$="-nav-titles"] .vic-nav-title:nth-child(5) { color: #3fc89f; }
+[id$="-scroll-area"] > :nth-child(5) { border-left: 3px solid #3fc89f; background: rgba(63,200,159,0.05); border-top: 2px solid #3fc89f; }
 
-/* Couleur 6 → violet (Fond) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(6) { color: #af6fff; }
-[id$="-scroll-area"] > :nth-child(6) { border-left: 3px solid #af6fff; background: rgba(175,111,255,0.05); border-top: 2px solid #af6fff; }
+/* Couleur 6 → rose (Drapeaux) */
+[id$="-nav-titles"] .vic-nav-title:nth-child(6) { color: #ff4f8f; }
+[id$="-scroll-area"] > :nth-child(6) { border-left: 3px solid #ff4f8f; background: rgba(255,79,143,0.05); border-top: 2px solid #ff4f8f; }
 
-/* Couleur 7 → jaune (Style) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(7) { color: #ffdd44; }
-[id$="-scroll-area"] > :nth-child(7) { border-left: 3px solid #ffdd44; background: rgba(255,221,68,0.05); border-top: 2px solid #ffdd44; }
+/* Couleur 7 → violet (Fond) */
+[id$="-nav-titles"] .vic-nav-title:nth-child(7) { color: #af6fff; }
+[id$="-scroll-area"] > :nth-child(7) { border-left: 3px solid #af6fff; background: rgba(175,111,255,0.05); border-top: 2px solid #af6fff; }
 
 /* Couleur 8 → cyan (Textes) */
 [id$="-nav-titles"] .vic-nav-title:nth-child(8) { color: #44ddff; }
@@ -6266,12 +6266,12 @@ h1, .section-header h2, .custom-card h3,
    --gold (cyan néon par défaut) avec sa propre couleur, et tout le contenu
    (titres h3, boutons actifs, accents) en hérite automatiquement via la cascade. */
 #sb-scroll-area > :nth-child(1) { --gold: #4e9eff; --neon-cyan: #4e9eff; } /* Affichage  – bleu    */
-#sb-scroll-area > :nth-child(2) { --gold: #ff9f3f; --neon-cyan: #ff9f3f; } /* Position   – orange  */
-#sb-scroll-area > :nth-child(3) { --gold: #ff44dd; --neon-cyan: #ff44dd; } /* Événement  – magenta */
-#sb-scroll-area > :nth-child(4) { --gold: #3fc89f; --neon-cyan: #3fc89f; } /* Logo       – vert    */
-#sb-scroll-area > :nth-child(5) { --gold: #ff4f8f; --neon-cyan: #ff4f8f; } /* Drapeaux   – rose    */
-#sb-scroll-area > :nth-child(6) { --gold: #af6fff; --neon-cyan: #af6fff; } /* Fond       – violet  */
-#sb-scroll-area > :nth-child(7) { --gold: #ffdd44; --neon-cyan: #ffdd44; } /* Style      – jaune   */
+#sb-scroll-area > :nth-child(2) { --gold: #ffdd44; --neon-cyan: #ffdd44; } /* Scoreboard – jaune   */
+#sb-scroll-area > :nth-child(3) { --gold: #ff9f3f; --neon-cyan: #ff9f3f; } /* Position   – orange  */
+#sb-scroll-area > :nth-child(4) { --gold: #ff44dd; --neon-cyan: #ff44dd; } /* Événement  – magenta */
+#sb-scroll-area > :nth-child(5) { --gold: #3fc89f; --neon-cyan: #3fc89f; } /* Logo       – vert    */
+#sb-scroll-area > :nth-child(6) { --gold: #ff4f8f; --neon-cyan: #ff4f8f; } /* Drapeaux   – rose    */
+#sb-scroll-area > :nth-child(7) { --gold: #af6fff; --neon-cyan: #af6fff; } /* Fond       – violet  */
 #sb-scroll-area > :nth-child(8) { --gold: #44ddff; --neon-cyan: #44ddff; } /* Textes     – cyan    */
 #sb-scroll-area > :nth-child(9) { --gold: #ff5e5e; --neon-cyan: #ff5e5e; } /* Particules – rouge   */
 
