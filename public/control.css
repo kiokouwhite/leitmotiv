@@ -5300,17 +5300,13 @@ body.regie-mode [data-subpanel$="-preview"] {
 [id$="-nav-titles"] .vic-nav-title:nth-child(5) { color: #ff4f8f; }
 [id$="-scroll-area"] > :nth-child(5) { border-left: 3px solid #ff4f8f; background: rgba(255,79,143,0.05); border-top: 2px solid #ff4f8f; }
 
-/* Couleur 6 → violet (Fond) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(6) { color: #af6fff; }
-[id$="-scroll-area"] > :nth-child(6) { border-left: 3px solid #af6fff; background: rgba(175,111,255,0.05); border-top: 2px solid #af6fff; }
+/* Couleur 6 → cyan (Textes) */
+[id$="-nav-titles"] .vic-nav-title:nth-child(6) { color: #44ddff; }
+[id$="-scroll-area"] > :nth-child(6) { border-left: 3px solid #44ddff; background: rgba(68,221,255,0.05); border-top: 2px solid #44ddff; }
 
-/* Couleur 7 → cyan (Textes) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(7) { color: #44ddff; }
-[id$="-scroll-area"] > :nth-child(7) { border-left: 3px solid #44ddff; background: rgba(68,221,255,0.05); border-top: 2px solid #44ddff; }
-
-/* Couleur 8 → rouge (Particules) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(8) { color: #ff5e5e; }
-[id$="-scroll-area"] > :nth-child(8) { border-left: 3px solid #ff5e5e; background: rgba(255,94,94,0.05); border-top: 2px solid #ff5e5e; }
+/* Couleur 7 → rouge (Particules) */
+[id$="-nav-titles"] .vic-nav-title:nth-child(7) { color: #ff5e5e; }
+[id$="-scroll-area"] > :nth-child(7) { border-left: 3px solid #ff5e5e; background: rgba(255,94,94,0.05); border-top: 2px solid #ff5e5e; }
 
 /* Titres centrés en groupe, quel que soit leur nombre */
 [id$="-nav-titles"] { justify-content: center !important; padding: 0 !important; gap: 0 !important; }
@@ -6266,9 +6262,8 @@ h1, .section-header h2, .custom-card h3,
 #sb-scroll-area > :nth-child(3) { --gold: #ff44dd; --neon-cyan: #ff44dd; } /* Événement  – magenta */
 #sb-scroll-area > :nth-child(4) { --gold: #3fc89f; --neon-cyan: #3fc89f; } /* Logo       – vert    */
 #sb-scroll-area > :nth-child(5) { --gold: #ff4f8f; --neon-cyan: #ff4f8f; } /* Drapeaux   – rose    */
-#sb-scroll-area > :nth-child(6) { --gold: #af6fff; --neon-cyan: #af6fff; } /* Fond       – violet  */
-#sb-scroll-area > :nth-child(7) { --gold: #44ddff; --neon-cyan: #44ddff; } /* Textes     – cyan    */
-#sb-scroll-area > :nth-child(8) { --gold: #ff5e5e; --neon-cyan: #ff5e5e; } /* Particules – rouge   */
+#sb-scroll-area > :nth-child(6) { --gold: #44ddff; --neon-cyan: #44ddff; } /* Textes     – cyan    */
+#sb-scroll-area > :nth-child(7) { --gold: #ff5e5e; --neon-cyan: #ff5e5e; } /* Particules – rouge   */
 
 /* Centre les cartes de thèmes dans chaque section quand la ligne n'est pas
    pleine. Au runtime, JS rebuild la structure : #themes-grid disparaît et

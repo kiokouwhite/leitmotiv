@@ -602,7 +602,6 @@
               <span class="vic-nav-title" data-target="sb-sect-evenement">Événement</span>
               <span class="vic-nav-title" data-target="sb-sect-logo">Logo</span>
               <span class="vic-nav-title" data-target="sb-sect-drapeaux">Drapeaux</span>
-              <span class="vic-nav-title" data-target="sb-sect-fond">Fond</span>
               <span class="vic-nav-title" data-target="sb-sect-textes">Textes</span>
               <span class="vic-nav-title" data-target="sb-sect-particules">Particules</span>
             </div>
@@ -736,6 +735,70 @@
                     <div class="form-group" style="margin:0">
                       <label>Ombre couleur</label>
                       <input type="color" id="sb-shadow-color" value="#000000" />
+                    </div>
+                  </div>
+
+                  <!-- Fond du scoreboard (couleur unie + dégradé optionnel) -->
+                  <div class="custom-card">
+                    <h3>Fond du scoreboard</h3>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Couleur &amp; opacité</label>
+                      <div style="display:flex;gap:6px;align-items:center">
+                        <input type="color" id="sb-bg-color" value="#0E0E12" />
+                        <input type="number" id="sb-bg-opacity" value="100" min="0" max="100" style="width:56px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 5px;text-align:center" />
+                        <span style="font-size:11px;color:var(--text-muted)">%</span>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Dégradé G→D (vide=off)</label>
+                      <div style="display:flex;gap:6px;align-items:center">
+                        <input type="color" id="sb-bg-color-2" value="#0E0E12" />
+                        <button type="button" id="sb-bg-color-2-clear" class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px" title="Retirer le dégradé">×</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Texture de fond (image, opacité, blend mode, répétition) -->
+                  <div class="custom-card">
+                    <h3>Texture de fond</h3>
+                    <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px">
+                      <div id="texture-preview" style="width:60px;height:48px;border:1px solid var(--border);border-radius:6px;background-size:auto;background-repeat:repeat;background-position:0 0;flex-shrink:0;position:relative;overflow:hidden;background-color:var(--surface2)">
+                        <span id="texture-preview-empty" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-muted)">Aucune</span>
+                      </div>
+                      <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+                        <div style="display:flex;gap:6px">
+                          <label class="btn btn-outline btn-sm" style="cursor:pointer;font-size:11px">
+                            📁 Fichier
+                            <input type="file" id="texture-file-input" accept="image/*" style="display:none" />
+                          </label>
+                          <button id="btn-texture-clear" class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger);font-size:11px">✕</button>
+                        </div>
+                        <div class="form-group" style="margin:0">
+                          <label>Opacité</label>
+                          <div class="logo-particles-row">
+                            <input type="range" id="texture-opacity-range" min="0" max="100" value="50" />
+                            <input type="number" id="texture-opacity-num" min="0" max="100" value="50" style="width:50px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 4px;text-align:center" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:6px">
+                      <label>Mode de fusion</label>
+                      <select id="texture-blend" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 6px">
+                        <option value="normal">Normal</option>
+                        <option value="multiply">Multiply</option>
+                        <option value="overlay">Overlay</option>
+                        <option value="screen">Screen</option>
+                        <option value="soft-light">Soft Light</option>
+                      </select>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Répétition</label>
+                      <select id="texture-size" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 6px">
+                        <option value="repeat">Répéter (tuile)</option>
+                        <option value="cover">Couvrir</option>
+                        <option value="contain">Contenir</option>
+                      </select>
                     </div>
                   </div>
 
@@ -1200,73 +1263,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Fond -->
-              <div id="sb-sect-fond" style="padding:0 16px 16px">
-                <div class="custom-grid">
-                  <div class="custom-card">
-                    <h3>Texture de fond</h3>
-                    <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px">
-                      <div id="texture-preview" style="width:60px;height:48px;border:1px solid var(--border);border-radius:6px;background-size:auto;background-repeat:repeat;background-position:0 0;flex-shrink:0;position:relative;overflow:hidden;background-color:var(--surface2)">
-                        <span id="texture-preview-empty" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-muted)">Aucune</span>
-                      </div>
-                      <div style="flex:1;display:flex;flex-direction:column;gap:6px">
-                        <div style="display:flex;gap:6px">
-                          <label class="btn btn-outline btn-sm" style="cursor:pointer;font-size:11px">
-                            📁 Fichier
-                            <input type="file" id="texture-file-input" accept="image/*" style="display:none" />
-                          </label>
-                          <button id="btn-texture-clear" class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger);font-size:11px">✕</button>
-                        </div>
-                        <div class="form-group" style="margin:0">
-                          <label>Opacité</label>
-                          <div class="logo-particles-row">
-                            <input type="range" id="texture-opacity-range" min="0" max="100" value="50" />
-                            <input type="number" id="texture-opacity-num" min="0" max="100" value="50" style="width:50px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 4px;text-align:center" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:6px">
-                      <label>Mode de fusion</label>
-                      <select id="texture-blend" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 6px">
-                        <option value="normal">Normal</option>
-                        <option value="multiply">Multiply</option>
-                        <option value="overlay">Overlay</option>
-                        <option value="screen">Screen</option>
-                        <option value="soft-light">Soft Light</option>
-                      </select>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Répétition</label>
-                      <select id="texture-size" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 6px">
-                        <option value="repeat">Répéter (tuile)</option>
-                        <option value="cover">Couvrir</option>
-                        <option value="contain">Contenir</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="custom-card">
-                    <h3>Fond de l'overlay</h3>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Couleur &amp; opacité</label>
-                      <div style="display:flex;gap:6px;align-items:center">
-                        <input type="color" id="sb-bg-color" value="#0E0E12" />
-                        <input type="number" id="sb-bg-opacity" value="100" min="0" max="100" style="width:56px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 5px;text-align:center" />
-                        <span style="font-size:11px;color:var(--text-muted)">%</span>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Dégradé G→D (vide=off)</label>
-                      <div style="display:flex;gap:6px;align-items:center">
-                        <input type="color" id="sb-bg-color-2" value="#0E0E12" />
-                        <button type="button" id="sb-bg-color-2-clear" class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px" title="Retirer le dégradé">×</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
 
               <!-- Textes -->
               <div id="sb-sect-textes" style="padding:0 16px 16px">
