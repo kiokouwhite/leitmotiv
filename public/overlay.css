@@ -51,18 +51,21 @@ body {
   filter: drop-shadow(0 4px var(--sb-shadow-intensity, 32px) var(--sb-shadow-color, rgba(0,0,0,0.8))) blur(4px);
 }
 
-/* Lot 5 : ancrage vertical du scoreboard — top (défaut) / middle / bottom. */
-body.sb-anchor-middle .scoreboard {
-  top: 50%;
-  transform: translateX(calc(-50% + var(--sb-x, 0px))) translateY(calc(-50% + var(--sb-y, 0px))) scale(var(--sb-scale, 1));
-  transform-origin: center center;
-}
-body.sb-anchor-bottom .scoreboard {
-  top: auto;
-  bottom: 0;
-  transform: translateX(calc(-50% + var(--sb-x, 0px))) translateY(calc(var(--sb-y, 0px) * -1)) scale(var(--sb-scale, 1));
-  transform-origin: bottom center;
-}
+/* Ancrage 9 points du scoreboard — pilote via body[data-sb-anchor=...].
+   La règle .scoreboard ci-dessus définit le défaut « top-center » ; chaque
+   variante ci-dessous override top/bottom/left/right + transform pour son
+   coin/milieu. Convention X/Y : repère CSS absolu (X+ droite, Y+ bas)
+   depuis le coin d'ancrage. Pour les ancrages -right, X+ pousse hors écran
+   (la barre est déjà collée à droite) — saisir une valeur négative pour
+   décaler vers l'intérieur. */
+body[data-sb-anchor="top-left"]      .scoreboard { top:0; left:0; right:auto; bottom:auto; transform: translate(var(--sb-x, 0px), var(--sb-y, 0px)) scale(var(--sb-scale, 1)); transform-origin: top left; }
+body[data-sb-anchor="top-right"]     .scoreboard { top:0; right:0; left:auto; bottom:auto; transform: translate(var(--sb-x, 0px), var(--sb-y, 0px)) scale(var(--sb-scale, 1)); transform-origin: top right; }
+body[data-sb-anchor="middle-left"]   .scoreboard { top:50%; left:0; right:auto; bottom:auto; transform: translate(var(--sb-x, 0px), calc(-50% + var(--sb-y, 0px))) scale(var(--sb-scale, 1)); transform-origin: center left; }
+body[data-sb-anchor="middle-center"] .scoreboard { top:50%; left:50%; right:auto; bottom:auto; transform: translate(calc(-50% + var(--sb-x, 0px)), calc(-50% + var(--sb-y, 0px))) scale(var(--sb-scale, 1)); transform-origin: center center; }
+body[data-sb-anchor="middle-right"]  .scoreboard { top:50%; right:0; left:auto; bottom:auto; transform: translate(var(--sb-x, 0px), calc(-50% + var(--sb-y, 0px))) scale(var(--sb-scale, 1)); transform-origin: center right; }
+body[data-sb-anchor="bottom-left"]   .scoreboard { bottom:0; left:0; right:auto; top:auto; transform: translate(var(--sb-x, 0px), var(--sb-y, 0px)) scale(var(--sb-scale, 1)); transform-origin: bottom left; }
+body[data-sb-anchor="bottom-center"] .scoreboard { bottom:0; left:50%; right:auto; top:auto; transform: translate(calc(-50% + var(--sb-x, 0px)), var(--sb-y, 0px)) scale(var(--sb-scale, 1)); transform-origin: bottom center; }
+body[data-sb-anchor="bottom-right"]  .scoreboard { bottom:0; right:0; left:auto; top:auto; transform: translate(var(--sb-x, 0px), var(--sb-y, 0px)) scale(var(--sb-scale, 1)); transform-origin: bottom right; }
 
 /* ── Event bar ───────────────────────────────────────────────── */
 

@@ -607,7 +607,6 @@
             <div id="sb-nav-titles" style="width:30px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 0;gap:28px;border-right:1px solid var(--border);background:var(--surface)">
               <span class="vic-nav-title" data-target="sb-sect-affichage">Affichage</span>
               <span class="vic-nav-title" data-target="sb-sect-scoreboard">Scoreboard</span>
-              <span class="vic-nav-title" data-target="sb-sect-position">Position</span>
               <span class="vic-nav-title" data-target="sb-sect-evenement">Événement</span>
               <span class="vic-nav-title" data-target="sb-sect-logo">Logo</span>
               <span class="vic-nav-title" data-target="sb-sect-drapeaux">Drapeaux</span>
@@ -640,6 +639,51 @@
                     <label class="vis-toggle"><input type="checkbox" id="show-tag" checked /><span>Tag / sponsor</span></label>
                     <label class="vis-toggle"><input type="checkbox" id="show-character" checked /><span>Personnage</span></label>
                     <label class="vis-toggle"><input type="checkbox" id="show-seed" checked /><span>Seed (#N)</span></label>
+                  </div>
+                </div>
+                <div class="custom-card" style="margin-top:12px">
+                  <h3>Position &amp; Taille</h3>
+                  <div class="form-group" style="margin-bottom:8px">
+                    <label>Ancrage</label>
+                    <div class="sb-anchor-grid" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:4px;margin-top:4px;max-width:140px">
+                      <button class="sb-anchor-btn theme-btn"        data-anchor="top-left"      title="Haut-gauche"   style="aspect-ratio:1;padding:0;font-size:14px">↖</button>
+                      <button class="sb-anchor-btn theme-btn active" data-anchor="top-center"    title="Haut-centre"   style="aspect-ratio:1;padding:0;font-size:14px">↑</button>
+                      <button class="sb-anchor-btn theme-btn"        data-anchor="top-right"     title="Haut-droite"   style="aspect-ratio:1;padding:0;font-size:14px">↗</button>
+                      <button class="sb-anchor-btn theme-btn"        data-anchor="middle-left"   title="Milieu-gauche" style="aspect-ratio:1;padding:0;font-size:14px">←</button>
+                      <button class="sb-anchor-btn theme-btn"        data-anchor="middle-center" title="Centre"        style="aspect-ratio:1;padding:0;font-size:14px">●</button>
+                      <button class="sb-anchor-btn theme-btn"        data-anchor="middle-right"  title="Milieu-droite" style="aspect-ratio:1;padding:0;font-size:14px">→</button>
+                      <button class="sb-anchor-btn theme-btn"        data-anchor="bottom-left"   title="Bas-gauche"    style="aspect-ratio:1;padding:0;font-size:14px">↙</button>
+                      <button class="sb-anchor-btn theme-btn"        data-anchor="bottom-center" title="Bas-centre"    style="aspect-ratio:1;padding:0;font-size:14px">↓</button>
+                      <button class="sb-anchor-btn theme-btn"        data-anchor="bottom-right"  title="Bas-droite"    style="aspect-ratio:1;padding:0;font-size:14px">↘</button>
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom:7px">
+                    <label>Taille %</label>
+                    <div class="logo-particles-row">
+                      <input type="range" id="sb-scale-range" min="50" max="200" value="100" step="1" />
+                      <input type="number" id="sb-scale-num" min="50" max="200" value="100" step="1" style="width:54px" />
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom:7px">
+                    <label>X px</label>
+                    <div class="logo-particles-row">
+                      <input type="range" id="sb-x-range" min="-960" max="960" value="0" step="1" />
+                      <input type="number" id="sb-x-num" min="-960" max="960" value="0" step="1" style="width:58px" />
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom:7px">
+                    <label>Y px</label>
+                    <div class="logo-particles-row">
+                      <input type="range" id="sb-y-range" min="-200" max="600" value="0" step="1" />
+                      <input type="number" id="sb-y-num" min="-200" max="600" value="0" step="1" style="width:58px" />
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin:0">
+                    <label>Écart P1↔P2</label>
+                    <div class="logo-particles-row">
+                      <input type="range" id="players-gap-range" min="0" max="400" value="0" step="2" />
+                      <input type="number" id="players-gap-num" min="0" max="400" value="0" step="2" style="width:58px" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -743,51 +787,6 @@
                     </div>
                   </div>
 
-                </div>
-              </div>
-
-              <!-- Position -->
-              <div id="sb-sect-position" style="padding:0 16px 16px">
-                <div class="custom-grid">
-                  <div class="custom-card">
-                    <h3>Position &amp; Taille</h3>
-                    <div class="form-group" style="margin-bottom:8px">
-                      <label>Ancrage vertical</label>
-                      <div style="display:flex;gap:4px;margin-top:4px">
-                        <button class="sb-anchor-btn theme-btn active" data-anchor="top" style="font-size:11px;padding:3px 8px;flex:1">↑ Haut</button>
-                        <button class="sb-anchor-btn theme-btn" data-anchor="middle" style="font-size:11px;padding:3px 8px;flex:1">⇔ Milieu</button>
-                        <button class="sb-anchor-btn theme-btn" data-anchor="bottom" style="font-size:11px;padding:3px 8px;flex:1">↓ Bas</button>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Taille %</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-scale-range" min="50" max="200" value="100" step="1" />
-                        <input type="number" id="sb-scale-num" min="50" max="200" value="100" step="1" style="width:54px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>X px</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-x-range" min="-960" max="960" value="0" step="1" />
-                        <input type="number" id="sb-x-num" min="-960" max="960" value="0" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Y px</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-y-range" min="-200" max="600" value="0" step="1" />
-                        <input type="number" id="sb-y-num" min="-200" max="600" value="0" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Écart P1↔P2</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="players-gap-range" min="0" max="400" value="0" step="2" />
-                        <input type="number" id="players-gap-num" min="0" max="400" value="0" step="2" style="width:58px" />
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
 

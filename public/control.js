@@ -233,8 +233,10 @@ function syncFromState(s) {
   if (bg2 && s.sbBgColor2) { bg2.value = s.sbBgColor2; state.sbBgColor2Active = true; }
   else if (s.sbBgColor2 === '' || s.sbBgColor2 == null) state.sbBgColor2Active = false;
   // Lot 5 — ancrage vertical
-  const anchorY = s.sbAnchorY || 'top';
-  document.querySelectorAll('.sb-anchor-btn').forEach(b => b.classList.toggle('active', b.dataset.anchor === anchorY));
+  // Compat : sbAnchorY legacy ('top'/'middle'/'bottom') → mappé sur *-center.
+  const _sbAnch = s.sbAnchor
+    || (s.sbAnchorY ? `${s.sbAnchorY}-center` : 'top-center');
+  document.querySelectorAll('.sb-anchor-btn').forEach(b => b.classList.toggle('active', b.dataset.anchor === _sbAnch));
   updateLogoPreview();
 
   // Format buttons
@@ -523,7 +525,7 @@ function buildStateFromForm() {
     scorePositionMode:   document.querySelector('.score-pos-btn.active')?.dataset.pos || 'between',
     swapPlayers:         document.getElementById('swap-players')?.checked === true,
     // Lot 5 : ancrage vertical du scoreboard
-    sbAnchorY:           document.querySelector('.sb-anchor-btn.active')?.dataset.anchor || 'top',
+    sbAnchor:            document.querySelector('.sb-anchor-btn.active')?.dataset.anchor || 'top-center',
     // Lot 4 : event-bar tripartite
     eventBarLeftWidth:   parseInt(document.getElementById('eb-left-width-num')?.value ?? 0),
     eventBarRightWidth:  parseInt(document.getElementById('eb-right-width-num')?.value ?? 0),
@@ -3058,7 +3060,7 @@ const SCOREBOARD_DEFAULTS = {
   eventBarShadowOpacity: 50, eventBarShadowBlur: 4, eventBarShadowDistance: 10,
   eventBarShadowSpread: 0, eventBarShadowAngle: 315,
   // Lot 5
-  sbAnchorY: 'top',
+  sbAnchor: 'top-center',
   sbScale: 100, sbX: 0, sbY: 0,
 };
 

@@ -609,11 +609,16 @@ function update(s) {
   // Miroir P1 ↔ P2
   document.body.classList.toggle('sb-mirror', s.swapPlayers === true);
 
-  // Lot 5 : ancrage vertical du scoreboard — body class sb-anchor-<top|middle|bottom>.
-  const anchorY = ['top','middle','bottom'].includes(s.sbAnchorY) ? s.sbAnchorY : 'top';
-  document.body.classList.toggle('sb-anchor-top',    anchorY === 'top');
-  document.body.classList.toggle('sb-anchor-middle', anchorY === 'middle');
-  document.body.classList.toggle('sb-anchor-bottom', anchorY === 'bottom');
+  // Ancrage 9 points du scoreboard. Préfère sbAnchor (nouveau, 9 valeurs)
+  // sinon dérive depuis sbAnchorY legacy (top/middle/bottom → *-center).
+  const _sbAnch = s.sbAnchor
+    || (s.sbAnchorY ? `${s.sbAnchorY}-center` : 'top-center');
+  document.body.setAttribute('data-sb-anchor', _sbAnch);
+  // Conserve les classes legacy par row pour les CSS externes éventuelles.
+  const _sbRow = _sbAnch.split('-')[0];
+  document.body.classList.toggle('sb-anchor-top',    _sbRow === 'top');
+  document.body.classList.toggle('sb-anchor-middle', _sbRow === 'middle');
+  document.body.classList.toggle('sb-anchor-bottom', _sbRow === 'bottom');
 
   // Lot 4 / 6 : event-bar — vars posées sur <body> (et pas sur #scoreboard) pour
   // qu'elles restent accessibles à .event-bar même en mode détaché, où la barre
