@@ -3346,22 +3346,25 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
   });
   updateAutoHidePreview();
 
-  // Scale des iframes preview
+  // Scale des iframes preview. wrap.dataset.userZoom (1 par défaut) permet
+  // d'overzoomer dans la fenêtre (boutons + / − injectés par ensureZoomControls).
   function scalePreviewWrap(wrap) {
     const frame = wrap.querySelector('.overlay-preview-frame');
     if (!frame) return;
-    // Toujours afficher la TOTALITÉ du canvas 1920×1080 — pas d'auto-crop.
-    // Ce que voit OBS = ce que voit la preview (juste réduit pour tenir
-    // dans la largeur du conteneur). Pour zoomer dedans, le bouton
-    // « 🔍 Plein cadre » ouvre une modal avec l'iframe à taille native.
-    const scale = wrap.offsetWidth / 1920;
+    const baseScale = wrap.offsetWidth / 1920;
+    const userZoom  = parseFloat(wrap.dataset.userZoom || '1') || 1;
     frame.style.transformOrigin = 'top left';
-    frame.style.transform = `scale(${scale})`;
-    wrap.style.height = Math.round(1080 * scale) + 'px';
+    frame.style.transform = `scale(${baseScale * userZoom})`;
+    // La hauteur du wrap reste celle du « fit » — quand userZoom>1 la frame
+    // déborde et le wrap devient scrollable, sinon overflow:hidden masque tout.
+    wrap.style.height = Math.round(1080 * baseScale) + 'px';
+    wrap.style.overflow = userZoom > 1 ? 'auto' : 'hidden';
   }
   function scaleAllPreviews() {
     document.querySelectorAll('.overlay-preview-wrap').forEach(scalePreviewWrap);
   }
+  // Exposé pour l'injecteur de boutons zoom (autre IIFE).
+  window._scalePreviewWrap = scalePreviewWrap;
   scaleAllPreviews();
   window.addEventListener('resize', scaleAllPreviews);
 
@@ -12900,8 +12903,52 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
     });
     wrap.appendChild(btn);
   }
+  // Boutons de zoom in-place (− / valeur / +) — injectés dans chaque .overlay-preview-wrap.
+  function ensureZoomControls(wrap) {
+    if (!wrap.classList?.contains('overlay-preview-wrap')) return;
+    if (wrap.querySelector('.preview-zoom-controls')) return;
+    const url = urlFromWrap(wrap);
+    if (!url || url === 'about:blank') return;
+    const MIN = 0.25, MAX = 4;
+    const bar = document.createElement('div');
+    bar.className = 'preview-zoom-controls';
+    bar.innerHTML =
+      '<button type="button" class="preview-zoom-btn" data-z="out" title="Dézoomer">−</button>' +
+      '<span class="preview-zoom-val">100%</span>' +
+      '<button type="button" class="preview-zoom-btn" data-z="in" title="Zoomer">+</button>' +
+      '<button type="button" class="preview-zoom-btn" data-z="reset" title="Réinitialiser le zoom" style="margin-left:2px">⌂</button>';
+    const valEl = bar.querySelector('.preview-zoom-val');
+    function applyZoom(z) {
+      z = Math.max(MIN, Math.min(MAX, z));
+      wrap.dataset.userZoom = z;
+      valEl.textContent = Math.round(z * 100) + '%';
+      if (typeof window._scalePreviewWrap === 'function') window._scalePreviewWrap(wrap);
+    }
+    bar.addEventListener('click', (e) => {
+      const action = e.target?.dataset?.z;
+      if (!action) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const cur = parseFloat(wrap.dataset.userZoom || '1') || 1;
+      if (action === 'in')        applyZoom(cur * 1.25);
+      else if (action === 'out')  applyZoom(cur / 1.25);
+      else if (action === 'reset') applyZoom(1);
+    });
+    // Ctrl + molette = zoom autour du curseur (pas indispensable, mais cohérent
+    // avec la modal plein cadre). Sans Ctrl on laisse le scroll natif fonctionner.
+    wrap.addEventListener('wheel', (e) => {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      const cur = parseFloat(wrap.dataset.userZoom || '1') || 1;
+      applyZoom(e.deltaY < 0 ? cur * 1.1 : cur / 1.1);
+    }, { passive: false });
+    wrap.appendChild(bar);
+  }
   function injectAll() {
-    document.querySelectorAll('.overlay-preview-wrap').forEach(ensureTrigger);
+    document.querySelectorAll('.overlay-preview-wrap').forEach(w => {
+      ensureTrigger(w);
+      ensureZoomControls(w);
+    });
   }
   injectAll();
   // Couvre les wraps créés dynamiquement (mountPreview, master preview, etc.)
