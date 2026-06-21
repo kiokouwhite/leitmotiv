@@ -3109,6 +3109,35 @@ document.getElementById('btn-char-display-mode').addEventListener('click', () =>
   setStatus(statusMsg[state.charDisplayMode]);
 });
 
+// Personnages placeholder — tire 2 persos SSBU au hasard pour les 2 joueurs
+// afin de prévisualiser l'overlay quand on n'a pas encore choisi de match.
+document.getElementById('btn-placeholder-chars')?.addEventListener('click', () => {
+  if (!characterList || !characterList.length) {
+    setStatus('Liste des personnages pas encore chargée', 'warn');
+    return;
+  }
+  const i1 = Math.floor(Math.random() * characterList.length);
+  let i2 = Math.floor(Math.random() * characterList.length);
+  if (characterList.length > 1) {
+    // Force un perso différent pour P2 quitte à incrémenter modulo
+    while (i2 === i1) i2 = (i2 + 1) % characterList.length;
+  }
+  const c1 = characterList[i1], c2 = characterList[i2];
+  const ns = buildStateFromForm();
+  ns.player1.character = state.player1.character = { id: c1.id, name: c1.name, image: c1.image };
+  ns.player2.character = state.player2.character = { id: c2.id, name: c2.name, image: c2.image };
+  emitState(ns);
+  if (typeof updateCharPreview === 'function') {
+    updateCharPreview(1, state.player1.character);
+    updateCharPreview(2, state.player2.character);
+  }
+  if (typeof updateStockColorBtns === 'function') {
+    updateStockColorBtns(1, c1.name);
+    updateStockColorBtns(2, c2.name);
+  }
+  setStatus(`Placeholder : ${c1.name} vs ${c2.name}`);
+});
+
 // Particules — opacité & quantité — sync slider ↔ number
 ['particle-opacity', 'particle-count'].forEach(id => {
   document.getElementById(id + '-range').addEventListener('input', function () {
