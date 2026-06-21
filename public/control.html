@@ -593,14 +593,6 @@
 
           <div style="display:flex;flex-direction:column;height:700px;overflow:hidden">
 
-            <!-- Bouton « Réinitialiser » — DOIT rester HORS de #sb-scroll-area :
-                 les couleurs de section sont calées sur :nth-child(N) du
-                 scroll-area, donc tout enfant supplémentaire décalerait
-                 toutes les sections d'un cran (Affichage en orange, etc.). -->
-            <div style="padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0">
-              <button id="btn-sb-reset" class="btn btn-outline btn-sm" style="width:100%">↺ Réinitialiser le scoreboard</button>
-            </div>
-
             <div style="display:flex;flex:1;min-height:0;overflow:hidden">
 
             <!-- Titres verticaux -->
@@ -1357,7 +1349,14 @@
             </div>
 
             </div><!-- /inner row (nav + scroll + preview) -->
-          </div><!-- /outer flex-column (reset + inner row) -->
+
+            <!-- Bouton « Réinitialiser » — placé en bas du panneau Customisation,
+                 juste au-dessus du footer global. Toujours HORS de #sb-scroll-area
+                 pour ne pas décaler les couleurs nth-child des sections. -->
+            <div style="padding:10px 16px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0">
+              <button id="btn-sb-reset" class="btn btn-outline btn-sm" style="width:100%">↺ Réinitialiser le scoreboard</button>
+            </div>
+          </div><!-- /outer flex-column (inner row + reset) -->
         </section>
       </div><!-- /sb-sub-custom -->
 
