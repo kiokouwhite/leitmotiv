@@ -2940,7 +2940,8 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   'event-bar-offset-x', 'event-bar-offset-y',
 ].forEach(idBase => {
   const rng = document.getElementById(idBase + '-range');
-  const num = document.getElementById(idBase + '-num');
+  // Le num input n'a pas toujours le suffixe -num (ex. event-text-size).
+  const num = document.getElementById(idBase + '-num') || document.getElementById(idBase);
   if (!rng || !num) return;
   const sync = src => { (src === rng ? num : rng).value = src.value; emitState(buildStateFromForm()); };
   rng.addEventListener('input', () => sync(rng));
