@@ -70,6 +70,8 @@ body.sb-anchor-bottom .scoreboard {
   background: var(--event-bar-bg, var(--sb-bg, var(--smash-bg)));
   border-bottom: var(--event-bar-border-width, 2px) solid var(--event-bar-border-color, var(--smash-gold));
   margin-bottom: var(--event-bar-detach, 0px);
+  filter: var(--event-bar-shadow, none);
+  mix-blend-mode: var(--event-bar-shadow-blend, normal);
   color: var(--event-text-color, var(--smash-muted));
   font-size: var(--event-text-size, 12px);
   font-weight: var(--event-text-weight, 600);

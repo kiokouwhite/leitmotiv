@@ -915,11 +915,74 @@
                         <input type="number" id="event-bar-bevel-num" min="0" max="32" value="12" step="1" style="width:54px" />
                       </div>
                     </div>
-                    <div class="form-group" style="margin:0">
+                    <div class="form-group" style="margin-bottom:7px">
                       <label>Détachement (px)</label>
                       <div class="logo-particles-row">
                         <input type="range" id="event-bar-detach-range" min="0" max="60" value="0" step="1" />
                         <input type="number" id="event-bar-detach-num" min="0" max="60" value="0" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);margin-bottom:7px">
+                      <label>Ombre portée</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="eb-shadow-btn theme-btn active" data-shadow="off" style="font-size:11px;padding:3px 8px;flex:1">Off</button>
+                        <button class="eb-shadow-btn theme-btn" data-shadow="on" style="font-size:11px;padding:3px 8px;flex:1">On</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Mode de fusion</label>
+                      <select id="event-bar-shadow-blend" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                        <option value="normal">Normal</option>
+                        <option value="multiply" selected>Produit</option>
+                        <option value="screen">Écran</option>
+                        <option value="overlay">Superposition</option>
+                        <option value="darken">Obscurcir</option>
+                        <option value="lighten">Éclaircir</option>
+                        <option value="color-dodge">Densité +</option>
+                        <option value="color-burn">Densité −</option>
+                        <option value="hard-light">Lumière forte</option>
+                        <option value="soft-light">Lumière douce</option>
+                        <option value="difference">Différence</option>
+                        <option value="exclusion">Exclusion</option>
+                      </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Couleur ombre</label>
+                      <input type="color" id="event-bar-shadow-color" value="#000000" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Opacité ombre %</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-shadow-opacity-range" min="0" max="100" value="50" step="1" />
+                        <input type="number" id="event-bar-shadow-opacity-num" min="0" max="100" value="50" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Rayon / Flou (px)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-shadow-blur-range" min="0" max="40" value="4" step="1" />
+                        <input type="number" id="event-bar-shadow-blur-num" min="0" max="40" value="4" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Décalage (px)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-shadow-distance-range" min="0" max="40" value="10" step="1" />
+                        <input type="number" id="event-bar-shadow-distance-num" min="0" max="40" value="10" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Intensité (px)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-shadow-spread-range" min="0" max="10" value="0" step="1" />
+                        <input type="number" id="event-bar-shadow-spread-num" min="0" max="10" value="0" step="1" style="width:54px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Angle (°)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-shadow-angle-range" min="0" max="360" value="315" step="1" />
+                        <input type="number" id="event-bar-shadow-angle-num" min="0" max="360" value="315" step="1" style="width:54px" />
                       </div>
                     </div>
                   </div>

@@ -203,6 +203,11 @@ function syncFromState(s) {
     ['event-bar-detach',        'eventBarDetach',        0],
     ['event-bar-offset-x',      'eventBarOffsetX',       0],
     ['event-bar-offset-y',      'eventBarOffsetY',       0],
+    ['event-bar-shadow-opacity',  'eventBarShadowOpacity',  50],
+    ['event-bar-shadow-blur',     'eventBarShadowBlur',      4],
+    ['event-bar-shadow-distance', 'eventBarShadowDistance', 10],
+    ['event-bar-shadow-spread',   'eventBarShadowSpread',    0],
+    ['event-bar-shadow-angle',    'eventBarShadowAngle',   315],
   ].forEach(([idBase, field, def]) => {
     const v = (s[field] != null) ? s[field] : def;
     const rng = document.getElementById(idBase + '-range');
@@ -214,10 +219,15 @@ function syncFromState(s) {
     ['event-text-glow-color',   'eventTextGlowColor',    '#EAB830'],
     ['event-bar-bg-color',      'eventBarBgColor',       '#0E0E12'],
     ['event-bar-border-color',  'eventBarBorderColor',   '#EAB830'],
+    ['event-bar-shadow-color',  'eventBarShadowColor',   '#000000'],
   ].forEach(([id, field, def]) => {
     const el = document.getElementById(id);
     if (el) el.value = s[field] || def;
   });
+  const _ebShadowOn = s.eventBarShadowOn === true ? 'on' : 'off';
+  document.querySelectorAll('.eb-shadow-btn').forEach(b => b.classList.toggle('active', b.dataset.shadow === _ebShadowOn));
+  const _ebShadowBlend = document.getElementById('event-bar-shadow-blend');
+  if (_ebShadowBlend) _ebShadowBlend.value = s.eventBarShadowBlend || 'multiply';
   const bg2 = document.getElementById('sb-bg-color-2');
   if (bg2 && s.sbBgColor2) { bg2.value = s.sbBgColor2; state.sbBgColor2Active = true; }
   else if (s.sbBgColor2 === '' || s.sbBgColor2 == null) state.sbBgColor2Active = false;
@@ -537,6 +547,14 @@ function buildStateFromForm() {
     eventBarMode:        document.querySelector('.eb-mode-btn.active')?.dataset.mode || 'attached',
     eventBarOffsetX:     parseInt(document.getElementById('event-bar-offset-x-num')?.value ?? 0),
     eventBarOffsetY:     parseInt(document.getElementById('event-bar-offset-y-num')?.value ?? 0),
+    eventBarShadowOn:       document.querySelector('.eb-shadow-btn.active')?.dataset.shadow === 'on',
+    eventBarShadowBlend:    document.getElementById('event-bar-shadow-blend')?.value || 'multiply',
+    eventBarShadowColor:    document.getElementById('event-bar-shadow-color')?.value || '#000000',
+    eventBarShadowOpacity:  parseInt(document.getElementById('event-bar-shadow-opacity-num')?.value ?? 50),
+    eventBarShadowBlur:     parseInt(document.getElementById('event-bar-shadow-blur-num')?.value ?? 4),
+    eventBarShadowDistance: parseInt(document.getElementById('event-bar-shadow-distance-num')?.value ?? 10),
+    eventBarShadowSpread:   parseInt(document.getElementById('event-bar-shadow-spread-num')?.value ?? 0),
+    eventBarShadowAngle:    parseInt(document.getElementById('event-bar-shadow-angle-num')?.value ?? 315),
   };
 }
 
@@ -2938,6 +2956,8 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   'event-bar-bg-opacity', 'event-bar-border-width',
   'event-bar-padding-x', 'event-bar-gap', 'event-bar-bevel', 'event-bar-detach',
   'event-bar-offset-x', 'event-bar-offset-y',
+  'event-bar-shadow-opacity', 'event-bar-shadow-blur', 'event-bar-shadow-distance',
+  'event-bar-shadow-spread', 'event-bar-shadow-angle',
 ].forEach(idBase => {
   const rng = document.getElementById(idBase + '-range');
   // Le num input n'a pas toujours le suffixe -num (ex. event-text-size).
@@ -2948,15 +2968,17 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   num.addEventListener('input', () => sync(num));
 });
 ['center-logo-shape', 'center-logo-glow-color', 'sb-shadow-color', 'eb-sep-style',
- // Lot 6 : onglet Événement — color pickers
- 'event-text-glow-color', 'event-bar-bg-color', 'event-bar-border-color'].forEach(id => {
+ // Lot 6 : onglet Événement — color pickers + select
+ 'event-text-glow-color', 'event-bar-bg-color', 'event-bar-border-color',
+ 'event-bar-shadow-color', 'event-bar-shadow-blend'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => emitState(buildStateFromForm()));
 });
 
 // Lot 4 + Lot 5 + Lot 6 : multi-toggles (alignement, empilement, ancrage, casse, graisse).
 [['.eb-left-align-btn', 'align'], ['.eb-stack-btn', 'stack'], ['.sb-anchor-btn', 'anchor'],
- ['.eb-case-btn', 'case'], ['.eb-weight-btn', 'weight'], ['.eb-mode-btn', 'mode']].forEach(([sel]) => {
+ ['.eb-case-btn', 'case'], ['.eb-weight-btn', 'weight'], ['.eb-mode-btn', 'mode'],
+ ['.eb-shadow-btn', 'shadow']].forEach(([sel]) => {
   document.querySelectorAll(sel).forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll(sel).forEach(b => b.classList.remove('active'));
@@ -3030,6 +3052,9 @@ const SCOREBOARD_DEFAULTS = {
   eventBarBorderColor: '#EAB830', eventBarBorderWidth: 2,
   eventBarPaddingX: 32, eventBarGap: 10, eventBarBevel: 12, eventBarDetach: 0,
   eventBarPosition: 'top-center', eventBarMode: 'attached', eventBarOffsetX: 0, eventBarOffsetY: 0,
+  eventBarShadowOn: false, eventBarShadowBlend: 'multiply', eventBarShadowColor: '#000000',
+  eventBarShadowOpacity: 50, eventBarShadowBlur: 4, eventBarShadowDistance: 10,
+  eventBarShadowSpread: 0, eventBarShadowAngle: 315,
   // Lot 5
   sbAnchorY: 'top',
   sbScale: 100, sbX: 0, sbY: 0,

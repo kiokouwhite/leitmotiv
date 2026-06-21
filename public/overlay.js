@@ -667,6 +667,44 @@ function update(s) {
   _docBody.style.setProperty('--event-bar-detach',       (s.eventBarDetach ?? 0) + 'px');
   _docBody.style.setProperty('--eb-offset-x', (s.eventBarOffsetX ?? 0) + 'px');
   _docBody.style.setProperty('--eb-offset-y', (s.eventBarOffsetY ?? 0) + 'px');
+  // Ombre portée — convention angle façon Photoshop (math, Y up = lumière) :
+  // l'ombre tombe du côté opposé à la lumière. On flip Y pour le repère CSS.
+  // Intensité (spread) émulée en stackant N drop-shadows à 8 directions autour
+  // de la position de base, car filter:drop-shadow() n'a pas de spread natif.
+  let _shadowCss = 'none';
+  let _shadowBlend = 'normal';
+  if (s.eventBarShadowOn) {
+    const _shHex = (s.eventBarShadowColor || '#000000').replace('#','');
+    if (_shHex.length === 6) {
+      const _rad = (s.eventBarShadowAngle ?? 315) * Math.PI / 180;
+      const _dist = parseInt(s.eventBarShadowDistance ?? 10);
+      const _bx = -Math.cos(_rad) * _dist;
+      const _by = -Math.sin(_rad) * _dist;
+      const _blur = parseInt(s.eventBarShadowBlur ?? 4);
+      const _spread = Math.max(0, Math.min(10, parseInt(s.eventBarShadowSpread ?? 0)));
+      const _r = parseInt(_shHex.substring(0,2), 16);
+      const _g = parseInt(_shHex.substring(2,4), 16);
+      const _b = parseInt(_shHex.substring(4,6), 16);
+      const _a = (s.eventBarShadowOpacity ?? 50) / 100;
+      const _col = `rgba(${_r},${_g},${_b},${_a})`;
+      const _layers = [`drop-shadow(${_bx.toFixed(1)}px ${_by.toFixed(1)}px ${_blur}px ${_col})`];
+      // Spread : pour chaque pixel d'intensité, ajoute 8 shadows à 45° autour
+      // du point de base pour épaissir le contour. Limité à 10 pour ne pas
+      // générer 80+ filters (performances GPU).
+      for (let r = 1; r <= _spread; r++) {
+        for (let a = 0; a < 8; a++) {
+          const ang = (a * 45) * Math.PI / 180;
+          const ox = _bx + Math.cos(ang) * r;
+          const oy = _by + Math.sin(ang) * r;
+          _layers.push(`drop-shadow(${ox.toFixed(1)}px ${oy.toFixed(1)}px ${_blur}px ${_col})`);
+        }
+      }
+      _shadowCss = _layers.join(' ');
+      _shadowBlend = s.eventBarShadowBlend || 'multiply';
+    }
+  }
+  _docBody.style.setProperty('--event-bar-shadow', _shadowCss);
+  _docBody.style.setProperty('--event-bar-shadow-blend', _shadowBlend);
   // Mode détaché : la barre sort du DOM du scoreboard et est greffée à <body>
   // pour s'affranchir du transform/scale qui en fait un containing block.
   // On mémorise le parent d'origine pour restaurer en mode attaché.
