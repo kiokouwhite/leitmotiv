@@ -69,6 +69,7 @@ body.sb-anchor-bottom .scoreboard {
 .event-bar {
   background: var(--event-bar-bg, var(--sb-bg, var(--smash-bg)));
   border-bottom: var(--event-bar-border-width, 2px) solid var(--event-bar-border-color, var(--smash-gold));
+  margin-bottom: var(--event-bar-detach, 0px);
   color: var(--event-text-color, var(--smash-muted));
   font-size: var(--event-text-size, 12px);
   font-weight: var(--event-text-weight, 600);
@@ -516,8 +517,10 @@ body.sb-logo-shape-hex .slim-center-logo img    { clip-path: polygon(25% 5%, 75%
 .scoreboard.event-bar-bottom .event-bar {
   order: 1;
   border-bottom: none;
-  border-top: 2px solid var(--smash-gold);
-  clip-path: polygon(0% 0%, 100% 0%, calc(100% - 12px) 100%, 12px 100%);
+  border-top: var(--event-bar-border-width, 2px) solid var(--event-bar-border-color, var(--smash-gold));
+  clip-path: polygon(0% 0%, 100% 0%, calc(100% - var(--event-bar-bevel, 12px)) 100%, var(--event-bar-bevel, 12px) 100%);
+  margin-bottom: 0;
+  margin-top: var(--event-bar-detach, 0px);
 }
 
 /* ── Toggle layouts ───────────────────────────────────────────── */

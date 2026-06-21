@@ -198,6 +198,7 @@ function syncFromState(s) {
     ['event-bar-padding-x',     'eventBarPaddingX',      32],
     ['event-bar-gap',           'eventBarGap',           10],
     ['event-bar-bevel',         'eventBarBevel',         12],
+    ['event-bar-detach',        'eventBarDetach',        0],
   ].forEach(([idBase, field, def]) => {
     const v = (s[field] != null) ? s[field] : def;
     const rng = document.getElementById(idBase + '-range');
@@ -527,6 +528,7 @@ function buildStateFromForm() {
     eventBarPaddingX:    parseInt(document.getElementById('event-bar-padding-x-num')?.value ?? 32),
     eventBarGap:         parseInt(document.getElementById('event-bar-gap-num')?.value ?? 10),
     eventBarBevel:       parseInt(document.getElementById('event-bar-bevel-num')?.value ?? 12),
+    eventBarDetach:      parseInt(document.getElementById('event-bar-detach-num')?.value ?? 0),
   };
 }
 
@@ -2926,7 +2928,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   // Lot 6 : onglet Événement — sliders typo + chrome de la barre
   'event-text-size', 'event-letter-spacing', 'event-text-glow',
   'event-bar-bg-opacity', 'event-bar-border-width',
-  'event-bar-padding-x', 'event-bar-gap', 'event-bar-bevel',
+  'event-bar-padding-x', 'event-bar-gap', 'event-bar-bevel', 'event-bar-detach',
 ].forEach(idBase => {
   const rng = document.getElementById(idBase + '-range');
   const num = document.getElementById(idBase + '-num');
@@ -3016,7 +3018,7 @@ const SCOREBOARD_DEFAULTS = {
   eventTextGlow: 0, eventTextGlowColor: '#EAB830',
   eventBarBgColor: '#0E0E12', eventBarBgOpacity: 100,
   eventBarBorderColor: '#EAB830', eventBarBorderWidth: 2,
-  eventBarPaddingX: 32, eventBarGap: 10, eventBarBevel: 12,
+  eventBarPaddingX: 32, eventBarGap: 10, eventBarBevel: 12, eventBarDetach: 0,
   // Lot 5
   sbAnchorY: 'top',
   sbScale: 100, sbX: 0, sbY: 0,

@@ -655,6 +655,7 @@ function update(s) {
   sb.style.setProperty('--event-bar-padding-x',    (s.eventBarPaddingX ?? 32) + 'px');
   sb.style.setProperty('--event-bar-gap',          (s.eventBarGap ?? 10) + 'px');
   sb.style.setProperty('--event-bar-bevel',        (s.eventBarBevel ?? 12) + 'px');
+  sb.style.setProperty('--event-bar-detach',       (s.eventBarDetach ?? 0) + 'px');
   sb.style.setProperty('--tag-color', s.tagColor || '#E8B830');
   sb.style.setProperty('--name-color', s.nameColor || '#F0EEF8');
   sb.style.setProperty('--pronouns-color', s.pronounsColor || '#5A5A7A');
