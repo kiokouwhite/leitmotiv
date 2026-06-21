@@ -598,8 +598,8 @@
             <!-- Titres verticaux -->
             <div id="sb-nav-titles" style="width:30px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 0;gap:28px;border-right:1px solid var(--border);background:var(--surface)">
               <span class="vic-nav-title" data-target="sb-sect-affichage">Affichage</span>
-              <span class="vic-nav-title" data-target="sb-sect-score">Score</span>
               <span class="vic-nav-title" data-target="sb-sect-scoreboard">Scoreboard</span>
+              <span class="vic-nav-title" data-target="sb-sect-score">Score</span>
               <span class="vic-nav-title" data-target="sb-sect-evenement">Événement</span>
               <span class="vic-nav-title" data-target="sb-sect-logo">Logo</span>
               <span class="vic-nav-title" data-target="sb-sect-drapeaux">Drapeaux</span>
@@ -658,64 +658,6 @@
                     </div>
                   </div>
                 </div>
-                </div>
-              </div>
-
-              <!-- Score (mode d'affichage + position + apparence du nombre/dots) -->
-              <div id="sb-sect-score" style="padding:0 16px 16px">
-                <div class="custom-grid">
-
-                  <!-- Affichage du score : numbers vs dots, orientation, position -->
-                  <div class="custom-card">
-                    <h3>Affichage</h3>
-                    <div class="form-group" style="margin-bottom:8px">
-                      <label>Mode</label>
-                      <div style="display:flex;gap:4px;margin-top:4px">
-                        <button class="score-display-btn theme-btn active" data-display="numbers" style="font-size:11px;padding:4px 10px;flex:1">123 Chiffres</button>
-                        <button class="score-display-btn theme-btn" data-display="dots" style="font-size:11px;padding:4px 10px;flex:1">◉ Points</button>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:8px">
-                      <label>Orientation dots</label>
-                      <div style="display:flex;gap:4px;margin-top:4px">
-                        <button class="dots-orientation-btn theme-btn active" data-orientation="row" style="font-size:11px;padding:4px 10px;flex:1">— Ligne</button>
-                        <button class="dots-orientation-btn theme-btn" data-orientation="column" style="font-size:11px;padding:4px 10px;flex:1">| Col.</button>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Position</label>
-                      <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap">
-                        <button class="score-pos-btn theme-btn active" data-pos="between" style="font-size:11px;padding:4px 8px;flex:1">⇆ Entre</button>
-                        <button class="score-pos-btn theme-btn" data-pos="above" style="font-size:11px;padding:4px 8px;flex:1">↑ Au-dessus</button>
-                        <button class="score-pos-btn theme-btn" data-pos="in-cards" style="font-size:11px;padding:4px 8px;flex:1">📦 Dans cartes</button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Apparence du score : couleur, taille, VS, dots -->
-                  <div class="custom-card">
-                    <h3>Apparence</h3>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Couleur du chiffre</label>
-                      <input type="color" id="score-color" value="#F0EEF8" />
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Taille du chiffre (px)</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="score-font-size-range" min="20" max="120" value="52" step="1" />
-                        <input type="number" id="score-font-size-num" min="20" max="120" value="52" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Couleur du « VS »</label>
-                      <input type="color" id="score-vs-color" value="#E8B830" />
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Couleur des dots remplis</label>
-                      <input type="color" id="dot-color" value="#E8B830" />
-                    </div>
-                  </div>
-
                 </div>
               </div>
 
@@ -934,6 +876,105 @@
                       <div class="logo-particles-row">
                         <input type="range" id="tag-font-size-range" min="8" max="28" value="16" step="1" />
                         <input type="number" id="tag-font-size-num" min="8" max="28" value="16" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Score (mode + position + apparence + carré derrière) -->
+              <div id="sb-sect-score" style="padding:0 16px 16px">
+                <div class="custom-grid">
+
+                  <!-- Affichage : numbers/dots, orientation, position -->
+                  <div class="custom-card">
+                    <h3>Affichage</h3>
+                    <div class="form-group" style="margin-bottom:8px">
+                      <label>Mode</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="score-display-btn theme-btn active" data-display="numbers" style="font-size:11px;padding:4px 10px;flex:1">123 Chiffres</button>
+                        <button class="score-display-btn theme-btn" data-display="dots" style="font-size:11px;padding:4px 10px;flex:1">◉ Points</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px">
+                      <label>Orientation dots</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="dots-orientation-btn theme-btn active" data-orientation="row" style="font-size:11px;padding:4px 10px;flex:1">— Ligne</button>
+                        <button class="dots-orientation-btn theme-btn" data-orientation="column" style="font-size:11px;padding:4px 10px;flex:1">| Col.</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Position</label>
+                      <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap">
+                        <button class="score-pos-btn theme-btn active" data-pos="between" style="font-size:11px;padding:4px 8px;flex:1">⇆ Entre</button>
+                        <button class="score-pos-btn theme-btn" data-pos="above" style="font-size:11px;padding:4px 8px;flex:1">↑ Au-dessus</button>
+                        <button class="score-pos-btn theme-btn" data-pos="in-cards" style="font-size:11px;padding:4px 8px;flex:1">📦 Dans cartes</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Apparence du chiffre : couleur, taille, VS, dots -->
+                  <div class="custom-card">
+                    <h3>Apparence</h3>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Couleur du chiffre</label>
+                      <input type="color" id="score-color" value="#F0EEF8" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                        <input type="checkbox" id="score-use-player-color" />
+                        Utiliser la couleur du joueur
+                      </label>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Taille du chiffre (px)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="score-font-size-range" min="20" max="120" value="52" step="1" />
+                        <input type="number" id="score-font-size-num" min="20" max="120" value="52" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Couleur du « VS »</label>
+                      <input type="color" id="score-vs-color" value="#E8B830" />
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Couleur des dots remplis</label>
+                      <input type="color" id="dot-color" value="#E8B830" />
+                    </div>
+                  </div>
+
+                  <!-- Carré derrière le score (TSH-style) -->
+                  <div class="custom-card">
+                    <h3>Carré derrière le score</h3>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                        <input type="checkbox" id="score-bg-on" />
+                        Activer le carré
+                      </label>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Couleur du carré</label>
+                      <input type="color" id="score-bg-color" value="#E83030" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                        <input type="checkbox" id="score-bg-use-player-color" checked />
+                        Utiliser la couleur du joueur
+                      </label>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Padding (px)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="score-bg-padding-range" min="0" max="40" value="12" step="1" />
+                        <input type="number" id="score-bg-padding-num" min="0" max="40" value="12" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Arrondi (px)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="score-bg-radius-range" min="0" max="40" value="6" step="1" />
+                        <input type="number" id="score-bg-radius-num" min="0" max="40" value="6" step="1" style="width:58px" />
                       </div>
                     </div>
                   </div>

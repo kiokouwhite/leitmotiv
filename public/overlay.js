@@ -758,12 +758,23 @@ function update(s) {
   if (s.scoreVsColor)   sb.style.setProperty('--score-vs-color', s.scoreVsColor);
   sb.style.setProperty('--score-font-size', (s.scoreFontSize ?? 52) + 'px');
   if (s.dotColor)       sb.style.setProperty('--dot-color',      s.dotColor);
+  // Toggles couleur joueur (chiffre) + carré derrière + vars associées
+  document.body.classList.toggle('sb-score-player-color',    s.scoreUsePlayerColor === true);
+  document.body.classList.toggle('sb-score-box',             s.scoreBgOn === true);
+  document.body.classList.toggle('sb-score-bg-player-color', s.scoreBgUsePlayerColor === true);
+  if (s.scoreBgColor) sb.style.setProperty('--score-bg-color', s.scoreBgColor);
+  sb.style.setProperty('--score-bg-padding', (s.scoreBgPadding ?? 12) + 'px');
+  sb.style.setProperty('--score-bg-radius',  (s.scoreBgRadius  ?? 6)  + 'px');
 
   // Colors — full layout
   const c1 = s.hidePlayerColors ? 'transparent' : s.player1.color;
   const c2 = s.hidePlayerColors ? 'transparent' : s.player2.color;
   document.getElementById('player1-block').style.setProperty('--p1-color', c1);
   document.getElementById('player2-block').style.setProperty('--p2-color', c2);
+  // Aussi sur #scoreboard pour que les scores en position 'between'/'above'
+  // (qui vivent hors des player-block) puissent y accéder via cascade.
+  sb.style.setProperty('--p1-color', c1);
+  sb.style.setProperty('--p2-color', c2);
   // Colors — slim layout
   document.getElementById('player1-block-slim').style.setProperty('--p1-color', c1);
   document.getElementById('player2-block-slim').style.setProperty('--p2-color', c2);

@@ -342,6 +342,25 @@ function syncFromState(s) {
   const _scSizeVal = s.scoreFontSize ?? 52;
   if (_scSizeRng) _scSizeRng.value = _scSizeVal;
   if (_scSizeNum) _scSizeNum.value = _scSizeVal;
+  // Carré derrière score + toggles couleur joueur
+  const _scUsePc = document.getElementById('score-use-player-color');
+  if (_scUsePc) _scUsePc.checked = s.scoreUsePlayerColor === true;
+  const _scBgOn = document.getElementById('score-bg-on');
+  if (_scBgOn) _scBgOn.checked = s.scoreBgOn === true;
+  const _scBgCol = document.getElementById('score-bg-color');
+  if (_scBgCol) _scBgCol.value = s.scoreBgColor || '#E83030';
+  const _scBgUsePc = document.getElementById('score-bg-use-player-color');
+  if (_scBgUsePc) _scBgUsePc.checked = s.scoreBgUsePlayerColor !== false; // default true
+  const _scBgPadRng = document.getElementById('score-bg-padding-range');
+  const _scBgPadNum = document.getElementById('score-bg-padding-num');
+  const _scBgPadVal = s.scoreBgPadding ?? 12;
+  if (_scBgPadRng) _scBgPadRng.value = _scBgPadVal;
+  if (_scBgPadNum) _scBgPadNum.value = _scBgPadVal;
+  const _scBgRadRng = document.getElementById('score-bg-radius-range');
+  const _scBgRadNum = document.getElementById('score-bg-radius-num');
+  const _scBgRadVal = s.scoreBgRadius ?? 6;
+  if (_scBgRadRng) _scBgRadRng.value = _scBgRadVal;
+  if (_scBgRadNum) _scBgRadNum.value = _scBgRadVal;
 
   // Event bar
   const etSizeEl = document.getElementById('event-text-size');
@@ -482,10 +501,17 @@ function buildStateFromForm() {
     nameColor: document.getElementById('name-color')?.value || '#F0EEF8',
     pronounsColor: document.getElementById('pronouns-color')?.value || '#5A5A7A',
     // Onglet Score : apparence du chiffre + VS + dots
-    scoreColor:    document.getElementById('score-color')?.value || '#F0EEF8',
-    scoreVsColor:  document.getElementById('score-vs-color')?.value || '#E8B830',
-    scoreFontSize: parseInt(document.getElementById('score-font-size-num')?.value ?? 52),
-    dotColor:      document.getElementById('dot-color')?.value || '#E8B830',
+    scoreColor:           document.getElementById('score-color')?.value || '#F0EEF8',
+    scoreUsePlayerColor:  document.getElementById('score-use-player-color')?.checked === true,
+    scoreVsColor:         document.getElementById('score-vs-color')?.value || '#E8B830',
+    scoreFontSize:        parseInt(document.getElementById('score-font-size-num')?.value ?? 52),
+    dotColor:             document.getElementById('dot-color')?.value || '#E8B830',
+    // Carré derrière le score
+    scoreBgOn:              document.getElementById('score-bg-on')?.checked === true,
+    scoreBgColor:           document.getElementById('score-bg-color')?.value || '#E83030',
+    scoreBgUsePlayerColor:  document.getElementById('score-bg-use-player-color')?.checked === true,
+    scoreBgPadding:         parseInt(document.getElementById('score-bg-padding-num')?.value ?? 12),
+    scoreBgRadius:          parseInt(document.getElementById('score-bg-radius-num')?.value ?? 6),
     eventTextSize: parseInt(document.getElementById('event-text-size')?.value ?? 12),
     eventTextColor: document.getElementById('event-text-color')?.value || '#5A5A7A',
     sbBgColor: document.getElementById('sb-bg-color')?.value || '#0E0E12',
@@ -2983,7 +3009,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   'event-bar-shadow-opacity', 'event-bar-shadow-blur', 'event-bar-shadow-distance',
   'event-bar-shadow-spread', 'event-bar-shadow-angle',
   // Onglet Score
-  'score-font-size',
+  'score-font-size', 'score-bg-padding', 'score-bg-radius',
 ].forEach(idBase => {
   const rng = document.getElementById(idBase + '-range');
   // Le num input n'a pas toujours le suffixe -num (ex. event-text-size).
@@ -2998,7 +3024,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
  'event-text-glow-color', 'event-bar-bg-color', 'event-bar-border-color',
  'event-bar-shadow-color', 'event-bar-shadow-blend',
  // Onglet Score — color pickers
- 'score-color', 'score-vs-color', 'dot-color'].forEach(id => {
+ 'score-color', 'score-vs-color', 'dot-color', 'score-bg-color'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => emitState(buildStateFromForm()));
 });
@@ -3053,6 +3079,11 @@ const swapCb = document.getElementById('swap-players');
 if (swapCb) swapCb.addEventListener('change', () => emitState(buildStateFromForm()));
 const sepCb = document.getElementById('cards-separated');
 if (sepCb) sepCb.addEventListener('change', () => emitState(buildStateFromForm()));
+// Onglet Score — 3 checkboxes (couleur joueur chiffre + carré + couleur joueur carré)
+['score-use-player-color', 'score-bg-on', 'score-bg-use-player-color'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', () => emitState(buildStateFromForm()));
+});
 
 // ── Bouton « Réinitialiser le scoreboard » ─────────────────────────────────
 // Remet tous les contrôles ajoutés dans les Lots 1-5 à leurs valeurs par défaut
@@ -3072,6 +3103,9 @@ const SCOREBOARD_DEFAULTS = {
   characterSize: 100, nameFontSize: 24, tagFontSize: 16,
   scorePositionMode: 'between', swapPlayers: false, cardsSeparated: false,
   scoreColor: '#F0EEF8', scoreVsColor: '#E8B830', scoreFontSize: 52, dotColor: '#E8B830',
+  scoreUsePlayerColor: false,
+  scoreBgOn: false, scoreBgColor: '#E83030', scoreBgUsePlayerColor: true,
+  scoreBgPadding: 12, scoreBgRadius: 6,
   // Lot 4
   eventBarLeftWidth: 0, eventBarRightWidth: 0,
   eventBarLeftAlign: 'left', eventStacking: 'inline', eventSlotSeparator: 'dot',

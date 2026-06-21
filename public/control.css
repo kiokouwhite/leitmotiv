@@ -5284,13 +5284,13 @@ body.regie-mode [data-subpanel$="-preview"] {
 [id$="-nav-titles"] .vic-nav-title:nth-child(1) { color: #4e9eff; }
 [id$="-scroll-area"] > :nth-child(1) { border-left: 3px solid #4e9eff; background: rgba(78,158,255,0.05); }
 
-/* Couleur 2 → orange (Score) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(2) { color: #ff9f3f; }
-[id$="-scroll-area"] > :nth-child(2) { border-left: 3px solid #ff9f3f; background: rgba(255,159,63,0.05); border-top: 2px solid #ff9f3f; }
+/* Couleur 2 → jaune (Scoreboard) */
+[id$="-nav-titles"] .vic-nav-title:nth-child(2) { color: #ffdd44; }
+[id$="-scroll-area"] > :nth-child(2) { border-left: 3px solid #ffdd44; background: rgba(255,221,68,0.05); border-top: 2px solid #ffdd44; }
 
-/* Couleur 3 → jaune (Scoreboard) */
-[id$="-nav-titles"] .vic-nav-title:nth-child(3) { color: #ffdd44; }
-[id$="-scroll-area"] > :nth-child(3) { border-left: 3px solid #ffdd44; background: rgba(255,221,68,0.05); border-top: 2px solid #ffdd44; }
+/* Couleur 3 → orange (Score) */
+[id$="-nav-titles"] .vic-nav-title:nth-child(3) { color: #ff9f3f; }
+[id$="-scroll-area"] > :nth-child(3) { border-left: 3px solid #ff9f3f; background: rgba(255,159,63,0.05); border-top: 2px solid #ff9f3f; }
 
 /* Couleur 4 → magenta (Événement) */
 [id$="-nav-titles"] .vic-nav-title:nth-child(4) { color: #ff44dd; }
@@ -6258,8 +6258,8 @@ h1, .section-header h2, .custom-card h3,
    --gold (cyan néon par défaut) avec sa propre couleur, et tout le contenu
    (titres h3, boutons actifs, accents) en hérite automatiquement via la cascade. */
 #sb-scroll-area > :nth-child(1) { --gold: #4e9eff; --neon-cyan: #4e9eff; } /* Affichage  – bleu    */
-#sb-scroll-area > :nth-child(2) { --gold: #ff9f3f; --neon-cyan: #ff9f3f; } /* Score      – orange  */
-#sb-scroll-area > :nth-child(3) { --gold: #ffdd44; --neon-cyan: #ffdd44; } /* Scoreboard – jaune   */
+#sb-scroll-area > :nth-child(2) { --gold: #ffdd44; --neon-cyan: #ffdd44; } /* Scoreboard – jaune   */
+#sb-scroll-area > :nth-child(3) { --gold: #ff9f3f; --neon-cyan: #ff9f3f; } /* Score      – orange  */
 #sb-scroll-area > :nth-child(4) { --gold: #ff44dd; --neon-cyan: #ff44dd; } /* Événement  – magenta */
 #sb-scroll-area > :nth-child(5) { --gold: #3fc89f; --neon-cyan: #3fc89f; } /* Logo       – vert    */
 #sb-scroll-area > :nth-child(6) { --gold: #ff4f8f; --neon-cyan: #ff4f8f; } /* Drapeaux   – rose    */
