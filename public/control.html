@@ -773,7 +773,13 @@
                       </div>
                     </div>
                     <div class="form-group" style="margin-bottom:7px">
-                      <label>Séparation cartes (px)</label>
+                      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                        <input type="checkbox" id="cards-separated" />
+                        Cartes séparées (P1 + score + P2 deviennent 3 blocs distincts)
+                      </label>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Écart entre les blocs (px)</label>
                       <div class="logo-particles-row">
                         <input type="range" id="players-gap-range" min="0" max="800" value="0" step="2" />
                         <input type="number" id="players-gap-num" min="0" max="800" value="0" step="2" style="width:58px" />

@@ -608,6 +608,7 @@ function update(s) {
   document.body.classList.toggle('sb-score-between', scorePos === 'between');
   // Miroir P1 ↔ P2
   document.body.classList.toggle('sb-mirror', s.swapPlayers === true);
+  document.body.classList.toggle('sb-cards-separated', s.cardsSeparated === true);
 
   // Ancrage 9 points du scoreboard. Préfère sbAnchor (nouveau, 9 valeurs)
   // sinon dérive depuis sbAnchorY legacy (top/middle/bottom → *-center).

@@ -167,6 +167,8 @@ function syncFromState(s) {
   document.querySelectorAll('.score-pos-btn').forEach(b => b.classList.toggle('active', b.dataset.pos === scorePos));
   const swap = document.getElementById('swap-players');
   if (swap) swap.checked = s.swapPlayers === true;
+  const sep = document.getElementById('cards-separated');
+  if (sep) sep.checked = s.cardsSeparated === true;
   // Lot 4 — event-bar tripartite
   [
     ['eb-left-width',  'eventBarLeftWidth',  0],
@@ -524,6 +526,7 @@ function buildStateFromForm() {
     tagFontSize:         parseInt(document.getElementById('tag-font-size-num')?.value ?? 16),
     scorePositionMode:   document.querySelector('.score-pos-btn.active')?.dataset.pos || 'between',
     swapPlayers:         document.getElementById('swap-players')?.checked === true,
+    cardsSeparated:      document.getElementById('cards-separated')?.checked === true,
     // Lot 5 : ancrage vertical du scoreboard
     sbAnchor:            document.querySelector('.sb-anchor-btn.active')?.dataset.anchor || 'top-center',
     // Lot 4 : event-bar tripartite
@@ -3027,6 +3030,8 @@ document.querySelectorAll('.score-pos-btn').forEach(btn => {
 // Lot 3 : miroir P1/P2.
 const swapCb = document.getElementById('swap-players');
 if (swapCb) swapCb.addEventListener('change', () => emitState(buildStateFromForm()));
+const sepCb = document.getElementById('cards-separated');
+if (sepCb) sepCb.addEventListener('change', () => emitState(buildStateFromForm()));
 
 // ── Bouton « Réinitialiser le scoreboard » ─────────────────────────────────
 // Remet tous les contrôles ajoutés dans les Lots 1-5 à leurs valeurs par défaut
@@ -3044,7 +3049,7 @@ const SCOREBOARD_DEFAULTS = {
   playerCardMinWidth: 320, scoreboardHeight: 0, playerCardRadius: 0, playerCardPadding: 0,
   sbShadowIntensity: 32, sbShadowColor: '#000000',
   characterSize: 100, nameFontSize: 24, tagFontSize: 16,
-  scorePositionMode: 'between', swapPlayers: false,
+  scorePositionMode: 'between', swapPlayers: false, cardsSeparated: false,
   // Lot 4
   eventBarLeftWidth: 0, eventBarRightWidth: 0,
   eventBarLeftAlign: 'left', eventStacking: 'inline', eventSlotSeparator: 'dot',

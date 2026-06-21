@@ -158,6 +158,20 @@ body.sb-event-stack-vertical .event-bar .sep {
   gap: var(--players-gap, 0px);
 }
 
+/* Cartes séparées : retire le fond/bordure englobant du players-container
+   et le redistribue à chaque carte (P1, score-center, P2). Chaque bloc
+   devient un rectangle visuel indépendant, façon TSH. À combiner avec
+   border-radius > 0 sur les cartes pour le look pilule. */
+body.sb-cards-separated .players-container {
+  background: transparent;
+  border: none;
+}
+body.sb-cards-separated .players-container > .player,
+body.sb-cards-separated .players-container > .score-center {
+  background: var(--sb-bg, var(--smash-bg));
+  border: 1px solid var(--smash-border);
+}
+
 
 /* ── Player blocks ───────────────────────────────────────────── */
 
