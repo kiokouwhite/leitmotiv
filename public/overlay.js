@@ -665,6 +665,11 @@ function update(s) {
   _docBody.style.setProperty('--event-bar-gap',          (s.eventBarGap ?? 10) + 'px');
   _docBody.style.setProperty('--event-bar-bevel',        (s.eventBarBevel ?? 12) + 'px');
   _docBody.style.setProperty('--event-bar-detach',       (s.eventBarDetach ?? 0) + 'px');
+  // Arrondi (radius) — quand > 0, on bascule .event-bar en mode .eb-rounded
+  // qui remplace le clip-path polygon (biseaux) par inset(0 round Xpx).
+  const _ebRadius = parseInt(s.eventBarRadius ?? 0);
+  _docBody.style.setProperty('--event-bar-radius', _ebRadius + 'px');
+  document.querySelectorAll('.event-bar').forEach(b => b.classList.toggle('eb-rounded', _ebRadius > 0));
   _docBody.style.setProperty('--eb-offset-x', (s.eventBarOffsetX ?? 0) + 'px');
   _docBody.style.setProperty('--eb-offset-y', (s.eventBarOffsetY ?? 0) + 'px');
   // Ombre portée — convention angle façon Photoshop (math, Y up = lumière) :

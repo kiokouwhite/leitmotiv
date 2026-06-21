@@ -543,6 +543,15 @@ body.sb-logo-shape-hex .slim-center-logo img    { clip-path: polygon(25% 5%, 75%
   margin-top: var(--event-bar-detach, 0px);
 }
 
+/* Arrondi (radius > 0) — remplace les biseaux (clip-path polygon)
+   par un coin arrondi via clip-path:inset(0 round Xpx). Plus prioritaire
+   que la règle de base ET que la variante event-bar-bottom. */
+.event-bar.eb-rounded,
+.scoreboard.event-bar-bottom .event-bar.eb-rounded {
+  clip-path: inset(0 round var(--event-bar-radius, 0px));
+  border-radius: var(--event-bar-radius, 0px);
+}
+
 /* Lot 6 — barre événement détachée : sort du flow flex du scoreboard et se
    positionne sur l'un des 9 points d'ancrage (coins + milieux) du scoreboard.
    X/Y sont des décalages en direction CSS absolue (X+ = droite, Y+ = bas)
