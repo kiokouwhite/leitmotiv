@@ -3359,6 +3359,8 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
     // déborde et le wrap devient scrollable, sinon overflow:hidden masque tout.
     wrap.style.height = Math.round(1080 * baseScale) + 'px';
     wrap.style.overflow = userZoom > 1 ? 'auto' : 'hidden';
+    // Curseur grab uniquement quand pannable (zoom > 1). Drag géré dans ensureZoomControls.
+    wrap.style.cursor = userZoom > 1 ? 'grab' : '';
   }
   function scaleAllPreviews() {
     document.querySelectorAll('.overlay-preview-wrap').forEach(scalePreviewWrap);
@@ -12942,6 +12944,30 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
       const cur = parseFloat(wrap.dataset.userZoom || '1') || 1;
       applyZoom(e.deltaY < 0 ? cur * 1.1 : cur / 1.1);
     }, { passive: false });
+    // Drag-to-pan : quand userZoom>1, cliquer-glisser dans le wrap fait défiler.
+    let dragging = false, sx = 0, sy = 0, sl = 0, st = 0;
+    wrap.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      if (e.target.closest('.preview-zoom-controls, .preview-fs-trigger')) return;
+      const z = parseFloat(wrap.dataset.userZoom || '1') || 1;
+      if (z <= 1) return;
+      dragging = true;
+      sx = e.clientX; sy = e.clientY;
+      sl = wrap.scrollLeft; st = wrap.scrollTop;
+      wrap.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      wrap.scrollLeft = sl - (e.clientX - sx);
+      wrap.scrollTop  = st - (e.clientY - sy);
+    });
+    window.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      const z = parseFloat(wrap.dataset.userZoom || '1') || 1;
+      wrap.style.cursor = z > 1 ? 'grab' : '';
+    });
     wrap.appendChild(bar);
   }
   function injectAll() {
