@@ -189,6 +189,8 @@ function syncFromState(s) {
   document.querySelectorAll('.eb-case-btn').forEach(b => b.classList.toggle('active', b.dataset.case === ebCase));
   const ebWeight = String(s.eventTextWeight ?? 600);
   document.querySelectorAll('.eb-weight-btn').forEach(b => b.classList.toggle('active', b.dataset.weight === ebWeight));
+  const ebMode = s.eventBarMode === 'detached' ? 'detached' : 'attached';
+  document.querySelectorAll('.eb-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === ebMode));
   [
     ['event-text-size',         'eventTextSize',         12],
     ['event-letter-spacing',    'eventLetterSpacing',    3],
@@ -199,6 +201,8 @@ function syncFromState(s) {
     ['event-bar-gap',           'eventBarGap',           10],
     ['event-bar-bevel',         'eventBarBevel',         12],
     ['event-bar-detach',        'eventBarDetach',        0],
+    ['event-bar-offset-x',      'eventBarOffsetX',       0],
+    ['event-bar-offset-y',      'eventBarOffsetY',       0],
   ].forEach(([idBase, field, def]) => {
     const v = (s[field] != null) ? s[field] : def;
     const rng = document.getElementById(idBase + '-range');
@@ -529,6 +533,9 @@ function buildStateFromForm() {
     eventBarGap:         parseInt(document.getElementById('event-bar-gap-num')?.value ?? 10),
     eventBarBevel:       parseInt(document.getElementById('event-bar-bevel-num')?.value ?? 12),
     eventBarDetach:      parseInt(document.getElementById('event-bar-detach-num')?.value ?? 0),
+    eventBarMode:        document.querySelector('.eb-mode-btn.active')?.dataset.mode || 'attached',
+    eventBarOffsetX:     parseInt(document.getElementById('event-bar-offset-x-num')?.value ?? 0),
+    eventBarOffsetY:     parseInt(document.getElementById('event-bar-offset-y-num')?.value ?? 0),
   };
 }
 
@@ -2929,6 +2936,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   'event-text-size', 'event-letter-spacing', 'event-text-glow',
   'event-bar-bg-opacity', 'event-bar-border-width',
   'event-bar-padding-x', 'event-bar-gap', 'event-bar-bevel', 'event-bar-detach',
+  'event-bar-offset-x', 'event-bar-offset-y',
 ].forEach(idBase => {
   const rng = document.getElementById(idBase + '-range');
   const num = document.getElementById(idBase + '-num');
@@ -2946,7 +2954,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
 
 // Lot 4 + Lot 5 + Lot 6 : multi-toggles (alignement, empilement, ancrage, casse, graisse).
 [['.eb-left-align-btn', 'align'], ['.eb-stack-btn', 'stack'], ['.sb-anchor-btn', 'anchor'],
- ['.eb-case-btn', 'case'], ['.eb-weight-btn', 'weight']].forEach(([sel]) => {
+ ['.eb-case-btn', 'case'], ['.eb-weight-btn', 'weight'], ['.eb-mode-btn', 'mode']].forEach(([sel]) => {
   document.querySelectorAll(sel).forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll(sel).forEach(b => b.classList.remove('active'));
@@ -3019,6 +3027,7 @@ const SCOREBOARD_DEFAULTS = {
   eventBarBgColor: '#0E0E12', eventBarBgOpacity: 100,
   eventBarBorderColor: '#EAB830', eventBarBorderWidth: 2,
   eventBarPaddingX: 32, eventBarGap: 10, eventBarBevel: 12, eventBarDetach: 0,
+  eventBarMode: 'attached', eventBarOffsetX: 0, eventBarOffsetY: 0,
   // Lot 5
   sbAnchorY: 'top',
   sbScale: 100, sbX: 0, sbY: 0,

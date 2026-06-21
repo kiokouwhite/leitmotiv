@@ -523,6 +523,21 @@ body.sb-logo-shape-hex .slim-center-logo img    { clip-path: polygon(25% 5%, 75%
   margin-top: var(--event-bar-detach, 0px);
 }
 
+/* Lot 6 — barre événement détachée : sort du flow flex du scoreboard et
+   se positionne librement via X/Y (relatif au coin haut-gauche du scoreboard). */
+.event-bar.eb-detached {
+  position: absolute;
+  left: 50%;
+  top: var(--eb-offset-y, 0px);
+  transform: translateX(calc(-50% + var(--eb-offset-x, 0px)));
+  margin: 0;
+  z-index: 2;
+}
+.scoreboard.event-bar-bottom .event-bar.eb-detached {
+  top: auto;
+  bottom: calc(var(--eb-offset-y, 0px) * -1);
+}
+
 /* ── Toggle layouts ───────────────────────────────────────────── */
 
 /* slim-layout visible pour style-slim ET style-compact-rounded */

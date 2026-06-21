@@ -739,10 +739,31 @@
                   <div class="custom-card">
                     <h3>Disposition</h3>
                     <div class="form-group" style="margin-bottom:8px">
+                      <label>Mode</label>
+                      <div style="display:flex;gap:4px;margin-top:4px">
+                        <button class="eb-mode-btn theme-btn active" data-mode="attached" style="font-size:11px;padding:3px 8px;flex:1">⤞ Attaché</button>
+                        <button class="eb-mode-btn theme-btn" data-mode="detached" style="font-size:11px;padding:3px 8px;flex:1">⤓ Détaché</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px">
                       <label>Position</label>
                       <div style="display:flex;gap:4px;margin-top:4px">
                         <button class="event-bar-pos-btn theme-btn active" data-pos="top" style="font-size:13px;padding:4px 14px;flex:1">↑ Haut</button>
                         <button class="event-bar-pos-btn theme-btn" data-pos="bottom" style="font-size:13px;padding:4px 14px;flex:1">↓ Bas</button>
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Décalage X (détaché)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-offset-x-range" min="-960" max="960" value="0" step="1" />
+                        <input type="number" id="event-bar-offset-x-num" min="-960" max="960" value="0" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Décalage Y (détaché)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="event-bar-offset-y-range" min="-200" max="800" value="0" step="1" />
+                        <input type="number" id="event-bar-offset-y-num" min="-200" max="800" value="0" step="1" style="width:58px" />
                       </div>
                     </div>
                     <div class="form-group" style="margin-bottom:7px">
