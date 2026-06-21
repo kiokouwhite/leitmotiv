@@ -3435,6 +3435,25 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
   scaleAllPreviews();
   window.addEventListener('resize', scaleAllPreviews);
 
+  // Picker de couleur de fond de la preview — n'affecte que l'arrière-plan
+  // visible derrière l'iframe (utile pour voir clairement les bordures
+  // claires sur fond sombre, ou inversement, pendant les ajustements).
+  // Pas envoyé à l'overlay réel — juste cosmétique côté contrôle.
+  const _previewBgPicker = document.getElementById('preview-bg-picker');
+  const _PREVIEW_BG_KEY = 'pso-preview-bg';
+  function applyPreviewBg(col) {
+    document.querySelectorAll('.overlay-preview-wrap').forEach(w => { w.style.background = col; });
+  }
+  if (_previewBgPicker) {
+    const saved = (typeof localStorage !== 'undefined' && localStorage.getItem(_PREVIEW_BG_KEY)) || '#000000';
+    _previewBgPicker.value = saved;
+    applyPreviewBg(saved);
+    _previewBgPicker.addEventListener('input', () => {
+      applyPreviewBg(_previewBgPicker.value);
+      try { localStorage.setItem(_PREVIEW_BG_KEY, _previewBgPicker.value); } catch (_) {}
+    });
+  }
+
   // Re-recadrer chaque aperçu quand son overlay se rend / se met à jour (même origine).
   document.querySelectorAll('.overlay-preview-frame').forEach(frame => {
     const wrap = frame.closest('.overlay-preview-wrap');
