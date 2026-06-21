@@ -106,12 +106,30 @@ body.sb-eb-tripartite .event-bar {
 .eb-center { justify-content: center; text-align: center; }
 .eb-right  { justify-content: flex-end; text-align: right; }
 
-/* Empilement event/tournoi (col gauche) — quand vertical, on passe en column. */
-body.sb-event-stack-vertical .eb-left {
+/* Empilement vertical — toute la barre devient une pile : la colonne gauche
+   (event + tournoi) en column, mais aussi le centre (format + phase) et la
+   droite. La barre elle-même passe en column pour empiler les 3 wrappers
+   les uns sous les autres au lieu de les mettre côte à côte. Les
+   séparateurs « · » sont masqués (ils n'ont plus de sens entre 2 lignes). */
+body.sb-event-stack-vertical .event-bar {
   flex-direction: column;
-  align-items: var(--eb-left-justify, flex-start);
+  align-items: center;
   gap: 2px;
   line-height: 1.15;
+}
+body.sb-event-stack-vertical .eb-left,
+body.sb-event-stack-vertical .eb-center,
+body.sb-event-stack-vertical .eb-right {
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  line-height: 1.15;
+}
+body.sb-event-stack-vertical .eb-left {
+  align-items: var(--eb-left-justify, center);
+}
+body.sb-event-stack-vertical .event-bar .sep {
+  display: none !important;
 }
 
 .sep {
