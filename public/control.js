@@ -2964,6 +2964,7 @@ const SCOREBOARD_DEFAULTS = {
   sbBgColor2: '',
   // Lot 5
   sbAnchorY: 'top',
+  sbScale: 100, sbX: 0, sbY: 0,
 };
 
 function resetScoreboardCustomization() {
