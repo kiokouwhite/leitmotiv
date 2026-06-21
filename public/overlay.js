@@ -615,36 +615,39 @@ function update(s) {
   document.body.classList.toggle('sb-anchor-middle', anchorY === 'middle');
   document.body.classList.toggle('sb-anchor-bottom', anchorY === 'bottom');
 
-  // Lot 4 : event-bar tripartite (Customisation > Scoreboard > Textes).
+  // Lot 4 / 6 : event-bar — vars posées sur <body> (et pas sur #scoreboard) pour
+  // qu'elles restent accessibles à .event-bar même en mode détaché, où la barre
+  // est sortie du DOM du scoreboard (cf. déplacement plus bas).
+  const _docBody = document.body;
   const ebL = parseInt(s.eventBarLeftWidth ?? 0);
   const ebR = parseInt(s.eventBarRightWidth ?? 0);
-  sb.style.setProperty('--eb-left-width',  ebL > 0 ? `${ebL}%` : '0fr');
-  sb.style.setProperty('--eb-right-width', ebR > 0 ? `${ebR}%` : '0fr');
+  _docBody.style.setProperty('--eb-left-width',  ebL > 0 ? `${ebL}%` : '0fr');
+  _docBody.style.setProperty('--eb-right-width', ebR > 0 ? `${ebR}%` : '0fr');
   const leftAlign = ['left','center','right'].includes(s.eventBarLeftAlign) ? s.eventBarLeftAlign : 'left';
-  sb.style.setProperty('--eb-left-align', leftAlign);
-  sb.style.setProperty('--eb-left-justify', leftAlign === 'right' ? 'flex-end' : (leftAlign === 'center' ? 'center' : 'flex-start'));
-  document.body.classList.toggle('sb-eb-tripartite', ebL > 0 || ebR > 0);
-  document.body.classList.toggle('sb-event-stack-vertical', s.eventStacking === 'vertical');
+  _docBody.style.setProperty('--eb-left-align', leftAlign);
+  _docBody.style.setProperty('--eb-left-justify', leftAlign === 'right' ? 'flex-end' : (leftAlign === 'center' ? 'center' : 'flex-start'));
+  _docBody.classList.toggle('sb-eb-tripartite', ebL > 0 || ebR > 0);
+  _docBody.classList.toggle('sb-event-stack-vertical', s.eventStacking === 'vertical');
   applyEventBarTripartite();
   // Séparateur
-  const sepMap = { dot: '·', pipe: '|', slash: '/', dash: '—', none: '' };
+  const sepMap = { dot: '·', pipe: '|', slash: '/', dash: '—', bullet: '•', diamond: '◆', star: '★', none: '' };
   const sepCh  = sepMap[s.eventSlotSeparator] != null ? sepMap[s.eventSlotSeparator] : '·';
   document.querySelectorAll('.event-bar .sep').forEach(el => { el.textContent = sepCh; el.style.display = sepCh ? '' : 'none'; });
 
-  sb.style.setProperty('--event-text-size', `${s.eventTextSize ?? 12}px`);
+  _docBody.style.setProperty('--event-text-size', `${s.eventTextSize ?? 12}px`);
   const fw = s.flagSize ?? 52;
   sb.style.setProperty('--flag-w', fw + 'px');
   sb.style.setProperty('--flag-h', Math.round(fw * 34 / 52) + 'px');
-  sb.style.setProperty('--event-text-color', s.eventTextColor || '#5A5A7A');
+  _docBody.style.setProperty('--event-text-color', s.eventTextColor || '#5A5A7A');
 
   // Lot 6 : onglet Événement — typo + chrome de la barre. Toutes les valeurs
   // ont des défauts qui reproduisent le rendu d'origine (avant onglet).
-  sb.style.setProperty('--event-text-weight',    s.eventTextWeight ?? 600);
-  sb.style.setProperty('--event-letter-spacing', (s.eventLetterSpacing ?? 3) + 'px');
+  _docBody.style.setProperty('--event-text-weight',    s.eventTextWeight ?? 600);
+  _docBody.style.setProperty('--event-letter-spacing', (s.eventLetterSpacing ?? 3) + 'px');
   const _txTrans = ['none','uppercase','lowercase','capitalize'].includes(s.eventTextTransform) ? s.eventTextTransform : 'uppercase';
-  sb.style.setProperty('--event-text-transform', _txTrans);
+  _docBody.style.setProperty('--event-text-transform', _txTrans);
   const _glow = parseInt(s.eventTextGlow ?? 0);
-  sb.style.setProperty('--event-text-shadow', _glow > 0 ? `0 0 ${_glow}px ${s.eventTextGlowColor || s.eventTextColor || '#EAB830'}` : 'none');
+  _docBody.style.setProperty('--event-text-shadow', _glow > 0 ? `0 0 ${_glow}px ${s.eventTextGlowColor || s.eventTextColor || '#EAB830'}` : 'none');
   // Fond barre : combine couleur + opacité en rgba()
   const _bgHex = (s.eventBarBgColor || '').replace('#','');
   if (_bgHex.length === 6) {
@@ -652,21 +655,34 @@ function update(s) {
     const _bg = parseInt(_bgHex.substring(2,4), 16);
     const _bb = parseInt(_bgHex.substring(4,6), 16);
     const _ba = (s.eventBarBgOpacity ?? 100) / 100;
-    sb.style.setProperty('--event-bar-bg', `rgba(${_br},${_bg},${_bb},${_ba})`);
+    _docBody.style.setProperty('--event-bar-bg', `rgba(${_br},${_bg},${_bb},${_ba})`);
   } else {
-    sb.style.removeProperty('--event-bar-bg');
+    _docBody.style.removeProperty('--event-bar-bg');
   }
-  sb.style.setProperty('--event-bar-border-color', s.eventBarBorderColor || '#EAB830');
-  sb.style.setProperty('--event-bar-border-width', (s.eventBarBorderWidth ?? 2) + 'px');
-  sb.style.setProperty('--event-bar-padding-x',    (s.eventBarPaddingX ?? 32) + 'px');
-  sb.style.setProperty('--event-bar-gap',          (s.eventBarGap ?? 10) + 'px');
-  sb.style.setProperty('--event-bar-bevel',        (s.eventBarBevel ?? 12) + 'px');
-  sb.style.setProperty('--event-bar-detach',       (s.eventBarDetach ?? 0) + 'px');
-  // Mode détaché : la barre sort du flow flex et se positionne via X/Y
+  _docBody.style.setProperty('--event-bar-border-color', s.eventBarBorderColor || '#EAB830');
+  _docBody.style.setProperty('--event-bar-border-width', (s.eventBarBorderWidth ?? 2) + 'px');
+  _docBody.style.setProperty('--event-bar-padding-x',    (s.eventBarPaddingX ?? 32) + 'px');
+  _docBody.style.setProperty('--event-bar-gap',          (s.eventBarGap ?? 10) + 'px');
+  _docBody.style.setProperty('--event-bar-bevel',        (s.eventBarBevel ?? 12) + 'px');
+  _docBody.style.setProperty('--event-bar-detach',       (s.eventBarDetach ?? 0) + 'px');
+  _docBody.style.setProperty('--eb-offset-x', (s.eventBarOffsetX ?? 0) + 'px');
+  _docBody.style.setProperty('--eb-offset-y', (s.eventBarOffsetY ?? 0) + 'px');
+  // Mode détaché : la barre sort du DOM du scoreboard et est greffée à <body>
+  // pour s'affranchir du transform/scale qui en fait un containing block.
+  // On mémorise le parent d'origine pour restaurer en mode attaché.
   const _ebDetached = s.eventBarMode === 'detached';
-  document.querySelectorAll('.event-bar').forEach(b => b.classList.toggle('eb-detached', _ebDetached));
-  sb.style.setProperty('--eb-offset-x', (s.eventBarOffsetX ?? 0) + 'px');
-  sb.style.setProperty('--eb-offset-y', (s.eventBarOffsetY ?? 0) + 'px');
+  document.querySelectorAll('.event-bar').forEach(b => {
+    if (!b._origParent && b.parentElement !== document.body) {
+      b._origParent      = b.parentElement;
+      b._origNextSibling = b.nextSibling;
+    }
+    if (_ebDetached) {
+      if (b.parentElement !== document.body) document.body.appendChild(b);
+    } else if (b._origParent && b.parentElement !== b._origParent) {
+      b._origParent.insertBefore(b, b._origNextSibling);
+    }
+    b.classList.toggle('eb-detached', _ebDetached);
+  });
   sb.style.setProperty('--tag-color', s.tagColor || '#E8B830');
   sb.style.setProperty('--name-color', s.nameColor || '#F0EEF8');
   sb.style.setProperty('--pronouns-color', s.pronounsColor || '#5A5A7A');
