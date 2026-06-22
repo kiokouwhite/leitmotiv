@@ -2265,8 +2265,28 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
 
   // Presets de disposition Scoreboard (cartes cliquables comme la grille des thèmes de couleur).
   const SB_PRESETS = [
-    { id: 'classic',          name: 'Classique' },
+    { id: 'classic',          name: 'Classique', builtin: true },
   ];
+
+  // === Presets utilisateur — persistés en localStorage ===
+  const USER_PRESETS_KEY = 'leitmotiv-sb-user-presets';
+  function loadUserPresets() {
+    try {
+      const raw = localStorage.getItem(USER_PRESETS_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list : [];
+    } catch (_) { return []; }
+  }
+  function persistUserPresets() {
+    try {
+      const list = SB_PRESETS.filter(p => !p.builtin);
+      localStorage.setItem(USER_PRESETS_KEY, JSON.stringify(list));
+    } catch (_) {}
+  }
+  // Charge au boot et concatène à la liste built-in
+  loadUserPresets().forEach(p => {
+    if (p && p.id && p.name) SB_PRESETS.push({ ...p, builtin: false });
+  });
 
   function renderPresets(overlayId) {
     const grid = document.getElementById('overlay-presets-grid');
@@ -2275,23 +2295,102 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
       const cur = state.scoreboardLayout || 'classic';
       grid.innerHTML = SB_PRESETS.map(p => {
         const active = (p.id === cur) ? ' active' : '';
-        return '<div class="theme-preset-card sb-preset-card' + active + '" data-layout="' + p.id + '" role="button" tabindex="0">' +
-          '<div class="theme-preset-preview" style="background:linear-gradient(135deg,#0E0E12,#16161E);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:0.06em;text-transform:uppercase">' + p.id + '</div>' +
+        const previewLabel = p.builtin ? p.id : '★ user';
+        const delBtn = p.builtin ? '' :
+          '<button class="sb-preset-del" data-del="' + p.id + '" type="button" title="Supprimer ce preset" ' +
+            'style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:#ff6688;border:1px solid rgba(255,102,136,0.4);' +
+            'border-radius:4px;font-size:11px;padding:2px 6px;cursor:pointer;line-height:1;z-index:2">✕</button>';
+        return '<div class="theme-preset-card sb-preset-card' + active + '" data-layout="' + p.id + '" role="button" tabindex="0" style="position:relative">' +
+          delBtn +
+          '<div class="theme-preset-preview" style="background:linear-gradient(135deg,#0E0E12,#16161E);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:0.06em;text-transform:uppercase">' + previewLabel + '</div>' +
           '<div class="theme-preset-name">' + p.name + '</div>' +
         '</div>';
       }).join('');
       grid.querySelectorAll('.sb-preset-card').forEach(card => {
-        card.addEventListener('click', () => {
+        card.addEventListener('click', (ev) => {
+          // Si on a cliqué sur le ✕ : suppression, pas activation
+          if (ev.target.closest('.sb-preset-del')) {
+            ev.stopPropagation();
+            const id = ev.target.closest('.sb-preset-del').dataset.del;
+            const i = SB_PRESETS.findIndex(p => p.id === id);
+            if (i >= 0 && !SB_PRESETS[i].builtin) {
+              SB_PRESETS.splice(i, 1);
+              persistUserPresets();
+              renderPresets(currentOverlay);
+            }
+            return;
+          }
           grid.querySelectorAll('.sb-preset-card').forEach(c => c.classList.remove('active'));
           card.classList.add('active');
-          state.scoreboardLayout = card.dataset.layout;
-          emitState(buildStateFromForm());
+          const id = card.dataset.layout;
+          const preset = SB_PRESETS.find(p => p.id === id);
+          if (preset && !preset.builtin && preset.data) {
+            // User preset : applique le snapshot complet
+            Object.assign(state, preset.data);
+            if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data });
+            emitState(buildStateFromForm());
+          } else {
+            // Built-in : ancien comportement (juste scoreboardLayout)
+            state.scoreboardLayout = id;
+            emitState(buildStateFromForm());
+          }
         });
       });
     } else {
       grid.innerHTML = '<p class="hint" style="grid-column:1/-1;margin:0">Dispositions préfaites pour « ' + (OVERLAY_LABEL[overlayId] || '') + ' » — à venir.</p>';
     }
   }
+
+  // === Bouton « 💾 Sauvegarder en preset » + modal de nommage ===
+  const _saveBtn   = document.getElementById('btn-sb-save-preset');
+  const _modal     = document.getElementById('preset-name-modal');
+  const _modalIn   = document.getElementById('preset-name-input');
+  const _modalErr  = document.getElementById('preset-name-error');
+  const _modalOk   = document.getElementById('preset-name-ok');
+  const _modalCanc = document.getElementById('preset-name-cancel');
+  const _modalClse = document.getElementById('preset-name-close');
+  function _openSaveModal() {
+    if (!_modal) return;
+    _modalIn.value = '';
+    _modalErr.textContent = '';
+    _modal.style.display = 'flex';
+    setTimeout(() => _modalIn.focus(), 50);
+  }
+  function _closeSaveModal() {
+    if (_modal) _modal.style.display = 'none';
+  }
+  function _commitSavePreset() {
+    const name = (_modalIn.value || '').trim();
+    if (!name) { _modalErr.textContent = 'Donne un nom.'; return; }
+    if (name.length > 40) { _modalErr.textContent = 'Max 40 caractères.'; return; }
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'preset';
+    const id = 'user-' + slug + '-' + Date.now().toString(36);
+    // Snapshot des champs « customisation » via SCOREBOARD_DEFAULTS
+    const data = {};
+    if (typeof SCOREBOARD_DEFAULTS === 'object') {
+      Object.keys(SCOREBOARD_DEFAULTS).forEach(k => {
+        if (state[k] !== undefined) data[k] = state[k];
+      });
+    }
+    const preset = { id, name, data, builtin: false };
+    SB_PRESETS.push(preset);
+    persistUserPresets();
+    _closeSaveModal();
+    // Rafraîchit la grille des presets si elle est visible
+    if (currentMode === 'presets') renderPresets(currentOverlay);
+    if (typeof setStatus === 'function') setStatus('Preset « ' + name + ' » sauvegardé', 'success');
+  }
+  if (_saveBtn)    _saveBtn.addEventListener('click', _openSaveModal);
+  if (_modalOk)    _modalOk.addEventListener('click', _commitSavePreset);
+  if (_modalCanc)  _modalCanc.addEventListener('click', _closeSaveModal);
+  if (_modalClse)  _modalClse.addEventListener('click', _closeSaveModal);
+  if (_modalIn)    _modalIn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter')  _commitSavePreset();
+    if (e.key === 'Escape') _closeSaveModal();
+  });
+  if (_modal)      _modal.addEventListener('click', (e) => {
+    if (e.target === _modal) _closeSaveModal();
+  });
 
   function applySsbuView() {
     const inParams = (currentMode === 'params');

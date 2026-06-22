@@ -189,6 +189,26 @@
 <!-- ══════════════════════════════════════════════════════════ -->
 <!--  CASTER LOAD MODAL — charger un caster (3 sources)         -->
 <!-- ══════════════════════════════════════════════════════════ -->
+<!-- Modal « Sauvegarder en preset » : demande un nom au user avant d'enregistrer
+     le state customisation courant comme preset utilisateur (localStorage). -->
+<div id="preset-name-modal" class="report-overlay" style="display:none">
+  <div class="report-card" style="width:420px;max-width:94vw;padding:0;display:flex;flex-direction:column">
+    <div class="section-header" style="padding:12px 16px;border-bottom:1px solid var(--border)">
+      <h2 style="margin:0">💾 Sauvegarder en preset</h2>
+      <button class="btn btn-outline btn-sm" id="preset-name-close" type="button">✕</button>
+    </div>
+    <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+      <label for="preset-name-input" style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em">Nom du preset</label>
+      <input type="text" id="preset-name-input" placeholder="ex : Tournoi WiFi violet…" maxlength="40" style="width:100%;padding:8px 10px;font-size:14px" />
+      <div id="preset-name-error" style="font-size:12px;color:var(--danger);min-height:14px"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
+        <button class="btn btn-outline btn-sm" id="preset-name-cancel" type="button">Annuler</button>
+        <button class="btn btn-primary btn-sm" id="preset-name-ok"     type="button">💾 Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="caster-load-modal" class="report-overlay" style="display:none">
   <div class="report-card" style="width:560px;max-width:94vw;max-height:88vh;display:flex;flex-direction:column;padding:0">
     <div class="section-header" style="padding:12px 16px;border-bottom:1px solid var(--border)">
@@ -1497,8 +1517,9 @@
             <!-- Bouton « Réinitialiser » — placé en bas du panneau Customisation,
                  juste au-dessus du footer global. Toujours HORS de #sb-scroll-area
                  pour ne pas décaler les couleurs nth-child des sections. -->
-            <div style="padding:10px 16px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0">
-              <button id="btn-sb-reset" class="btn btn-outline btn-sm" style="width:100%">↺ Réinitialiser le scoreboard</button>
+            <div style="padding:10px 16px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0;display:flex;gap:8px">
+              <button id="btn-sb-reset"      class="btn btn-outline btn-sm" style="flex:1">↺ Réinitialiser</button>
+              <button id="btn-sb-save-preset" class="btn btn-outline btn-sm" style="flex:1">💾 Sauvegarder en preset</button>
             </div>
           </div><!-- /outer flex-column (inner row + reset) -->
         </section>
