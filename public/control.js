@@ -3613,19 +3613,29 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
 
   // Scale des iframes preview. wrap.dataset.userZoom (1 par défaut) permet
   // d'overzoomer dans la fenêtre (boutons + / − injectés par ensureZoomControls).
+  // L'iframe est enveloppée dans un .overlay-preview-scroll inner qui porte
+  // l'overflow:auto — comme ça les boutons absolute (zoom, plein cadre) qui
+  // vivent sur le wrap restent VISIBLES quand l'utilisateur scroll/pan dans
+  // le contenu zoomé (sinon ils défilaient hors du cadre avec le contenu).
   function scalePreviewWrap(wrap) {
     const frame = wrap.querySelector('.overlay-preview-frame');
     if (!frame) return;
+    let scroller = wrap.querySelector('.overlay-preview-scroll');
+    if (!scroller) {
+      scroller = document.createElement('div');
+      scroller.className = 'overlay-preview-scroll';
+      scroller.style.cssText = 'position:absolute;inset:0;overflow:hidden';
+      frame.parentNode.insertBefore(scroller, frame);
+      scroller.appendChild(frame);
+    }
     const baseScale = wrap.offsetWidth / 1920;
     const userZoom  = parseFloat(wrap.dataset.userZoom || '1') || 1;
     frame.style.transformOrigin = 'top left';
     frame.style.transform = `scale(${baseScale * userZoom})`;
-    // La hauteur du wrap reste celle du « fit » — quand userZoom>1 la frame
-    // déborde et le wrap devient scrollable, sinon overflow:hidden masque tout.
-    wrap.style.height = Math.round(1080 * baseScale) + 'px';
-    wrap.style.overflow = userZoom > 1 ? 'auto' : 'hidden';
-    // Curseur grab uniquement quand pannable (zoom > 1). Drag géré dans ensureZoomControls.
-    wrap.style.cursor = userZoom > 1 ? 'grab' : '';
+    wrap.style.height   = Math.round(1080 * baseScale) + 'px';
+    wrap.style.overflow = 'hidden';  // wrap est désormais TOUJOURS contained
+    scroller.style.overflow = userZoom > 1 ? 'auto' : 'hidden';
+    scroller.style.cursor   = userZoom > 1 ? 'grab' : '';
   }
   function scaleAllPreviews() {
     document.querySelectorAll('.overlay-preview-wrap').forEach(scalePreviewWrap);
@@ -13228,29 +13238,32 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
       const cur = parseFloat(wrap.dataset.userZoom || '1') || 1;
       applyZoom(e.deltaY < 0 ? cur * 1.1 : cur / 1.1);
     }, { passive: false });
-    // Drag-to-pan : quand userZoom>1, cliquer-glisser dans le wrap fait défiler.
-    let dragging = false, sx = 0, sy = 0, sl = 0, st = 0;
+    // Drag-to-pan : quand userZoom>1, cliquer-glisser fait défiler l'inner
+    // scroller (créé par scalePreviewWrap). Boutons zoom + plein cadre vivent
+    // sur le wrap et ne sont PAS scrollés.
+    let dragging = false, sx = 0, sy = 0, sl = 0, st = 0, scroller = null;
     wrap.addEventListener('mousedown', (e) => {
       if (e.button !== 0) return;
       if (e.target.closest('.preview-zoom-controls, .preview-fs-trigger')) return;
       const z = parseFloat(wrap.dataset.userZoom || '1') || 1;
       if (z <= 1) return;
+      scroller = wrap.querySelector('.overlay-preview-scroll') || wrap;
       dragging = true;
       sx = e.clientX; sy = e.clientY;
-      sl = wrap.scrollLeft; st = wrap.scrollTop;
-      wrap.style.cursor = 'grabbing';
+      sl = scroller.scrollLeft; st = scroller.scrollTop;
+      scroller.style.cursor = 'grabbing';
       e.preventDefault();
     });
     window.addEventListener('mousemove', (e) => {
-      if (!dragging) return;
-      wrap.scrollLeft = sl - (e.clientX - sx);
-      wrap.scrollTop  = st - (e.clientY - sy);
+      if (!dragging || !scroller) return;
+      scroller.scrollLeft = sl - (e.clientX - sx);
+      scroller.scrollTop  = st - (e.clientY - sy);
     });
     window.addEventListener('mouseup', () => {
       if (!dragging) return;
       dragging = false;
       const z = parseFloat(wrap.dataset.userZoom || '1') || 1;
-      wrap.style.cursor = z > 1 ? 'grab' : '';
+      if (scroller) scroller.style.cursor = z > 1 ? 'grab' : '';
     });
     wrap.appendChild(bar);
   }
