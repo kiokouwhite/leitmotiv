@@ -1048,17 +1048,6 @@
               <div id="sb-sect-evenement" style="padding:0 16px 16px">
                 <div class="custom-grid">
 
-                  <!-- Visibilité — champs de la barre événement -->
-                  <div class="custom-card">
-                    <h3>Visibilité</h3>
-                    <div class="vis-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:8px">
-                      <label class="vis-toggle"><input type="checkbox" id="show-event-name" checked /><span>Event</span></label>
-                      <label class="vis-toggle"><input type="checkbox" id="show-tournament" checked /><span>Tournoi (round)</span></label>
-                      <label class="vis-toggle"><input type="checkbox" id="show-format" checked /><span>Format (BO)</span></label>
-                      <label class="vis-toggle"><input type="checkbox" id="show-round" checked /><span>Phase / Stage</span></label>
-                    </div>
-                  </div>
-
                   <!-- ─── Disposition ───────────────────────────── -->
                   <div class="custom-card">
                     <h3>Disposition</h3>
@@ -1320,6 +1309,17 @@
                         <input type="range" id="event-bar-shadow-angle-range" min="0" max="360" value="315" step="1" />
                         <input type="number" id="event-bar-shadow-angle-num" min="0" max="360" value="315" step="1" style="width:54px" />
                       </div>
+                    </div>
+                  </div>
+
+                  <!-- Visibilité — compact, en bas, sur 2 colonnes -->
+                  <div class="custom-card" style="grid-column:span 2;padding:10px 12px">
+                    <h3 style="font-size:12px;margin:0 0 6px 0">Visibilité</h3>
+                    <div class="vis-grid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:4px 10px">
+                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-event-name" checked /><span>Event</span></label>
+                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-tournament" checked /><span>Tournoi (round)</span></label>
+                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-format" checked /><span>Format (BO)</span></label>
+                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-round" checked /><span>Phase / Stage</span></label>
                     </div>
                   </div>
 
