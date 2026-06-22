@@ -596,6 +596,12 @@ function update(s) {
   const sbHeight = parseInt(s.scoreboardHeight ?? 0);
   sb.style.setProperty('--sb-height',            sbHeight > 0 ? (sbHeight + 'px') : 'auto');
   sb.style.setProperty('--player-card-radius',   (s.playerCardRadius ?? 0) + 'px');
+  // Forme des cartes joueur — clip-path trapèze / parallélogramme via body class + var
+  document.body.style.setProperty('--player-card-skew', (s.playerCardSkew ?? 20) + 'px');
+  const _shapeVal = ['trapezoid','trapezoid-out','parallelogram','parallelogram-rev'].includes(s.playerCardShape) ? s.playerCardShape : '';
+  ['trapezoid','trapezoid-out','parallelogram','parallelogram-rev'].forEach(sh => {
+    document.body.classList.toggle('sb-shape-' + sh, _shapeVal === sh);
+  });
   sb.style.setProperty('--player-card-padding',  (s.playerCardPadding ?? 0) + 'px');
   sb.style.setProperty('--sb-shadow-intensity',  (s.sbShadowIntensity ?? 32) + 'px');
   sb.style.setProperty('--sb-shadow-color',      s.sbShadowColor || 'rgba(0,0,0,0.8)');

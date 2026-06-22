@@ -231,6 +231,29 @@ body.sb-score-in-cards .score-box {
   position: relative;
   overflow: hidden;
 }
+
+/* Formes des cartes joueur — pilotées par body.sb-shape-* + var
+   --player-card-skew. Trapèze = sommet coupé vers l'intérieur (ou
+   l'extérieur en variant -out). Parallélogramme = penche les 2 cartes
+   du même côté. */
+body.sb-shape-trapezoid .player-left {
+  clip-path: polygon(0 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, 0 100%);
+}
+body.sb-shape-trapezoid .player-right {
+  clip-path: polygon(var(--player-card-skew, 20px) 0, 100% 0, 100% 100%, 0 100%);
+}
+body.sb-shape-trapezoid-out .player-left {
+  clip-path: polygon(var(--player-card-skew, 20px) 0, 100% 0, 100% 100%, 0 100%);
+}
+body.sb-shape-trapezoid-out .player-right {
+  clip-path: polygon(0 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, 0 100%);
+}
+body.sb-shape-parallelogram .player {
+  clip-path: polygon(var(--player-card-skew, 20px) 0, 100% 0, calc(100% - var(--player-card-skew, 20px)) 100%, 0 100%);
+}
+body.sb-shape-parallelogram-rev .player {
+  clip-path: polygon(0 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, var(--player-card-skew, 20px) 100%);
+}
 .score-center {
   min-height: var(--sb-height, auto);
   border-radius: var(--player-card-radius, 0px);

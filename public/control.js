@@ -144,6 +144,7 @@ function syncFromState(s) {
     ['sb-height',                 'scoreboardHeight',        0],
     ['player-card-radius',        'playerCardRadius',        0],
     ['player-card-padding',       'playerCardPadding',       0],
+    ['player-card-skew',          'playerCardSkew',          20],
     ['sb-shadow',                 'sbShadowIntensity',       32],
     ['character-size',            'characterSize',           100],
     ['name-font-size',            'nameFontSize',            24],
@@ -586,6 +587,8 @@ function buildStateFromForm() {
     scoreboardHeight:    parseInt(document.getElementById('sb-height-num')?.value ?? 0),
     playerCardRadius:    parseInt(document.getElementById('player-card-radius-num')?.value ?? 0),
     playerCardPadding:   parseInt(document.getElementById('player-card-padding-num')?.value ?? 0),
+    playerCardShape:     document.getElementById('player-card-shape')?.value || 'rectangle',
+    playerCardSkew:      parseInt(document.getElementById('player-card-skew-num')?.value ?? 20),
     sbShadowIntensity:   parseInt(document.getElementById('sb-shadow-num')?.value ?? 32),
     sbShadowColor:       document.getElementById('sb-shadow-color')?.value || '#000000',
     // Ombre portée du scoreboard — contrôles façon Photoshop
@@ -3122,7 +3125,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   'center-logo-size', 'center-logo-offset-y', 'center-logo-opacity',
   'center-logo-glow', 'players-gap',
   // Lot 3 : géométrie + tailles
-  'player-min-width', 'sb-height', 'player-card-radius', 'player-card-padding',
+  'player-min-width', 'sb-height', 'player-card-radius', 'player-card-padding', 'player-card-skew',
   'sb-shadow', 'sb-shadow-opacity', 'sb-shadow-distance', 'sb-shadow-spread', 'sb-shadow-angle',
   'character-size', 'name-font-size', 'tag-font-size',
   // Lot 4 : event-bar
@@ -3145,7 +3148,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   rng.addEventListener('input', () => sync(rng));
   num.addEventListener('input', () => sync(num));
 });
-['center-logo-shape', 'center-logo-glow-color', 'sb-shadow-color', 'sb-shadow-blend', 'eb-sep-style',
+['center-logo-shape', 'center-logo-glow-color', 'sb-shadow-color', 'sb-shadow-blend', 'eb-sep-style', 'player-card-shape',
  // Lot 6 : onglet Événement — color pickers + select
  'event-text-glow-color', 'event-bar-bg-color', 'event-bar-border-color',
  'event-bar-shadow-color', 'event-bar-shadow-blend',
@@ -3225,6 +3228,7 @@ const SCOREBOARD_DEFAULTS = {
   playersGap: 0,
   // Lot 3
   playerCardMinWidth: 320, scoreboardHeight: 0, playerCardRadius: 0, playerCardPadding: 0,
+  playerCardShape: 'rectangle', playerCardSkew: 20,
   sbShadowIntensity: 32, sbShadowColor: '#000000',
   sbShadowOn: true, sbShadowBlend: 'normal', sbShadowOpacity: 80,
   sbShadowDistance: 4, sbShadowSpread: 0, sbShadowAngle: 270,

@@ -718,11 +718,28 @@
                         <input type="number" id="player-card-radius-num" min="0" max="40" value="0" step="1" style="width:58px" />
                       </div>
                     </div>
-                    <div class="form-group" style="margin:0">
+                    <div class="form-group" style="margin-bottom:7px">
                       <label>Padding</label>
                       <div class="logo-particles-row">
                         <input type="range" id="player-card-padding-range" min="0" max="40" value="12" step="1" />
                         <input type="number" id="player-card-padding-num" min="0" max="40" value="12" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Forme</label>
+                      <select id="player-card-shape" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                        <option value="rectangle">Rectangle (par défaut)</option>
+                        <option value="trapezoid">Trapèze (penché vers l'intérieur)</option>
+                        <option value="trapezoid-out">Trapèze inversé (vers l'extérieur)</option>
+                        <option value="parallelogram">Parallélogramme</option>
+                        <option value="parallelogram-rev">Parallélogramme inversé</option>
+                      </select>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Inclinaison (px)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="player-card-skew-range" min="0" max="60" value="20" step="1" />
+                        <input type="number" id="player-card-skew-num" min="0" max="60" value="20" step="1" style="width:58px" />
                       </div>
                     </div>
                   </div>
