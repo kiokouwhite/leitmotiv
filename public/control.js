@@ -3219,7 +3219,19 @@ if (sepCb) sepCb.addEventListener('change', () => emitState(buildStateFromForm()
 // et repasse le scoreboardLayout sur 'classic'. Préserve les données joueurs.
 const SCOREBOARD_DEFAULTS = {
   scoreboardLayout: 'classic',
-  // Lot 1
+  overlayStyle: 'full',
+  // Affichage global
+  hidePlayerColors: false, charDisplayMode: 'normal',
+  // Couleurs textes + fond + textures (anciennement onglet Textes/Fond, maintenant Scoreboard)
+  tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A',
+  sbBgColor: '#0E0E12', sbBgOpacity: 100,
+  overlayTexture: null, overlayTextureOpacity: 50, overlayTextureBlend: 'normal', overlayTextureSize: 'repeat',
+  // Event bar (champs hors Lot 6 qui manquaient)
+  eventTextColor: '#EAB830', eventTextSize: 12,
+  // Particules + drapeaux
+  particleOpacity: 100, particleCountScale: 100, particlesEnabled: true, logoParticleCount: 3,
+  flagSize: 52,
+  // Lot 1 — visibilité des champs
   showEventName: true, showTournament: true, showFormat: true, showRound: true,
   showFlags: true, showPronouns: true, showTag: true, showCharacter: true, showSeed: true,
   // Lot 2
