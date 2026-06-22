@@ -1784,6 +1784,28 @@ window.createParticleSystem = function(canvasId, containerId) {
     ctx    = canvas.getContext('2d');
     resize();
     window.addEventListener('resize', resize);
+    // Observe les changements de taille du container (utilisateur qui élargit
+    // les cartes joueur, change sb-scale, etc.) — sinon resize() n'était
+    // appelé qu'au window resize ou au changement de type particule, et
+    // les particules restaient bloquées dans l'ancienne zone de canvas.
+    const sb = document.getElementById(containerId);
+    if (sb && typeof ResizeObserver === 'function') {
+      let _resizeT = null;
+      const ro = new ResizeObserver(() => {
+        // Debounce : évite N appels rapprochés pendant un drag de slider
+        clearTimeout(_resizeT);
+        _resizeT = setTimeout(() => {
+          resize();
+          // Re-spawn les particules pour qu'elles couvrent la nouvelle zone
+          // immédiatement (sinon il faut attendre que les anciennes sortent).
+          if (_lastType && _lastCount) {
+            if (_lastType2) startDual(_lastType, _lastCount, _lastType2, _lastCount2);
+            else            start(_lastType, _lastCount);
+          }
+        }, 80);
+      });
+      ro.observe(sb);
+    }
   }
 
   return { init, start, stop, resize, startDual, setOpacity, setCountScale,
