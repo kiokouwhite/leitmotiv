@@ -744,6 +744,31 @@
                     </div>
                   </div>
 
+                  <!-- Contour du scoreboard -->
+                  <div class="custom-card">
+                    <h3>Contour</h3>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Couleur</label>
+                      <input type="color" id="sb-border-color" value="#2A2A3E" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:7px">
+                      <label>Épaisseur (px)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="sb-border-width-range" min="0" max="12" value="1" step="1" />
+                        <input type="number" id="sb-border-width-num" min="0" max="12" value="1" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label>Style</label>
+                      <select id="sb-border-style" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                        <option value="solid">Plein</option>
+                        <option value="dashed">Tirets</option>
+                        <option value="dotted">Points</option>
+                        <option value="double">Double</option>
+                      </select>
+                    </div>
+                  </div>
+
                   <!-- Ombre portée du scoreboard (style Photoshop) -->
                   <div class="custom-card">
                     <h3>Ombre portée</h3>

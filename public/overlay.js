@@ -596,6 +596,10 @@ function update(s) {
   const sbHeight = parseInt(s.scoreboardHeight ?? 0);
   sb.style.setProperty('--sb-height',            sbHeight > 0 ? (sbHeight + 'px') : 'auto');
   sb.style.setProperty('--player-card-radius',   (s.playerCardRadius ?? 0) + 'px');
+  // Contour du scoreboard (carte « Contour »)
+  sb.style.setProperty('--sb-border-color', s.sbBorderColor || '#2A2A3E');
+  sb.style.setProperty('--sb-border-width', (s.sbBorderWidth ?? 1) + 'px');
+  sb.style.setProperty('--sb-border-style', ['solid','dashed','dotted','double'].includes(s.sbBorderStyle) ? s.sbBorderStyle : 'solid');
   // Forme des cartes joueur — clip-path trapèze / parallélogramme via body class + var.
   // Skew négatif = sens inversé : on flip la forme vers son opposé et on prend l'abs.
   // Trapezoid ↔ trapezoid-out, parallelogram ↔ parallelogram-rev. Permet à l'utilisateur

@@ -156,7 +156,7 @@ body.sb-event-stack-vertical .event-bar .sep {
   display: flex;
   align-items: stretch;
   background: var(--sb-bg, var(--smash-bg));
-  border: 1px solid var(--smash-border);
+  border: var(--sb-border-width, 1px) var(--sb-border-style, solid) var(--sb-border-color, var(--smash-border));
   border-top: none;
   position: relative;
   gap: var(--players-gap, 0px);

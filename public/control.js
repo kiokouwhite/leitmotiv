@@ -145,6 +145,7 @@ function syncFromState(s) {
     ['player-card-radius',        'playerCardRadius',        0],
     ['player-card-padding',       'playerCardPadding',       0],
     ['player-card-skew',          'playerCardSkew',          20],
+    ['sb-border-width',           'sbBorderWidth',           1],
     ['sb-shadow',                 'sbShadowIntensity',       32],
     ['character-size',            'characterSize',           100],
     ['name-font-size',            'nameFontSize',            24],
@@ -167,6 +168,11 @@ function syncFromState(s) {
   if (p2Col && s.player2?.color) p2Col.value = s.player2.color;
   const shCol = document.getElementById('sb-shadow-color');
   if (shCol && s.sbShadowColor) shCol.value = s.sbShadowColor;
+  // Contour scoreboard — couleur + style (la width passe par la boucle pair-sync)
+  const _sbBdCol = document.getElementById('sb-border-color');
+  if (_sbBdCol) _sbBdCol.value = s.sbBorderColor || '#2A2A3E';
+  const _sbBdStyle = document.getElementById('sb-border-style');
+  if (_sbBdStyle) _sbBdStyle.value = s.sbBorderStyle || 'solid';
   // Ombre portée scoreboard — toggle + select + 4 sliders (opacity/dist/spread/angle).
   // Le slider Flou existe déjà via la boucle pair-sync (sb-shadow-range/num).
   const _sbShOn = s.sbShadowOn !== false ? 'on' : 'off';
@@ -589,6 +595,9 @@ function buildStateFromForm() {
     playerCardPadding:   parseInt(document.getElementById('player-card-padding-num')?.value ?? 0),
     playerCardShape:     document.getElementById('player-card-shape')?.value || 'rectangle',
     playerCardSkew:      parseInt(document.getElementById('player-card-skew-num')?.value ?? 20),
+    sbBorderColor:       document.getElementById('sb-border-color')?.value || '#2A2A3E',
+    sbBorderWidth:       parseInt(document.getElementById('sb-border-width-num')?.value ?? 1),
+    sbBorderStyle:       document.getElementById('sb-border-style')?.value || 'solid',
     sbShadowIntensity:   parseInt(document.getElementById('sb-shadow-num')?.value ?? 32),
     sbShadowColor:       document.getElementById('sb-shadow-color')?.value || '#000000',
     // Ombre portée du scoreboard — contrôles façon Photoshop
@@ -3126,6 +3135,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   'center-logo-glow', 'players-gap',
   // Lot 3 : géométrie + tailles
   'player-min-width', 'sb-height', 'player-card-radius', 'player-card-padding', 'player-card-skew',
+  'sb-border-width',
   'sb-shadow', 'sb-shadow-opacity', 'sb-shadow-distance', 'sb-shadow-spread', 'sb-shadow-angle',
   'character-size', 'name-font-size', 'tag-font-size',
   // Lot 4 : event-bar
@@ -3149,6 +3159,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   num.addEventListener('input', () => sync(num));
 });
 ['center-logo-shape', 'center-logo-glow-color', 'sb-shadow-color', 'sb-shadow-blend', 'eb-sep-style', 'player-card-shape',
+ 'sb-border-color', 'sb-border-style',
  // Lot 6 : onglet Événement — color pickers + select
  'event-text-glow-color', 'event-bar-bg-color', 'event-bar-border-color',
  'event-bar-shadow-color', 'event-bar-shadow-blend',
@@ -3241,6 +3252,7 @@ const SCOREBOARD_DEFAULTS = {
   // Lot 3
   playerCardMinWidth: 320, scoreboardHeight: 0, playerCardRadius: 0, playerCardPadding: 0,
   playerCardShape: 'rectangle', playerCardSkew: 20,
+  sbBorderColor: '#2A2A3E', sbBorderWidth: 1, sbBorderStyle: 'solid',
   sbShadowIntensity: 32, sbShadowColor: '#000000',
   sbShadowOn: true, sbShadowBlend: 'normal', sbShadowOpacity: 80,
   sbShadowDistance: 4, sbShadowSpread: 0, sbShadowAngle: 270,
