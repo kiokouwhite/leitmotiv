@@ -176,6 +176,20 @@ body.sb-cards-separated .players-container > .score-center {
   border: 1px solid var(--smash-border);
   border-radius: var(--player-card-radius, 8px);
 }
+/* En mode cartes séparées, les pseudo-elements décoratifs (patterns
+   de thème) et le canvas de particules étaient encore visibles à
+   travers les gaps entre les cartes — ils étaient masqués avant par
+   le fond englobant du players-container. On les éteint pour que la
+   zone entre les cartes reste vraiment vide. */
+body.sb-cards-separated .players-container::before,
+body.sb-cards-separated .players-container::after,
+body.sb-cards-separated #scoreboard::before,
+body.sb-cards-separated #scoreboard::after {
+  display: none !important;
+}
+body.sb-cards-separated #particle-canvas {
+  display: none !important;
+}
 
 /* Score dans les cartes — le JS déplace p1-score à la fin de player1-block et
    p2-score au début de player2-block. CSS aligne chaque score sur le côté
