@@ -235,7 +235,26 @@ body.sb-score-in-cards .score-box {
 /* Formes des cartes joueur — pilotées par body.sb-shape-* + var
    --player-card-skew. Trapèze = sommet coupé vers l'intérieur (ou
    l'extérieur en variant -out). Parallélogramme = penche les 2 cartes
-   du même côté. */
+   du même côté.
+   IMPORTANT : sans le bloc ci-dessous qui rend .players-container
+   transparent, le clip-path de .player se ferait masquer par le fond
+   du container (même couleur derrière → on ne voit pas la coupe).
+   Donc dès qu'une forme est active on retire fond + bordure du
+   container et on les redistribue sur chaque carte. */
+body.sb-shape-trapezoid .players-container,
+body.sb-shape-trapezoid-out .players-container,
+body.sb-shape-parallelogram .players-container,
+body.sb-shape-parallelogram-rev .players-container {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+body.sb-shape-trapezoid .players-container > .player,
+body.sb-shape-trapezoid-out .players-container > .player,
+body.sb-shape-parallelogram .players-container > .player,
+body.sb-shape-parallelogram-rev .players-container > .player {
+  background: var(--sb-bg, var(--smash-bg));
+}
 body.sb-shape-trapezoid .player-left {
   clip-path: polygon(0 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, 0 100%);
 }
