@@ -13162,6 +13162,25 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
   }
 
   function getThemePalette() {
+    // Source de vérité : objet THEMES (control.js scope) indexé par
+    // state.overlayTheme. Plus fiable que getComputedStyle(#scoreboard)
+    // car #scoreboard vit dans l'iframe /overlay — il n'existe pas dans
+    // la page de contrôle, donc les vars CSS de thème n'y sont pas
+    // accessibles. Fallback sur les CSS vars si on tourne dans /overlay.
+    try {
+      const themeId = (typeof state !== 'undefined' && state && state.overlayTheme) || 'default';
+      const T = (typeof THEMES !== 'undefined' && THEMES) ? (THEMES[themeId] || THEMES.default) : null;
+      if (T) {
+        return [
+          { label: 'Fond scoreboard', hex: normalizeToHex(T.sbBgColor) },
+          { label: 'Pseudo joueur',   hex: normalizeToHex(T.nameColor) },
+          { label: 'Tag joueur',      hex: normalizeToHex(T.tagColor) },
+          { label: 'Pronoms',         hex: normalizeToHex(T.pronounsColor) },
+          { label: 'Texte event',     hex: normalizeToHex(T.eventTextColor) },
+          { label: 'Score (chiffre)', hex: normalizeToHex(T.nameColor) },
+        ];
+      }
+    } catch (_) { /* tombe sur le fallback CSS */ }
     const sb = document.getElementById('scoreboard');
     const root = sb || document.documentElement;
     const cs = getComputedStyle(root);

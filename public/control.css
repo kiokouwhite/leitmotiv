@@ -6071,12 +6071,24 @@ h1, .section-header h2, .custom-card h3,
 
 /* Swatches couleurs du thème — injectés à côté de chaque <input type=color>.
    Inline-flex pour rester sur la même ligne que le picker, pas de position
-   absolute (cf. commentaire v3 dans control.js : éviter le click-block). */
+   absolute (cf. commentaire v3 dans control.js : éviter le click-block).
+   Cachés par défaut, apparaissent quand on survole la form-group qui
+   contient le color picker, ou la zone des swatches elle-même. */
 .theme-swatches {
   display: inline-flex;
   gap: 4px;
   margin-left: 8px;
   vertical-align: middle;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.form-group:hover > .theme-swatches,
+input[type=color]:hover + .theme-swatches,
+.theme-swatches:hover,
+.theme-swatches:focus-within {
+  opacity: 1;
+  pointer-events: auto;
 }
 .theme-swatch {
   width: 18px;
