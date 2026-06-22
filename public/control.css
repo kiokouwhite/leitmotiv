@@ -6072,23 +6072,20 @@ h1, .section-header h2, .custom-card h3,
 /* Swatches couleurs du thème — injectés à côté de chaque <input type=color>.
    Inline-flex pour rester sur la même ligne que le picker, pas de position
    absolute (cf. commentaire v3 dans control.js : éviter le click-block).
-   Cachés par défaut, apparaissent quand on survole la form-group qui
-   contient le color picker, ou la zone des swatches elle-même. */
+   display:none par défaut (PAS opacity:0) pour qu'ils sortent du flow et
+   ne décalent pas les rangées qui contiennent un color picker (ex. la
+   ligne TAG · PSEUDO · PRONOMS · SEED · COULEUR du panneau Principal). */
 .theme-swatches {
-  display: inline-flex;
+  display: none;
   gap: 4px;
   margin-left: 8px;
   vertical-align: middle;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
 }
 .form-group:hover > .theme-swatches,
 input[type=color]:hover + .theme-swatches,
 .theme-swatches:hover,
 .theme-swatches:focus-within {
-  opacity: 1;
-  pointer-events: auto;
+  display: inline-flex;
 }
 .theme-swatch {
   width: 18px;
@@ -6308,27 +6305,6 @@ input[type=color]:hover + .theme-swatches,
 #themes-scroll-area > :nth-child(8) { --gold: #ff5e5e; --neon-cyan: #ff5e5e; }
 #themes-scroll-area > :nth-child(9) { --gold: #a8e84e; --neon-cyan: #a8e84e; }
 
-/* ── Theme color swatches à côté des color pickers ─────────────────── */
-.theme-swatches {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: 8px;
-  vertical-align: middle;
-}
-.theme-swatch {
-  width: 18px;
-  height: 18px;
-  padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 4px;
-  cursor: pointer;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3);
-  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
-}
-.theme-swatch:hover {
-  transform: scale(1.18);
-  border-color: var(--gold);
-  box-shadow: 0 0 8px rgba(var(--gold-rgb, 34, 240, 255), 0.4), inset 0 0 0 1px rgba(0, 0, 0, 0.3);
-}
-.theme-swatch:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+/* Bloc duplicate retiré — les vrais styles .theme-swatches / .theme-swatch
+   vivent plus haut dans ce fichier (cf. swatches v3). Cette section
+   ré-imposait display:inline-flex et écrasait le display:none hover-only. */
