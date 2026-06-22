@@ -252,7 +252,17 @@ body.sb-score-in-cards .score-box {
        pour que la barre globale prenne la forme sans créer de
        séparations visibles entre P1, score-center et P2. */
 
-/* MODE JOINT — clip sur la barre entière */
+/* MODE JOINT — clip sur la barre entière + retire les bordures
+   verticales du score-center (sinon 1px gris visible entre les blocs
+   donne l'impression d'une séparation que l'utilisateur ne veut pas
+   quand elle pose juste une forme). */
+body:not(.sb-cards-separated).sb-shape-trapezoid .score-center,
+body:not(.sb-cards-separated).sb-shape-trapezoid-out .score-center,
+body:not(.sb-cards-separated).sb-shape-parallelogram .score-center,
+body:not(.sb-cards-separated).sb-shape-parallelogram-rev .score-center {
+  border-left: none !important;
+  border-right: none !important;
+}
 body:not(.sb-cards-separated).sb-shape-trapezoid .players-container {
   clip-path: polygon(var(--player-card-skew, 20px) 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, 0 100%);
 }
