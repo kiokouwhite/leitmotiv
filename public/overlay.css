@@ -160,6 +160,14 @@ body.sb-event-stack-vertical .event-bar .sep {
   border-top: none;
   position: relative;
   gap: var(--players-gap, 0px);
+  /* L'arrondi --player-card-radius est appliqué AUSSI ici (en plus de
+     chaque .player et .score-center) pour que la barre globale ait des
+     coins arrondis visibles. Sinon en mode joint (sans cards-separated),
+     seuls les coins extérieurs étaient rondes par chance — la zone
+     centrale paraissait carrée. overflow:hidden clippe les cartes
+     internes à la forme arrondie du container. */
+  border-radius: var(--player-card-radius, 0px);
+  overflow: hidden;
 }
 
 /* Cartes séparées : retire le fond/bordure englobant du players-container
