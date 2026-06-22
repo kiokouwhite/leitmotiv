@@ -82,8 +82,11 @@ function syncFromState(s) {
   document.getElementById('p2-name').value     = s.player2.name;
   document.getElementById('p2-pronouns').value = s.player2.pronouns || '';
   document.getElementById('p2-seed').value     = s.player2.seeding  != null ? s.player2.seeding : '';
-  document.getElementById('p1-color').value    = s.player1.color;
-  document.getElementById('p2-color').value    = s.player2.color;
+  // p1-color / p2-color retirés du panneau Principal (édition via Customisation → Scoreboard → Couleurs joueurs)
+  const _p1ColEl = document.getElementById('p1-color');
+  if (_p1ColEl) _p1ColEl.value = s.player1.color;
+  const _p2ColEl = document.getElementById('p2-color');
+  if (_p2ColEl) _p2ColEl.value = s.player2.color;
   document.getElementById('p1-score-display').textContent = s.player1.score;
   document.getElementById('p2-score-display').textContent = s.player2.score;
   document.getElementById('event-name').value = s.event;
@@ -479,7 +482,7 @@ function buildStateFromForm() {
       tag:        document.getElementById('p1-tag').value.trim(),
       name:       document.getElementById('p1-name').value.trim() || 'PLAYER 1',
       pronouns:   document.getElementById('p1-pronouns').value.trim(),
-      color:      document.getElementById('p1-color').value,
+      color:      document.getElementById('p1-color')?.value || state.player1?.color || '#E83030',
       stockColor: state.player1.stockColor ?? 0,
       flag:        document.getElementById('p1-flag')?.value || '',
       flagOffsetX: parseInt(document.getElementById('p1-flag-x-num')?.value ?? 0),
@@ -496,7 +499,7 @@ function buildStateFromForm() {
       tag:        document.getElementById('p2-tag').value.trim(),
       name:       document.getElementById('p2-name').value.trim() || 'PLAYER 2',
       pronouns:   document.getElementById('p2-pronouns').value.trim(),
-      color:      document.getElementById('p2-color').value,
+      color:      document.getElementById('p2-color')?.value || state.player2?.color || '#3070E8',
       stockColor: state.player2.stockColor ?? 0,
       flag:        document.getElementById('p2-flag')?.value || '',
       flagOffsetX: parseInt(document.getElementById('p2-flag-x-num')?.value ?? 0),
