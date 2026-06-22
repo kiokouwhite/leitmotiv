@@ -596,9 +596,18 @@ function update(s) {
   const sbHeight = parseInt(s.scoreboardHeight ?? 0);
   sb.style.setProperty('--sb-height',            sbHeight > 0 ? (sbHeight + 'px') : 'auto');
   sb.style.setProperty('--player-card-radius',   (s.playerCardRadius ?? 0) + 'px');
-  // Forme des cartes joueur — clip-path trapèze / parallélogramme via body class + var
-  document.body.style.setProperty('--player-card-skew', (s.playerCardSkew ?? 20) + 'px');
-  const _shapeVal = ['trapezoid','trapezoid-out','parallelogram','parallelogram-rev'].includes(s.playerCardShape) ? s.playerCardShape : '';
+  // Forme des cartes joueur — clip-path trapèze / parallélogramme via body class + var.
+  // Skew négatif = sens inversé : on flip la forme vers son opposé et on prend l'abs.
+  // Trapezoid ↔ trapezoid-out, parallelogram ↔ parallelogram-rev. Permet à l'utilisateur
+  // de tester les 2 directions sans avoir à changer manuellement le select Forme.
+  let _shapeVal = ['trapezoid','trapezoid-out','parallelogram','parallelogram-rev'].includes(s.playerCardShape) ? s.playerCardShape : '';
+  let _skewVal  = parseInt(s.playerCardSkew ?? 20);
+  if (_skewVal < 0 && _shapeVal) {
+    const _flip = { trapezoid:'trapezoid-out', 'trapezoid-out':'trapezoid', parallelogram:'parallelogram-rev', 'parallelogram-rev':'parallelogram' };
+    _shapeVal = _flip[_shapeVal] || _shapeVal;
+    _skewVal  = Math.abs(_skewVal);
+  }
+  document.body.style.setProperty('--player-card-skew', _skewVal + 'px');
   ['trapezoid','trapezoid-out','parallelogram','parallelogram-rev'].forEach(sh => {
     document.body.classList.toggle('sb-shape-' + sh, _shapeVal === sh);
   });
