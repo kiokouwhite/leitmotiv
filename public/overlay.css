@@ -477,15 +477,18 @@ body.sb-score-player-color #p1-score { color: var(--p1-color, var(--smash-red));
 body.sb-score-player-color #p2-score { color: var(--p2-color, var(--smash-blue)); }
 
 /* Onglet Score — carré derrière le score (TSH-style). JS pose la classe
-   .sb-score-box sur <body>. Padding + arrondi pilotés par vars. */
+   .sb-score-box sur <body>. Padding + arrondi pilotés par vars. Couleur
+   du fond pilotée par var DEUX vars distinctes pour permettre couleur
+   différente P1 vs P2. */
 body.sb-score-box #p1-score,
 body.sb-score-box #p2-score {
-  background: var(--score-bg-color, var(--smash-gold));
   padding: var(--score-bg-padding, 12px) calc(var(--score-bg-padding, 12px) * 1.5);
   border-radius: var(--score-bg-radius, 6px);
   display: inline-block;
   min-width: 0;
 }
+body.sb-score-box #p1-score { background: var(--score-bg-color-p1, var(--smash-gold)); }
+body.sb-score-box #p2-score { background: var(--score-bg-color-p2, var(--smash-gold)); }
 /* Carré aux couleurs du joueur quand .sb-score-bg-player-color est posée. */
 body.sb-score-box.sb-score-bg-player-color #p1-score { background: var(--p1-color, var(--smash-red)); }
 body.sb-score-box.sb-score-bg-player-color #p2-score { background: var(--p2-color, var(--smash-blue)); }

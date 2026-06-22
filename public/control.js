@@ -367,6 +367,8 @@ function syncFromState(s) {
   if (_scBgOn) _scBgOn.checked = s.scoreBgOn === true;
   const _scBgCol = document.getElementById('score-bg-color');
   if (_scBgCol) _scBgCol.value = s.scoreBgColor || '#E83030';
+  const _scBgColP2 = document.getElementById('score-bg-color-p2');
+  if (_scBgColP2) _scBgColP2.value = s.scoreBgColorP2 || '#3070E8';
   const _scBgUsePc = document.getElementById('score-bg-use-player-color');
   if (_scBgUsePc) _scBgUsePc.checked = s.scoreBgUsePlayerColor !== false; // default true
   const _scBgPadRng = document.getElementById('score-bg-padding-range');
@@ -527,6 +529,7 @@ function buildStateFromForm() {
     // Carré derrière le score
     scoreBgOn:              document.getElementById('score-bg-on')?.checked === true,
     scoreBgColor:           document.getElementById('score-bg-color')?.value || '#E83030',
+    scoreBgColorP2:         document.getElementById('score-bg-color-p2')?.value || '#3070E8',
     scoreBgUsePlayerColor:  document.getElementById('score-bg-use-player-color')?.checked === true,
     scoreBgPadding:         parseInt(document.getElementById('score-bg-padding-num')?.value ?? 12),
     scoreBgRadius:          parseInt(document.getElementById('score-bg-radius-num')?.value ?? 6),
@@ -3050,7 +3053,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
  'event-text-glow-color', 'event-bar-bg-color', 'event-bar-border-color',
  'event-bar-shadow-color', 'event-bar-shadow-blend',
  // Onglet Score — color pickers
- 'score-color', 'score-vs-color', 'dot-color', 'score-bg-color'].forEach(id => {
+ 'score-color', 'score-vs-color', 'dot-color', 'score-bg-color', 'score-bg-color-p2'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', () => emitState(buildStateFromForm()));
 });
@@ -3132,7 +3135,7 @@ const SCOREBOARD_DEFAULTS = {
   scorePositionMode: 'between', swapPlayers: false, cardsSeparated: false,
   scoreColor: '#F0EEF8', scoreVsColor: '#E8B830', scoreFontSize: 52, dotColor: '#E8B830',
   scoreUsePlayerColor: false,
-  scoreBgOn: false, scoreBgColor: '#E83030', scoreBgUsePlayerColor: true,
+  scoreBgOn: false, scoreBgColor: '#E83030', scoreBgColorP2: '#3070E8', scoreBgUsePlayerColor: true,
   scoreBgPadding: 12, scoreBgRadius: 6,
   // Lot 4
   eventBarLeftWidth: 0, eventBarRightWidth: 0,

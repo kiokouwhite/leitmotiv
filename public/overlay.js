@@ -795,7 +795,8 @@ function update(s) {
   document.body.classList.toggle('sb-score-player-color',    s.scoreUsePlayerColor === true);
   document.body.classList.toggle('sb-score-box',             s.scoreBgOn === true);
   document.body.classList.toggle('sb-score-bg-player-color', s.scoreBgUsePlayerColor === true);
-  if (s.scoreBgColor) sb.style.setProperty('--score-bg-color', s.scoreBgColor);
+  if (s.scoreBgColor)   sb.style.setProperty('--score-bg-color-p1', s.scoreBgColor);
+  if (s.scoreBgColorP2) sb.style.setProperty('--score-bg-color-p2', s.scoreBgColorP2);
   sb.style.setProperty('--score-bg-padding', (s.scoreBgPadding ?? 12) + 'px');
   sb.style.setProperty('--score-bg-radius',  (s.scoreBgRadius  ?? 6)  + 'px');
 
