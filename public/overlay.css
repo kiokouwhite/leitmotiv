@@ -244,41 +244,46 @@ body.sb-score-in-cards .score-box {
    --player-card-skew. Trapèze = sommet coupé vers l'intérieur (ou
    l'extérieur en variant -out). Parallélogramme = penche les 2 cartes
    du même côté.
-   IMPORTANT : sans le bloc ci-dessous qui rend .players-container
-   transparent, le clip-path de .player se ferait masquer par le fond
-   du container (même couleur derrière → on ne voit pas la coupe).
-   Donc dès qu'une forme est active on retire fond + bordure du
-   container et on les redistribue sur chaque carte. */
-body.sb-shape-trapezoid .players-container,
-body.sb-shape-trapezoid-out .players-container,
-body.sb-shape-parallelogram .players-container,
-body.sb-shape-parallelogram-rev .players-container {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+   Deux modes de découpe selon que cards-separated est activé :
+     • cards-separated ON  → clip-path sur CHAQUE carte (visible
+       puisque container transparent, voir règle sb-cards-separated
+       plus haut).
+     • cards-separated OFF → clip-path sur le .players-container ENTIER
+       pour que la barre globale prenne la forme sans créer de
+       séparations visibles entre P1, score-center et P2. */
+
+/* MODE JOINT — clip sur la barre entière */
+body:not(.sb-cards-separated).sb-shape-trapezoid .players-container {
+  clip-path: polygon(var(--player-card-skew, 20px) 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, 0 100%);
 }
-body.sb-shape-trapezoid .players-container > .player,
-body.sb-shape-trapezoid-out .players-container > .player,
-body.sb-shape-parallelogram .players-container > .player,
-body.sb-shape-parallelogram-rev .players-container > .player {
-  background: var(--sb-bg, var(--smash-bg));
+body:not(.sb-cards-separated).sb-shape-trapezoid-out .players-container {
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--player-card-skew, 20px)) 100%, var(--player-card-skew, 20px) 100%);
 }
-body.sb-shape-trapezoid .player-left {
-  clip-path: polygon(0 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, 0 100%);
-}
-body.sb-shape-trapezoid .player-right {
-  clip-path: polygon(var(--player-card-skew, 20px) 0, 100% 0, 100% 100%, 0 100%);
-}
-body.sb-shape-trapezoid-out .player-left {
-  clip-path: polygon(var(--player-card-skew, 20px) 0, 100% 0, 100% 100%, 0 100%);
-}
-body.sb-shape-trapezoid-out .player-right {
-  clip-path: polygon(0 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, 0 100%);
-}
-body.sb-shape-parallelogram .player {
+body:not(.sb-cards-separated).sb-shape-parallelogram .players-container {
   clip-path: polygon(var(--player-card-skew, 20px) 0, 100% 0, calc(100% - var(--player-card-skew, 20px)) 100%, 0 100%);
 }
-body.sb-shape-parallelogram-rev .player {
+body:not(.sb-cards-separated).sb-shape-parallelogram-rev .players-container {
+  clip-path: polygon(0 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, var(--player-card-skew, 20px) 100%);
+}
+
+/* MODE SÉPARÉ — clip par carte (le container est déjà transparent via
+   sb-cards-separated, le clip découpe la forme propre à chaque carte) */
+body.sb-cards-separated.sb-shape-trapezoid .player-left {
+  clip-path: polygon(0 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, 0 100%);
+}
+body.sb-cards-separated.sb-shape-trapezoid .player-right {
+  clip-path: polygon(var(--player-card-skew, 20px) 0, 100% 0, 100% 100%, 0 100%);
+}
+body.sb-cards-separated.sb-shape-trapezoid-out .player-left {
+  clip-path: polygon(var(--player-card-skew, 20px) 0, 100% 0, 100% 100%, 0 100%);
+}
+body.sb-cards-separated.sb-shape-trapezoid-out .player-right {
+  clip-path: polygon(0 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, 0 100%);
+}
+body.sb-cards-separated.sb-shape-parallelogram .player {
+  clip-path: polygon(var(--player-card-skew, 20px) 0, 100% 0, calc(100% - var(--player-card-skew, 20px)) 100%, 0 100%);
+}
+body.sb-cards-separated.sb-shape-parallelogram-rev .player {
   clip-path: polygon(0 0, calc(100% - var(--player-card-skew, 20px)) 0, 100% 100%, var(--player-card-skew, 20px) 100%);
 }
 .score-center {
