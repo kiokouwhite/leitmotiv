@@ -2266,11 +2266,6 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
   // Presets de disposition Scoreboard (cartes cliquables comme la grille des thèmes de couleur).
   const SB_PRESETS = [
     { id: 'classic',          name: 'Classique' },
-    { id: 'compact-corner',   name: 'Coin compact' },
-    { id: 'tournament-left',  name: 'Tournoi à gauche' },
-    { id: 'centered-logo',    name: 'Logo central' },
-    { id: 'full-banner',      name: 'Bandeau complet' },
-    { id: 'split-screen',     name: 'Cartes joueurs' },
   ];
 
   function renderPresets(overlayId) {
