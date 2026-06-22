@@ -599,6 +599,39 @@ function update(s) {
   sb.style.setProperty('--player-card-padding',  (s.playerCardPadding ?? 0) + 'px');
   sb.style.setProperty('--sb-shadow-intensity',  (s.sbShadowIntensity ?? 32) + 'px');
   sb.style.setProperty('--sb-shadow-color',      s.sbShadowColor || 'rgba(0,0,0,0.8)');
+  // Ombre portée du scoreboard — chaîne de drop-shadow façon Photoshop.
+  // Spread émulé en stackant N drop-shadows à 8 directions autour du
+  // point de base, comme l'ombre de la barre événement.
+  let _sbShadowFilter = 'none';
+  let _sbShadowBlendMode = 'normal';
+  if (s.sbShadowOn !== false) {
+    const _sbHex = (s.sbShadowColor || '#000000').replace('#', '').replace(/rgba?\(.*/, '');
+    const _hex6 = /^[0-9a-f]{6}$/i.test(_sbHex) ? _sbHex : '000000';
+    const _sbRad = (s.sbShadowAngle ?? 270) * Math.PI / 180;
+    const _sbDist = parseInt(s.sbShadowDistance ?? 4);
+    const _sbBx = -Math.cos(_sbRad) * _sbDist;
+    const _sbBy = -Math.sin(_sbRad) * _sbDist;
+    const _sbBlur = parseInt(s.sbShadowIntensity ?? 32);
+    const _sbSpread = Math.max(0, Math.min(10, parseInt(s.sbShadowSpread ?? 0)));
+    const _sbR = parseInt(_hex6.substring(0, 2), 16);
+    const _sbG = parseInt(_hex6.substring(2, 4), 16);
+    const _sbB = parseInt(_hex6.substring(4, 6), 16);
+    const _sbA = (s.sbShadowOpacity ?? 80) / 100;
+    const _sbCol = `rgba(${_sbR},${_sbG},${_sbB},${_sbA})`;
+    const _sbLayers = [`drop-shadow(${_sbBx.toFixed(1)}px ${_sbBy.toFixed(1)}px ${_sbBlur}px ${_sbCol})`];
+    for (let r = 1; r <= _sbSpread; r++) {
+      for (let a = 0; a < 8; a++) {
+        const ang = (a * 45) * Math.PI / 180;
+        const ox = _sbBx + Math.cos(ang) * r;
+        const oy = _sbBy + Math.sin(ang) * r;
+        _sbLayers.push(`drop-shadow(${ox.toFixed(1)}px ${oy.toFixed(1)}px ${_sbBlur}px ${_sbCol})`);
+      }
+    }
+    _sbShadowFilter = _sbLayers.join(' ');
+    _sbShadowBlendMode = s.sbShadowBlend || 'normal';
+  }
+  sb.style.setProperty('--sb-shadow-filter', _sbShadowFilter);
+  sb.style.setProperty('--sb-shadow-blend',  _sbShadowBlendMode);
   sb.style.setProperty('--char-size',            (s.characterSize ?? 100) + 'px');
   sb.style.setProperty('--name-font-size',       (s.nameFontSize ?? 24) + 'px');
   sb.style.setProperty('--tag-font-size',        (s.tagFontSize ?? 16) + 'px');

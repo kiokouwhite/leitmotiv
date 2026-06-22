@@ -163,6 +163,24 @@ function syncFromState(s) {
   if (p2Col && s.player2?.color) p2Col.value = s.player2.color;
   const shCol = document.getElementById('sb-shadow-color');
   if (shCol && s.sbShadowColor) shCol.value = s.sbShadowColor;
+  // Ombre portée scoreboard — toggle + select + 4 sliders (opacity/dist/spread/angle).
+  // Le slider Flou existe déjà via la boucle pair-sync (sb-shadow-range/num).
+  const _sbShOn = s.sbShadowOn !== false ? 'on' : 'off';
+  document.querySelectorAll('.sb-shadow-on-btn').forEach(b => b.classList.toggle('active', b.dataset.shadow === _sbShOn));
+  const _sbShBlend = document.getElementById('sb-shadow-blend');
+  if (_sbShBlend) _sbShBlend.value = s.sbShadowBlend || 'normal';
+  [
+    ['sb-shadow-opacity',  'sbShadowOpacity',  80],
+    ['sb-shadow-distance', 'sbShadowDistance', 4],
+    ['sb-shadow-spread',   'sbShadowSpread',   0],
+    ['sb-shadow-angle',    'sbShadowAngle',    270],
+  ].forEach(([idBase, field, def]) => {
+    const v = (s[field] != null) ? s[field] : def;
+    const rng = document.getElementById(idBase + '-range');
+    const num = document.getElementById(idBase + '-num');
+    if (rng) rng.value = v;
+    if (num) num.value = v;
+  });
   const scorePos = s.scorePositionMode || 'between';
   document.querySelectorAll('.score-pos-btn').forEach(b => b.classList.toggle('active', b.dataset.pos === scorePos));
   const swap = document.getElementById('swap-players');
@@ -564,6 +582,13 @@ function buildStateFromForm() {
     playerCardPadding:   parseInt(document.getElementById('player-card-padding-num')?.value ?? 0),
     sbShadowIntensity:   parseInt(document.getElementById('sb-shadow-num')?.value ?? 32),
     sbShadowColor:       document.getElementById('sb-shadow-color')?.value || '#000000',
+    // Ombre portée du scoreboard — contrôles façon Photoshop
+    sbShadowOn:        document.querySelector('.sb-shadow-on-btn.active')?.dataset.shadow !== 'off',
+    sbShadowBlend:     document.getElementById('sb-shadow-blend')?.value || 'normal',
+    sbShadowOpacity:   parseInt(document.getElementById('sb-shadow-opacity-num')?.value ?? 80),
+    sbShadowDistance:  parseInt(document.getElementById('sb-shadow-distance-num')?.value ?? 4),
+    sbShadowSpread:    parseInt(document.getElementById('sb-shadow-spread-num')?.value ?? 0),
+    sbShadowAngle:     parseInt(document.getElementById('sb-shadow-angle-num')?.value ?? 270),
     characterSize:       parseInt(document.getElementById('character-size-num')?.value ?? 100),
     nameFontSize:        parseInt(document.getElementById('name-font-size-num')?.value ?? 24),
     tagFontSize:         parseInt(document.getElementById('tag-font-size-num')?.value ?? 16),
@@ -2998,7 +3023,8 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   'center-logo-glow', 'players-gap',
   // Lot 3 : géométrie + tailles
   'player-min-width', 'sb-height', 'player-card-radius', 'player-card-padding',
-  'sb-shadow', 'character-size', 'name-font-size', 'tag-font-size',
+  'sb-shadow', 'sb-shadow-opacity', 'sb-shadow-distance', 'sb-shadow-spread', 'sb-shadow-angle',
+  'character-size', 'name-font-size', 'tag-font-size',
   // Lot 4 : event-bar
   'eb-left-width', 'eb-right-width',
   // Lot 6 : onglet Événement — sliders typo + chrome de la barre
@@ -3019,7 +3045,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   rng.addEventListener('input', () => sync(rng));
   num.addEventListener('input', () => sync(num));
 });
-['center-logo-shape', 'center-logo-glow-color', 'sb-shadow-color', 'eb-sep-style',
+['center-logo-shape', 'center-logo-glow-color', 'sb-shadow-color', 'sb-shadow-blend', 'eb-sep-style',
  // Lot 6 : onglet Événement — color pickers + select
  'event-text-glow-color', 'event-bar-bg-color', 'event-bar-border-color',
  'event-bar-shadow-color', 'event-bar-shadow-blend',
@@ -3032,7 +3058,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
 // Lot 4 + Lot 5 + Lot 6 : multi-toggles (alignement, empilement, ancrage, casse, graisse).
 [['.eb-left-align-btn', 'align'], ['.eb-stack-btn', 'stack'], ['.sb-anchor-btn', 'anchor'],
  ['.eb-case-btn', 'case'], ['.eb-weight-btn', 'weight'], ['.eb-mode-btn', 'mode'],
- ['.eb-shadow-btn', 'shadow']].forEach(([sel]) => {
+ ['.eb-shadow-btn', 'shadow'], ['.sb-shadow-on-btn', 'shadow']].forEach(([sel]) => {
   document.querySelectorAll(sel).forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll(sel).forEach(b => b.classList.remove('active'));
@@ -3100,6 +3126,8 @@ const SCOREBOARD_DEFAULTS = {
   // Lot 3
   playerCardMinWidth: 320, scoreboardHeight: 0, playerCardRadius: 0, playerCardPadding: 0,
   sbShadowIntensity: 32, sbShadowColor: '#000000',
+  sbShadowOn: true, sbShadowBlend: 'normal', sbShadowOpacity: 80,
+  sbShadowDistance: 4, sbShadowSpread: 0, sbShadowAngle: 270,
   characterSize: 100, nameFontSize: 24, tagFontSize: 16,
   scorePositionMode: 'between', swapPlayers: false, cardsSeparated: false,
   scoreColor: '#F0EEF8', scoreVsColor: '#E8B830', scoreFontSize: 52, dotColor: '#E8B830',

@@ -41,14 +41,18 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 1px;
-  filter: drop-shadow(0 4px var(--sb-shadow-intensity, 32px) var(--sb-shadow-color, rgba(0,0,0,0.8)));
+  /* Filter pilote par overlay.js qui chaîne les drop-shadow selon les
+     contrôles de la carte « Ombre portée » (Scoreboard tab). Valeur
+     par défaut = rendu d'origine pour les cas où la var n'est pas posée. */
+  filter: var(--sb-shadow-filter, drop-shadow(0 4px 32px rgba(0,0,0,0.8)));
+  mix-blend-mode: var(--sb-shadow-blend, normal);
   transition: opacity 0.45s ease, filter 0.45s ease;
 }
 
 .scoreboard.hidden {
   opacity: 0;
   pointer-events: none;
-  filter: drop-shadow(0 4px var(--sb-shadow-intensity, 32px) var(--sb-shadow-color, rgba(0,0,0,0.8))) blur(4px);
+  filter: var(--sb-shadow-filter, drop-shadow(0 4px 32px rgba(0,0,0,0.8))) blur(4px);
 }
 
 /* Ancrage 9 points du scoreboard — pilote via body[data-sb-anchor=...].
