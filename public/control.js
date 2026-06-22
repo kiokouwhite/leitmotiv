@@ -13122,31 +13122,18 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
 })();
 
 // ══════════════════════════════════════════════════════════════════════
-// Swatches des couleurs du thème — v3
-// V1 : MutationObserver → boucle infinie.
-// V2 : observer retiré mais clics bloqués (cause jamais identifiée).
-// V3 :
-//   • Pas de MutationObserver — injection unique au load, refresh
-//     déclenché par event delegation sur les clicks de presets.
-//   • Pas de position:absolute/fixed — juste inline-flex à côté du
-//     picker, donc impossible de recouvrir un autre élément cliquable.
-//   • Boutons type="button" pour ne pas submit un form.
-//   • e.preventDefault + e.stopPropagation UNIQUEMENT sur le click de
-//     swatch — le listener doc-level ne stoppe rien, il observe.
-//   • Kill switch : window.DISABLE_THEME_SWATCHES = true depuis la
-//     console et tout l'IIFE no-op.
+// Couleurs du thème — v4 : popup au clic (remplace les swatches inline)
+// V1/V2/V3 : voir historique git. v4 abandonne le swatch inline à côté
+// du picker (qui décalait les rangées du panneau Principal) au profit
+// d'une popup unique greffée à <body>. Clic sur <input type="color">
+// → preventDefault + ouverture de la popup positionnée sous le picker.
+// La popup contient les 6 couleurs du thème actif + un bouton
+// « Couleur personnalisée » qui ouvre le picker OS natif (en levant
+// temporairement notre intercepteur pour laisser le click passer).
+// Kill switch : window.DISABLE_THEME_SWATCHES = true → no-op.
 // ══════════════════════════════════════════════════════════════════════
 (function () {
   if (window.DISABLE_THEME_SWATCHES) return;
-
-  const SWATCH_VARS = [
-    { v: '--sb-bg',            label: 'Fond' },
-    { v: '--name-color',       label: 'Nom' },
-    { v: '--tag-color',        label: 'Tag' },
-    { v: '--pronouns-color',   label: 'Pronoms' },
-    { v: '--event-text-color', label: 'Texte event' },
-    { v: '--smash-gold',       label: 'Accent' },
-  ];
 
   function normalizeToHex(str) {
     str = (str || '').trim();
@@ -13162,11 +13149,6 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
   }
 
   function getThemePalette() {
-    // Source de vérité : objet THEMES (control.js scope) indexé par
-    // state.overlayTheme. Plus fiable que getComputedStyle(#scoreboard)
-    // car #scoreboard vit dans l'iframe /overlay — il n'existe pas dans
-    // la page de contrôle, donc les vars CSS de thème n'y sont pas
-    // accessibles. Fallback sur les CSS vars si on tourne dans /overlay.
     try {
       const themeId = (typeof state !== 'undefined' && state && state.overlayTheme) || 'default';
       const T = (typeof THEMES !== 'undefined' && THEMES) ? (THEMES[themeId] || THEMES.default) : null;
@@ -13180,93 +13162,134 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
           { label: 'Score (chiffre)', hex: normalizeToHex(T.nameColor) },
         ];
       }
-    } catch (_) { /* tombe sur le fallback CSS */ }
-    const sb = document.getElementById('scoreboard');
-    const root = sb || document.documentElement;
-    const cs = getComputedStyle(root);
-    return SWATCH_VARS.map(x => ({
-      label: x.label,
-      hex:   normalizeToHex(cs.getPropertyValue(x.v)),
-    }));
+    } catch (_) {}
+    return [];
   }
 
-  function ensureSwatches(input) {
-    try {
-      if (!input || input.type !== 'color') return;
-      if (input.dataset.themeSwatchesSet === '1') return;
-      input.dataset.themeSwatchesSet = '1';
-      const container = document.createElement('span');
-      container.className = 'theme-swatches';
-      container.setAttribute('role', 'group');
-      container.setAttribute('aria-label', 'Couleurs du thème');
-      SWATCH_VARS.forEach((s, i) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'theme-swatch';
-        btn.title = s.label;
-        btn.dataset.idx = i;
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const hex = btn.dataset.color;
-          if (!hex) return;
-          input.value = hex;
-          input.dispatchEvent(new Event('input',  { bubbles: true }));
-          input.dispatchEvent(new Event('change', { bubbles: true }));
-        });
-        container.appendChild(btn);
-      });
-      input.insertAdjacentElement('afterend', container);
-    } catch (err) {
-      console.warn('[swatches] ensureSwatches failed:', err);
+  // Popup partagée, créée une fois et repositionnée à chaque ouverture.
+  const popup = document.createElement('div');
+  popup.className = 'color-popup';
+  popup.innerHTML =
+    '<div class="color-popup-title">Couleurs du thème</div>' +
+    '<div class="color-popup-grid"></div>' +
+    '<div class="color-popup-separator"></div>' +
+    '<button type="button" class="color-popup-custom-btn">' +
+      '<span class="color-popup-custom-preview"></span>' +
+      'Couleur personnalisée…' +
+    '</button>';
+  popup.style.display = 'none';
+  let activeInput = null;
+  // Insertion différée tant que <body> n'existe pas (script en <head>)
+  function _attachPopup() {
+    if (popup.parentElement) return;
+    document.body.appendChild(popup);
+  }
+
+  function refreshPopup() {
+    const grid = popup.querySelector('.color-popup-grid');
+    grid.innerHTML = '';
+    getThemePalette().forEach(p => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'color-popup-swatch';
+      if (p.hex) {
+        btn.dataset.color = p.hex;
+        btn.style.backgroundColor = p.hex;
+        btn.title = p.label + ' — ' + p.hex;
+      } else {
+        btn.style.display = 'none';
+      }
+      grid.appendChild(btn);
+    });
+    const preview = popup.querySelector('.color-popup-custom-preview');
+    if (preview && activeInput) preview.style.backgroundColor = activeInput.value || '#000000';
+  }
+
+  function showPopup(input) {
+    _attachPopup();
+    activeInput = input;
+    refreshPopup();
+    const r = input.getBoundingClientRect();
+    popup.style.display = 'flex';
+    // Position sous le picker, puis correction si débord viewport
+    popup.style.left = Math.max(8, r.left) + 'px';
+    popup.style.top  = (r.bottom + 4 + window.scrollY) + 'px';
+    requestAnimationFrame(() => {
+      const pr = popup.getBoundingClientRect();
+      if (pr.right > window.innerWidth - 8) {
+        popup.style.left = Math.max(8, window.innerWidth - pr.width - 8) + 'px';
+      }
+      if (pr.bottom > window.innerHeight - 8) {
+        popup.style.top = Math.max(8, r.top - pr.height - 4 + window.scrollY) + 'px';
+      }
+    });
+  }
+
+  function hidePopup() {
+    popup.style.display = 'none';
+    activeInput = null;
+  }
+
+  // Délégation : click sur swatch ou sur le bouton Custom
+  popup.addEventListener('click', (e) => {
+    const sw = e.target.closest('.color-popup-swatch');
+    if (sw && sw.dataset.color && activeInput) {
+      activeInput.value = sw.dataset.color;
+      activeInput.dispatchEvent(new Event('input',  { bubbles: true }));
+      activeInput.dispatchEvent(new Event('change', { bubbles: true }));
+      hidePopup();
+      return;
     }
-  }
-
-  function refreshSwatchColors() {
-    try {
-      const palette = getThemePalette();
-      document.querySelectorAll('.theme-swatches').forEach(container => {
-        container.querySelectorAll('.theme-swatch').forEach((btn, i) => {
-          const p = palette[i];
-          if (!p || !p.hex) {
-            btn.style.display = 'none';
-            btn.dataset.color = '';
-          } else {
-            btn.style.display = '';
-            btn.dataset.color = p.hex;
-            btn.style.backgroundColor = p.hex;
-          }
-        });
-      });
-    } catch (err) {
-      console.warn('[swatches] refresh failed:', err);
+    if (e.target.closest('.color-popup-custom-btn') && activeInput) {
+      const input = activeInput;
+      hidePopup();
+      // Lève notre intercepteur le temps d'un click natif ; le user
+      // gesture du click sur Custom est conservé donc le picker OS s'ouvre.
+      input._allowNative = true;
+      input.click();
+      setTimeout(() => { input._allowNative = false; }, 300);
     }
+  });
+
+  // Click hors popup → ferme. capture phase pour intercepter avant les
+  // handlers des éléments cliqués. On NE close PAS si on clique sur un
+  // autre color picker — l'attach handler s'en charge (show pour ce nouveau).
+  document.addEventListener('mousedown', (e) => {
+    if (popup.style.display === 'none') return;
+    if (popup.contains(e.target)) return;
+    if (e.target.matches && e.target.matches('input[type=color]')) return;
+    hidePopup();
+  }, true);
+
+  // Intercepteur sur chaque color input
+  function attach(input) {
+    if (input.dataset.colorPopupAttached === '1') return;
+    input.dataset.colorPopupAttached = '1';
+    input.addEventListener('click', (e) => {
+      if (input._allowNative) return; // sortie Custom → laisse passer
+      e.preventDefault();
+      e.stopPropagation();
+      showPopup(input);
+    });
   }
 
-  function injectAll() {
-    document.querySelectorAll('input[type=color]').forEach(ensureSwatches);
-    refreshSwatchColors();
+  function attachAll() {
+    try { document.querySelectorAll('input[type=color]').forEach(attach); } catch (_) {}
   }
 
-  // Init unique. Petit délai pour laisser le thème initial s'appliquer.
-  function boot() { setTimeout(injectAll, 150); }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
+    document.addEventListener('DOMContentLoaded', () => { _attachPopup(); attachAll(); });
   } else {
-    boot();
+    _attachPopup(); attachAll();
   }
 
-  // Refresh des couleurs quand l'utilisateur clique un preset de thème ou
-  // de scoreboard. Le listener N'EMPÊCHE RIEN — il observe et planifie
-  // un refresh une fois le thème propagé sur #scoreboard.
+  // Rescan léger après un click sur un preset (le DOM peut être muté)
   document.addEventListener('click', (e) => {
     if (e.target.closest('.sb-preset-card, .theme-card, .theme-preset-card')) {
-      setTimeout(refreshSwatchColors, 200);
+      setTimeout(attachAll, 200);
     }
   }, { passive: true });
 
-  // API publique pour que applyTheme/applyThemePreset (ou la console)
-  // puissent forcer un refresh à n'importe quel moment.
-  window._refreshThemeSwatches = refreshSwatchColors;
-  window._injectThemeSwatches  = injectAll;
+  window._refreshThemeSwatches = refreshPopup;
+  window._injectThemeSwatches  = attachAll;
 })();
