@@ -476,8 +476,11 @@ body.sb-score-above .players-container > .score-center .series-dots {
   background: var(--sb-bg, #0A0A10);
   padding: 0;
   min-width: 160px;
-  border-left: 1px solid var(--smash-border);
-  border-right: 1px solid var(--smash-border);
+  /* Séparateurs internes pilotés par le même contrôle « Contour » que le
+     cadre extérieur : à width 0 ils disparaissent complètement (sinon les
+     2 lignes verticales restaient visibles même contour réglé à 0). */
+  border-left: var(--sb-border-width, 1px) var(--sb-border-style, solid) var(--sb-border-color, var(--smash-border));
+  border-right: var(--sb-border-width, 1px) var(--sb-border-style, solid) var(--sb-border-color, var(--smash-border));
   position: relative;
   overflow: hidden;
 }
