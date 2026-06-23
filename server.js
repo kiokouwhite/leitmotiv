@@ -132,7 +132,18 @@ app.get('/favicon.ico', (req, res) => {
 });
 
 app.use('/full', express.static(path.join(__dirname, 'public', 'full'), { maxAge: '7d' }));
-app.use(express.static(path.join(__dirname, 'public')));
+// Static principal : no-cache sur HTML/JS/CSS pour que le panneau de contrôle
+// et les overlays récupèrent toujours la dernière version après une mise à
+// jour (sinon le navigateur sert un ancien overlay.js/css en cache et on
+// croit qu'un bug persiste alors qu'il est déjà corrigé). Les assets lourds
+// (images, polices) gardent un cache court par défaut.
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders(res, filePath) {
+    if (/\.(html|js|css)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+    }
+  },
+}));
 app.use('/companion', express.static(path.join(__dirname, 'companion')));
 
 // ─── Auth routes ──────────────────────────────────────────────────────────────
