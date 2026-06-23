@@ -485,6 +485,19 @@ body.sb-score-above .players-container > .score-center .series-dots {
   overflow: hidden;
 }
 
+/* Contour à 0 → on efface AUSSI toutes les bordures d'accent (ligne de
+   couleur joueur sous chaque carte, cadre du portrait, séparateur des
+   dots). Sinon la barre paraissait encore encadrée de rouge/bleu malgré
+   le contour réglé à 0. body.sb-no-border posé par overlay.js. */
+body.sb-no-border .player-left,
+body.sb-no-border .player-right,
+body.sb-no-border .slim-left,
+body.sb-no-border .slim-right { border-bottom: none !important; }
+body.sb-no-border .player-character { border: none !important; box-shadow: none !important; }
+body.sb-no-border .dots-col-left,
+body.sb-no-border .dots-col-right { border: none !important; }
+body.sb-no-border .event-bar { border-bottom: none !important; }
+
 .score-box {
   display: flex;
   align-items: center;

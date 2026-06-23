@@ -600,6 +600,9 @@ function update(s) {
   sb.style.setProperty('--sb-border-color', s.sbBorderColor || '#2A2A3E');
   sb.style.setProperty('--sb-border-width', (s.sbBorderWidth ?? 1) + 'px');
   sb.style.setProperty('--sb-border-style', ['solid','dashed','dotted','double'].includes(s.sbBorderStyle) ? s.sbBorderStyle : 'solid');
+  // Contour à 0 → efface aussi les bordures d'accent (couleur joueur sous
+  // les cartes, portrait, dots, barre événement) via body.sb-no-border.
+  document.body.classList.toggle('sb-no-border', parseInt(s.sbBorderWidth ?? 1) === 0);
   // Forme des cartes joueur — clip-path trapèze / parallélogramme via body class + var.
   // Skew négatif = sens inversé : on flip la forme vers son opposé et on prend l'abs.
   // Trapezoid ↔ trapezoid-out, parallelogram ↔ parallelogram-rev. Permet à l'utilisateur
