@@ -624,7 +624,13 @@ function update(s) {
   // Ombre portée du scoreboard — chaîne de drop-shadow façon Photoshop.
   // Spread émulé en stackant N drop-shadows à 8 directions autour du
   // point de base, comme l'ombre de la barre événement.
-  let _sbShadowFilter = 'none';
+  // Valeur OFF = un drop-shadow TRANSPARENT (no-op visible) plutôt que
+  // 'none'. Raison : la règle .scoreboard.hidden compose le filtre avec
+  // « blur(4px) ». « none blur(4px) » est invalide → le navigateur
+  // ignorait la déclaration et retombait sur le fallback (= une vraie
+  // ombre visible le temps de la transition d'apparition). Un drop-shadow
+  // transparent compose proprement avec blur() et ne rend rien.
+  let _sbShadowFilter = 'drop-shadow(0px 0px 0px rgba(0,0,0,0))';
   let _sbShadowBlendMode = 'normal';
   if (s.sbShadowOn !== false) {
     const _sbHex = (s.sbShadowColor || '#000000').replace('#', '').replace(/rgba?\(.*/, '');
