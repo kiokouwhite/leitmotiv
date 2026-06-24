@@ -6352,9 +6352,9 @@ h1, .section-header h2, .custom-card h3,
    vivent plus haut dans ce fichier (cf. swatches v3). Cette section
    ré-imposait display:inline-flex et écrasait le display:none hover-only. */
 
-/* ══ TEST VISUEL : tout centrer dans les cartes du panneau Scoreboard ══
-   Bloc temporaire — retirer si le rendu ne convient pas. Centre titres,
-   labels, sliders, color pickers et selects dans chaque section SSBU. */
+/* ══ Centrage du contenu des cartes du panneau Scoreboard ══
+   Centre titres, labels, sliders, color pickers et selects dans chaque
+   section SSBU (#sb-scroll-area .custom-card) — adopté car plus lisible. */
 #sb-scroll-area .custom-card h3,
 #sb-scroll-area .custom-card { text-align: center; }
 #sb-scroll-area .custom-card .form-group { align-items: center; }
