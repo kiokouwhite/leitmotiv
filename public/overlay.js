@@ -603,6 +603,13 @@ function update(s) {
   // Contour à 0 → efface aussi les bordures d'accent (couleur joueur sous
   // les cartes, portrait, dots, barre événement) via body.sb-no-border.
   document.body.classList.toggle('sb-no-border', parseInt(s.sbBorderWidth ?? 1) === 0);
+  // Position du contour — Interne (border) / Milieu / Externe (outline + offset)
+  const _bw = parseInt(s.sbBorderWidth ?? 1);
+  const _bpos = ['inside','center','outside'].includes(s.sbBorderPosition) ? s.sbBorderPosition : 'inside';
+  document.body.classList.toggle('sb-border-pos-center',  _bpos === 'center');
+  document.body.classList.toggle('sb-border-pos-outside', _bpos === 'outside');
+  // Milieu = outline à cheval (offset = -moitié de l'épaisseur) ; Externe = 0.
+  sb.style.setProperty('--sb-border-offset', (_bpos === 'center' ? -_bw / 2 : 0) + 'px');
   // Forme des cartes joueur — clip-path trapèze / parallélogramme via body class + var.
   // Skew négatif = sens inversé : on flip la forme vers son opposé et on prend l'abs.
   // Trapezoid ↔ trapezoid-out, parallelogram ↔ parallelogram-rev. Permet à l'utilisateur

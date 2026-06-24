@@ -170,6 +170,18 @@ body.sb-event-stack-vertical .event-bar .sep {
   overflow: hidden;
 }
 
+/* Position du contour — Interne (défaut) = border classique ci-dessus.
+   Milieu / Externe = on bascule sur outline (qui peut sortir de la box,
+   contrairement à border) avec un outline-offset négatif pour le milieu.
+   border retiré pour ne pas doubler. outline suit le border-radius et
+   n'est PAS rogné par overflow:hidden (c'est l'outline de l'élément). */
+body.sb-border-pos-center .players-container,
+body.sb-border-pos-outside .players-container {
+  border: none;
+  outline: var(--sb-border-width, 1px) var(--sb-border-style, solid) var(--sb-border-color, var(--smash-border));
+  outline-offset: var(--sb-border-offset, 0px);
+}
+
 /* Cartes séparées : retire le fond/bordure englobant du players-container
    et le redistribue à chaque carte (P1, score-center, P2). Chaque bloc
    devient un rectangle visuel indépendant, façon TSH. À combiner avec
