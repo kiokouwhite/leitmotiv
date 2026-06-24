@@ -1559,6 +1559,9 @@
                 </div>
               </div>
 
+              <!-- Compense la hauteur de la barre fixe #sb-reset-bar pour que
+                   le dernier réglage ne soit jamais masqué (hauteur resync en JS). -->
+              <div id="sb-reset-spacer" aria-hidden="true" style="height:56px;flex-shrink:0"></div>
             </div><!-- /sb-scroll-area -->
 
             <!-- Preview iframe ancrée à droite -->
@@ -1580,7 +1583,7 @@
             <!-- Bouton « Réinitialiser » — placé en bas du panneau Customisation,
                  juste au-dessus du footer global. Toujours HORS de #sb-scroll-area
                  pour ne pas décaler les couleurs nth-child des sections. -->
-            <div style="padding:10px 16px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0;display:flex;gap:8px">
+            <div id="sb-reset-bar" style="padding:10px 16px;border-top:1px solid var(--border);background:var(--surface);display:flex;gap:8px">
               <button id="btn-sb-reset"      class="btn btn-outline btn-sm" style="flex:1">↺ Réinitialiser</button>
               <button id="btn-sb-save-preset" class="btn btn-outline btn-sm" style="flex:1">💾 Sauvegarder en preset</button>
             </div>

@@ -13494,3 +13494,50 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
   window._refreshThemeSwatches = refreshPopup;
   window._injectThemeSwatches  = attachAll;
 })();
+
+// ══════════════════════════════════════════════════════════════════════
+// Barre d'action « Réinitialiser / Sauvegarder en preset » — sticky bas
+// de viewport qui cède la place au footer.
+// position:fixed (cf. control.css #sb-reset-bar) sortie du flow de la boîte
+// 700px clippée. Ce JS : (1) cale left/width sur le panneau #sb-sub-custom,
+// (2) remonte la barre quand #pso-footer entre dans le viewport pour qu'elle
+// se pose juste au-dessus sans le recouvrir, (3) resync le spacer.
+// La barre reste descendante de #sb-sub-custom → auto-masquée sur les
+// autres onglets (ancêtre display:none) ; early-return si offsetParent null.
+// ══════════════════════════════════════════════════════════════════════
+(function () {
+  const bar    = document.getElementById('sb-reset-bar');
+  const footer = document.getElementById('pso-footer');
+  const panel  = document.getElementById('sb-sub-custom');
+  const spacer = document.getElementById('sb-reset-spacer');
+  if (!bar || !footer || !panel) return;
+
+  let ticking = false;
+  function reposition() {
+    ticking = false;
+    if (panel.offsetParent === null) return; // panneau caché (autre onglet/pane)
+    const pr = panel.getBoundingClientRect();
+    bar.style.left  = pr.left + 'px';
+    bar.style.width = pr.width + 'px';
+    const footerTop = footer.getBoundingClientRect().top;
+    const overlap   = window.innerHeight - footerTop; // >0 = footer visible
+    bar.style.bottom = (overlap > 0 ? overlap : 0) + 'px';
+    if (spacer) spacer.style.height = bar.offsetHeight + 'px';
+  }
+  function onScrollResize() {
+    if (!ticking) { ticking = true; requestAnimationFrame(reposition); }
+  }
+  window.addEventListener('scroll', onScrollResize, { passive: true });
+  window.addEventListener('resize', onScrollResize);
+  const scrollArea = document.getElementById('sb-scroll-area');
+  if (scrollArea) scrollArea.addEventListener('scroll', onScrollResize, { passive: true });
+  reposition();
+  window.addEventListener('load', reposition);
+  // Recalcul quand on (ré)affiche le pane Customisation : les boutons de nav
+  // dispatchent déjà un resize, mais on couvre aussi un clic direct dessus.
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#cust-ssbu-nav, #cust-mode-nav, #cust-cat-nav, .tab-btn')) {
+      setTimeout(reposition, 60);
+    }
+  }, { passive: true });
+})();
