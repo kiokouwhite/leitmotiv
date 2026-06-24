@@ -630,6 +630,17 @@
               <div id="sb-sect-scoreboard" style="padding:0 16px 16px">
                 <div class="custom-grid">
 
+                  <!-- Visibilité — compact, tout en haut, sur 2 colonnes -->
+                  <div class="custom-card" style="grid-column:span 2;padding:10px 12px">
+                    <h3 style="font-size:12px;margin:0 0 6px 0">Visibilité</h3>
+                    <div class="vis-grid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:4px 10px">
+                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-pronouns" checked /><span>Pronoms</span></label>
+                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-tag" checked /><span>Tag / sponsor</span></label>
+                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-character" checked /><span>Personnage</span></label>
+                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-seed" checked /><span>Seed (#N)</span></label>
+                    </div>
+                  </div>
+
                   <!-- Affichage (déplacé depuis l'ex-onglet Affichage) -->
                   <div class="custom-card">
                     <h3>Affichage</h3>
@@ -677,17 +688,6 @@
                         <input type="range" id="sb-y-range" min="-200" max="600" value="0" step="1" />
                         <input type="number" id="sb-y-num" min="-200" max="600" value="0" step="1" style="width:58px" />
                       </div>
-                    </div>
-                  </div>
-
-                  <!-- Visibilité — compact, en haut, sur 2 colonnes -->
-                  <div class="custom-card" style="grid-column:span 2;padding:10px 12px">
-                    <h3 style="font-size:12px;margin:0 0 6px 0">Visibilité</h3>
-                    <div class="vis-grid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:4px 10px">
-                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-pronouns" checked /><span>Pronoms</span></label>
-                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-tag" checked /><span>Tag / sponsor</span></label>
-                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-character" checked /><span>Personnage</span></label>
-                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-seed" checked /><span>Seed (#N)</span></label>
                     </div>
                   </div>
 
