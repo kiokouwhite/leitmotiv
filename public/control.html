@@ -735,66 +735,75 @@
                   <div class="custom-card">
                     <h3>Cadre &amp; couleurs</h3>
 
-                    <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin:4px 0 6px">Contour</div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Couleur</label>
-                      <input type="color" id="sb-border-color" value="#2A2A3E" />
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Épaisseur (px)</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-border-width-range" min="0" max="12" value="1" step="1" />
-                        <input type="number" id="sb-border-width-num" min="0" max="12" value="1" step="1" style="width:58px" />
+                    <!-- Sous-encadré Contour -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-top:8px;background:rgba(0,0,0,0.15)">
+                      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin:0 0 8px">Contour</div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Couleur</label>
+                        <input type="color" id="sb-border-color" value="#2A2A3E" />
                       </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Style</label>
-                      <select id="sb-border-style" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
-                        <option value="solid">Plein</option>
-                        <option value="dashed">Tirets</option>
-                        <option value="dotted">Points</option>
-                        <option value="double">Double</option>
-                      </select>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Position</label>
-                      <select id="sb-border-position" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
-                        <option value="inside">Interne</option>
-                        <option value="center">Milieu</option>
-                        <option value="outside">Externe</option>
-                      </select>
-                    </div>
-
-                    <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin:14px 0 6px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08)">Fond du scoreboard</div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Couleur &amp; opacité</label>
-                      <div style="display:flex;gap:6px;align-items:center">
-                        <input type="color" id="sb-bg-color" value="#0E0E12" />
-                        <input type="number" id="sb-bg-opacity" value="100" min="0" max="100" style="width:56px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 5px;text-align:center" />
-                        <span style="font-size:11px;color:var(--text-muted)">%</span>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Épaisseur (px)</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-border-width-range" min="0" max="12" value="1" step="1" />
+                          <input type="number" id="sb-border-width-num" min="0" max="12" value="1" step="1" style="width:58px" />
+                        </div>
                       </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Dégradé G→D (vide=off)</label>
-                      <div style="display:flex;gap:6px;align-items:center">
-                        <input type="color" id="sb-bg-color-2" value="#0E0E12" />
-                        <button type="button" id="sb-bg-color-2-clear" class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px" title="Retirer le dégradé">×</button>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Style</label>
+                        <select id="sb-border-style" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                          <option value="solid">Plein</option>
+                          <option value="dashed">Tirets</option>
+                          <option value="dotted">Points</option>
+                          <option value="double">Double</option>
+                        </select>
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label>Position</label>
+                        <select id="sb-border-position" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                          <option value="inside">Interne</option>
+                          <option value="center">Milieu</option>
+                          <option value="outside">Externe</option>
+                        </select>
                       </div>
                     </div>
 
-                    <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin:14px 0 6px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08)">Couleurs des textes</div>
-                    <div style="display:flex;gap:16px;flex-wrap:wrap">
-                      <div class="form-group" style="margin:0">
-                        <label>Tag</label>
-                        <input type="color" id="tag-color" value="#E8B830" />
+                    <!-- Sous-encadré Fond du scoreboard -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-top:10px;background:rgba(0,0,0,0.15)">
+                      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin:0 0 8px">Fond du scoreboard</div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Couleur &amp; opacité</label>
+                        <div style="display:flex;gap:6px;align-items:center">
+                          <input type="color" id="sb-bg-color" value="#0E0E12" />
+                          <input type="number" id="sb-bg-opacity" value="100" min="0" max="100" style="width:56px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 5px;text-align:center" />
+                          <span style="font-size:11px;color:var(--text-muted)">%</span>
+                        </div>
                       </div>
                       <div class="form-group" style="margin:0">
-                        <label>Pseudo</label>
-                        <input type="color" id="name-color" value="#F0EEF8" />
+                        <label>Dégradé G→D (vide=off)</label>
+                        <div style="display:flex;gap:6px;align-items:center">
+                          <input type="color" id="sb-bg-color-2" value="#0E0E12" />
+                          <button type="button" id="sb-bg-color-2-clear" class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px" title="Retirer le dégradé">×</button>
+                        </div>
                       </div>
-                      <div class="form-group" style="margin:0">
-                        <label>Pronoms</label>
-                        <input type="color" id="pronouns-color" value="#5A5A7A" />
+                    </div>
+
+                    <!-- Sous-encadré Couleurs des textes -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-top:10px;background:rgba(0,0,0,0.15)">
+                      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin:0 0 8px">Couleurs des textes</div>
+                      <div style="display:flex;gap:16px;flex-wrap:wrap">
+                        <div class="form-group" style="margin:0">
+                          <label>Tag</label>
+                          <input type="color" id="tag-color" value="#E8B830" />
+                        </div>
+                        <div class="form-group" style="margin:0">
+                          <label>Pseudo</label>
+                          <input type="color" id="name-color" value="#F0EEF8" />
+                        </div>
+                        <div class="form-group" style="margin:0">
+                          <label>Pronoms</label>
+                          <input type="color" id="pronouns-color" value="#5A5A7A" />
+                        </div>
                       </div>
                     </div>
                   </div>
