@@ -5212,7 +5212,7 @@ body.regie-mode [data-subpanel$="-preview"] {
   padding: 10px 20px;
   background: var(--surface2);
   border-top: 1px solid var(--border);
-  margin-top: 24px;
+  margin-top: 0;
   flex-shrink: 0;
 }
 .pso-footer-label {
