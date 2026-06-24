@@ -641,14 +641,6 @@
                     </div>
                   </div>
 
-                  <!-- Affichage (déplacé depuis l'ex-onglet Affichage) -->
-                  <div class="custom-card">
-                    <h3>Affichage</h3>
-                    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-                      <button id="btn-hide-player-colors" class="btn btn-outline btn-full">🎨 Couleurs joueurs : ON</button>
-                    </div>
-                  </div>
-
                   <!-- Position & Taille (déplacé depuis l'ex-onglet Affichage) -->
                   <div class="custom-card">
                     <h3>Position &amp; Taille</h3>
@@ -892,10 +884,10 @@
                     </div>
                   </div>
 
-                  <!-- Couleurs joueurs (accents) -->
+                  <!-- Couleurs joueurs (accents + toggle on/off) -->
                   <div class="custom-card">
                     <h3>Couleurs joueurs</h3>
-                    <div style="display:flex;gap:16px;flex-wrap:wrap">
+                    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px">
                       <div class="form-group" style="margin:0">
                         <label>Accent J1</label>
                         <input type="color" id="p1-accent-color" value="#E83030" />
@@ -905,6 +897,7 @@
                         <input type="color" id="p2-accent-color" value="#3070E8" />
                       </div>
                     </div>
+                    <button id="btn-hide-player-colors" class="btn btn-outline btn-full">🎨 Couleurs joueurs : ON</button>
                   </div>
 
                   <!-- Disposition (séparation cartes + écart + miroir — position du score → onglet Score) -->
