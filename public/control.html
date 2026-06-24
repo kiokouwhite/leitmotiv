@@ -616,6 +616,7 @@
             <!-- Titres verticaux -->
             <div id="sb-nav-titles" style="width:30px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 0;gap:28px;border-right:1px solid var(--border);background:var(--surface)">
               <span class="vic-nav-title" data-target="sb-sect-scoreboard">Scoreboard</span>
+              <span class="vic-nav-title" data-target="sb-sect-personnage">Personnage</span>
               <span class="vic-nav-title" data-target="sb-sect-score">Score</span>
               <span class="vic-nav-title" data-target="sb-sect-evenement">Événement</span>
               <span class="vic-nav-title" data-target="sb-sect-logo">Logo</span>
@@ -633,10 +634,9 @@
                   <!-- Visibilité — compact, tout en haut, sur 2 colonnes -->
                   <div class="custom-card" style="grid-column:span 2;padding:10px 12px">
                     <h3 style="font-size:12px;margin:0 0 6px 0">Visibilité</h3>
-                    <div class="vis-grid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:4px 10px">
+                    <div class="vis-grid" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:4px 10px">
                       <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-pronouns" checked /><span>Pronoms</span></label>
                       <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-tag" checked /><span>Tag / sponsor</span></label>
-                      <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-character" checked /><span>Personnage</span></label>
                       <label class="vis-toggle" style="font-size:11px"><input type="checkbox" id="show-seed" checked /><span>Seed (#N)</span></label>
                     </div>
                   </div>
@@ -646,8 +646,6 @@
                     <h3>Affichage</h3>
                     <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
                       <button id="btn-hide-player-colors" class="btn btn-outline btn-full">🎨 Couleurs joueurs : ON</button>
-                      <button id="btn-char-display-mode" class="btn btn-outline btn-full">🖼 Personnages : Normal</button>
-                      <button id="btn-placeholder-chars" class="btn btn-outline btn-full" title="ON : tire 2 personnages SSBU au hasard pour prévisualiser. OFF : vide les personnages.">🎲 Personnages placeholder : OFF</button>
                     </div>
                   </div>
 
@@ -956,13 +954,6 @@
                   <div class="custom-card">
                     <h3>Tailles</h3>
                     <div class="form-group" style="margin-bottom:7px">
-                      <label>Portrait perso</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="character-size-range" min="40" max="200" value="100" step="2" />
-                        <input type="number" id="character-size-num" min="40" max="200" value="100" step="2" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
                       <label>Nom joueur</label>
                       <div class="logo-particles-row">
                         <input type="range" id="name-font-size-range" min="12" max="48" value="24" step="1" />
@@ -974,6 +965,37 @@
                       <div class="logo-particles-row">
                         <input type="range" id="tag-font-size-range" min="8" max="28" value="16" step="1" />
                         <input type="number" id="tag-font-size-num" min="8" max="28" value="16" step="1" style="width:58px" />
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Personnage (tout ce qui touche aux personnages) -->
+              <div id="sb-sect-personnage" style="padding:0 16px 16px">
+                <div class="custom-grid">
+
+                  <!-- Affichage perso : visibilité + mode + placeholder -->
+                  <div class="custom-card">
+                    <h3>Affichage</h3>
+                    <div class="form-group" style="margin-bottom:8px">
+                      <label class="vis-toggle" style="display:inline-flex;width:auto;margin:0"><input type="checkbox" id="show-character" checked /><span>Afficher les personnages</span></label>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+                      <button id="btn-char-display-mode" class="btn btn-outline btn-full">🖼 Personnages : Normal</button>
+                      <button id="btn-placeholder-chars" class="btn btn-outline btn-full" title="ON : tire 2 personnages SSBU au hasard pour prévisualiser. OFF : vide les personnages.">🎲 Personnages placeholder : OFF</button>
+                    </div>
+                  </div>
+
+                  <!-- Taille du portrait -->
+                  <div class="custom-card">
+                    <h3>Taille</h3>
+                    <div class="form-group" style="margin:0">
+                      <label>Portrait perso (%)</label>
+                      <div class="logo-particles-row">
+                        <input type="range" id="character-size-range" min="40" max="200" value="100" step="2" />
+                        <input type="number" id="character-size-num" min="40" max="200" value="100" step="2" style="width:58px" />
                       </div>
                     </div>
                   </div>
