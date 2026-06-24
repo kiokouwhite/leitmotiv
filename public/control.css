@@ -6351,3 +6351,15 @@ h1, .section-header h2, .custom-card h3,
 /* Bloc duplicate retiré — les vrais styles .theme-swatches / .theme-swatch
    vivent plus haut dans ce fichier (cf. swatches v3). Cette section
    ré-imposait display:inline-flex et écrasait le display:none hover-only. */
+
+/* ══ TEST VISUEL : tout centrer dans les cartes du panneau Scoreboard ══
+   Bloc temporaire — retirer si le rendu ne convient pas. Centre titres,
+   labels, sliders, color pickers et selects dans chaque section SSBU. */
+#sb-scroll-area .custom-card h3,
+#sb-scroll-area .custom-card { text-align: center; }
+#sb-scroll-area .custom-card .form-group { align-items: center; }
+#sb-scroll-area .custom-card .form-group > label { display: block; text-align: center; }
+#sb-scroll-area .custom-card .logo-particles-row { justify-content: center; }
+#sb-scroll-area .custom-card .vis-grid > .vis-toggle { justify-content: center; }
+#sb-scroll-area .custom-card input[type="color"] { display: inline-block; }
+#sb-scroll-area .custom-card select { text-align: center; text-align-last: center; }
