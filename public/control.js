@@ -3673,6 +3673,10 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
     wrap.style.overflow = 'hidden';  // wrap est désormais TOUJOURS contained
     scroller.style.overflow = userZoom > 1 ? 'auto' : 'hidden';
     scroller.style.cursor   = userZoom > 1 ? 'grab' : '';
+    // À zoom <= 1 le contenu tient pile dans le cadre : on remet le scroll
+    // à zéro, sinon un défilement résiduel (après un pan en zoom) laissait
+    // la preview décalée une fois revenue à 100 %.
+    if (userZoom <= 1) { scroller.scrollLeft = 0; scroller.scrollTop = 0; }
   }
   function scaleAllPreviews() {
     document.querySelectorAll('.overlay-preview-wrap').forEach(scalePreviewWrap);
