@@ -3326,33 +3326,58 @@ document.getElementById('btn-char-display-mode').addEventListener('click', () =>
   setStatus(statusMsg[state.charDisplayMode]);
 });
 
-// Personnages placeholder — tire 2 persos SSBU au hasard pour les 2 joueurs
-// afin de prévisualiser l'overlay quand on n'a pas encore choisi de match.
+// Personnages placeholder — toggle ON/OFF. ON = tire 2 persos SSBU au
+// hasard pour prévisualiser l'overlay sans match choisi ; OFF = vide les
+// 2 personnages (retour à « aucun perso »).
+let _placeholderCharsOn = false;
+function _updatePlaceholderBtn() {
+  const btn = document.getElementById('btn-placeholder-chars');
+  if (!btn) return;
+  btn.textContent = _placeholderCharsOn ? '🎲 Personnages placeholder : ON' : '🎲 Personnages placeholder : OFF';
+  btn.classList.toggle('btn-primary', _placeholderCharsOn);
+  btn.classList.toggle('btn-outline', !_placeholderCharsOn);
+}
 document.getElementById('btn-placeholder-chars')?.addEventListener('click', () => {
   if (!characterList || !characterList.length) {
     setStatus('Liste des personnages pas encore chargée', 'warn');
     return;
   }
-  const i1 = Math.floor(Math.random() * characterList.length);
-  let i2 = Math.floor(Math.random() * characterList.length);
-  if (characterList.length > 1) {
-    // Force un perso différent pour P2 quitte à incrémenter modulo
-    while (i2 === i1) i2 = (i2 + 1) % characterList.length;
-  }
-  const c1 = characterList[i1], c2 = characterList[i2];
+  _placeholderCharsOn = !_placeholderCharsOn;
   const ns = buildStateFromForm();
-  ns.player1.character = state.player1.character = { id: c1.id, name: c1.name, image: c1.image };
-  ns.player2.character = state.player2.character = { id: c2.id, name: c2.name, image: c2.image };
-  emitState(ns);
-  if (typeof updateCharPreview === 'function') {
-    updateCharPreview(1, state.player1.character);
-    updateCharPreview(2, state.player2.character);
+  if (_placeholderCharsOn) {
+    const i1 = Math.floor(Math.random() * characterList.length);
+    let i2 = Math.floor(Math.random() * characterList.length);
+    if (characterList.length > 1) {
+      while (i2 === i1) i2 = (i2 + 1) % characterList.length;
+    }
+    const c1 = characterList[i1], c2 = characterList[i2];
+    ns.player1.character = state.player1.character = { id: c1.id, name: c1.name, image: c1.image };
+    ns.player2.character = state.player2.character = { id: c2.id, name: c2.name, image: c2.image };
+    emitState(ns);
+    if (typeof updateCharPreview === 'function') {
+      updateCharPreview(1, state.player1.character);
+      updateCharPreview(2, state.player2.character);
+    }
+    if (typeof updateStockColorBtns === 'function') {
+      updateStockColorBtns(1, c1.name);
+      updateStockColorBtns(2, c2.name);
+    }
+    setStatus(`Placeholder ON : ${c1.name} vs ${c2.name}`);
+  } else {
+    ns.player1.character = state.player1.character = null;
+    ns.player2.character = state.player2.character = null;
+    emitState(ns);
+    if (typeof updateCharPreview === 'function') {
+      updateCharPreview(1, null);
+      updateCharPreview(2, null);
+    }
+    if (typeof updateStockColorBtns === 'function') {
+      updateStockColorBtns(1, null);
+      updateStockColorBtns(2, null);
+    }
+    setStatus('Placeholder OFF — personnages vidés');
   }
-  if (typeof updateStockColorBtns === 'function') {
-    updateStockColorBtns(1, c1.name);
-    updateStockColorBtns(2, c2.name);
-  }
-  setStatus(`Placeholder : ${c1.name} vs ${c2.name}`);
+  _updatePlaceholderBtn();
 });
 
 // Particules — opacité & quantité — sync slider ↔ number
