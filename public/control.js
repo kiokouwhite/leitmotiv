@@ -590,9 +590,12 @@ function buildStateFromForm() {
     ltPaddingX:  parseInt(document.getElementById('lt-padding-x-num')?.value ?? 60),
     flagSize: parseInt(document.getElementById('flag-size-num')?.value ?? 52),
     overlayTexture:        state.overlayTexture || null,
-    overlayTextureOpacity: parseInt(document.getElementById('texture-opacity-num')?.value ?? 50),
-    overlayTextureBlend:   document.getElementById('texture-blend')?.value || 'normal',
-    overlayTextureSize:    document.getElementById('texture-size')?.value || 'repeat',
+    // La carte « Texture de fond » du scoreboard a été retirée ; la texture
+    // reste pilotable depuis la modale Custom Theme (contrôles tc-texture-*).
+    // Fallback : contrôle principal (s'il existe) → contrôle tc → défaut.
+    overlayTextureOpacity: parseInt(document.getElementById('texture-opacity-num')?.value ?? document.getElementById('tc-texture-opacity-num')?.value ?? 50),
+    overlayTextureBlend:   document.getElementById('texture-blend')?.value || document.getElementById('tc-texture-blend')?.value || 'normal',
+    overlayTextureSize:    document.getElementById('texture-size')?.value || document.getElementById('tc-texture-size')?.value || 'repeat',
     // Lot 1 : visibilités individuelles des champs (Customisation > Scoreboard > Affichage)
     showEventName:  document.getElementById('show-event-name')?.checked !== false,
     showTournament: document.getElementById('show-tournament')?.checked !== false,

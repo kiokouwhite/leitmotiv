@@ -703,6 +703,30 @@
                         </div>
                       </div>
                     </div>
+
+                    <!-- Sous-encadré Disposition (déplacé depuis sa propre carte) -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:10px;background:rgba(0,0,0,0.15);overflow:hidden">
+                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border)">Disposition</div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                          <input type="checkbox" id="cards-separated" />
+                          Cartes séparées (P1 + score + P2 deviennent 3 blocs distincts)
+                        </label>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Écart entre les blocs (px)</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="players-gap-range" min="0" max="800" value="0" step="2" />
+                          <input type="number" id="players-gap-num" min="0" max="800" value="0" step="2" style="width:58px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                          <input type="checkbox" id="swap-players" />
+                          Inverser J1 ↔ J2 (miroir)
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- Géométrie des cartes (déplacé depuis Position) -->
@@ -956,74 +980,6 @@
                           <input type="number" id="sb-shadow-angle-num" min="0" max="360" value="270" step="1" style="width:54px" />
                         </div>
                       </div>
-                    </div>
-                  </div>
-
-                  <!-- Texture de fond (image, opacité, blend mode, répétition) -->
-                  <div class="custom-card">
-                    <h3>Texture de fond</h3>
-                    <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px">
-                      <div id="texture-preview" style="width:60px;height:48px;border:1px solid var(--border);border-radius:6px;background-size:auto;background-repeat:repeat;background-position:0 0;flex-shrink:0;position:relative;overflow:hidden;background-color:var(--surface2)">
-                        <span id="texture-preview-empty" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-muted)">Aucune</span>
-                      </div>
-                      <div style="flex:1;display:flex;flex-direction:column;gap:6px">
-                        <div style="display:flex;gap:6px">
-                          <label class="btn btn-outline btn-sm" style="cursor:pointer;font-size:11px">
-                            📁 Fichier
-                            <input type="file" id="texture-file-input" accept="image/*" style="display:none" />
-                          </label>
-                          <button id="btn-texture-clear" class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger);font-size:11px">✕</button>
-                        </div>
-                        <div class="form-group" style="margin:0">
-                          <label>Opacité</label>
-                          <div class="logo-particles-row">
-                            <input type="range" id="texture-opacity-range" min="0" max="100" value="50" />
-                            <input type="number" id="texture-opacity-num" min="0" max="100" value="50" style="width:50px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 4px;text-align:center" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:6px">
-                      <label>Mode de fusion</label>
-                      <select id="texture-blend" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 6px">
-                        <option value="normal">Normal</option>
-                        <option value="multiply">Multiply</option>
-                        <option value="overlay">Overlay</option>
-                        <option value="screen">Screen</option>
-                        <option value="soft-light">Soft Light</option>
-                      </select>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Répétition</label>
-                      <select id="texture-size" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:4px 6px">
-                        <option value="repeat">Répéter (tuile)</option>
-                        <option value="cover">Couvrir</option>
-                        <option value="contain">Contenir</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <!-- Disposition (séparation cartes + écart + miroir — position du score → onglet Score) -->
-                  <div class="custom-card">
-                    <h3>Disposition</h3>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
-                        <input type="checkbox" id="cards-separated" />
-                        Cartes séparées (P1 + score + P2 deviennent 3 blocs distincts)
-                      </label>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Écart entre les blocs (px)</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="players-gap-range" min="0" max="800" value="0" step="2" />
-                        <input type="number" id="players-gap-num" min="0" max="800" value="0" step="2" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
-                        <input type="checkbox" id="swap-players" />
-                        Inverser J1 ↔ J2 (miroir)
-                      </label>
                     </div>
                   </div>
 
