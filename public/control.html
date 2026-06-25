@@ -704,29 +704,6 @@
                       </div>
                     </div>
 
-                    <!-- Sous-encadré Disposition (déplacé depuis sa propre carte) -->
-                    <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:10px;background:rgba(0,0,0,0.15);overflow:hidden">
-                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border)">Disposition</div>
-                      <div class="form-group" style="margin-bottom:7px">
-                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
-                          <input type="checkbox" id="cards-separated" />
-                          Cartes séparées (P1 + score + P2 deviennent 3 blocs distincts)
-                        </label>
-                      </div>
-                      <div class="form-group" style="margin-bottom:7px">
-                        <label>Écart entre les blocs (px)</label>
-                        <div class="logo-particles-row">
-                          <input type="range" id="players-gap-range" min="0" max="800" value="0" step="2" />
-                          <input type="number" id="players-gap-num" min="0" max="800" value="0" step="2" style="width:58px" />
-                        </div>
-                      </div>
-                      <div class="form-group" style="margin:0">
-                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
-                          <input type="checkbox" id="swap-players" />
-                          Inverser J1 ↔ J2 (miroir)
-                        </label>
-                      </div>
-                    </div>
                   </div>
 
                   <!-- Géométrie des cartes (déplacé depuis Position) -->
@@ -785,6 +762,30 @@
                           <input type="range" id="player-card-skew-range" min="-60" max="60" value="20" step="1" />
                           <input type="number" id="player-card-skew-num" min="-60" max="60" value="20" step="1" style="width:58px" />
                         </div>
+                      </div>
+                    </div>
+
+                    <!-- Sous-encadré Disposition (déplacé depuis Position & Taille) -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:10px;background:rgba(0,0,0,0.15);overflow:hidden">
+                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border)">Disposition</div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                          <input type="checkbox" id="cards-separated" />
+                          Cartes séparées (P1 + score + P2 deviennent 3 blocs distincts)
+                        </label>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Écart entre les blocs (px)</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="players-gap-range" min="0" max="800" value="0" step="2" />
+                          <input type="number" id="players-gap-num" min="0" max="800" value="0" step="2" style="width:58px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                          <input type="checkbox" id="swap-players" />
+                          Inverser J1 ↔ J2 (miroir)
+                        </label>
                       </div>
                     </div>
                   </div>
