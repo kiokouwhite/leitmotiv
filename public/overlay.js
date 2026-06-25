@@ -573,8 +573,14 @@ function update(s) {
   if (s.sbBgImage) {
     document.body.classList.add('sb-has-bg-image');
     const fit = s.sbBgImageFit || 'cover';
-    const sizeCSS = fit === 'stretch' ? '100% 100%' : fit; // cover | contain | 100% 100%
-    const imgLayer = `url('${s.sbBgImage}') center / ${sizeCSS} no-repeat`;
+    // repeat → mosaïque à taille native ; sinon image unique (cover/contain/étirer).
+    let imgLayer;
+    if (fit === 'repeat') {
+      imgLayer = `url('${s.sbBgImage}') top left / auto repeat`;
+    } else {
+      const sizeCSS = fit === 'stretch' ? '100% 100%' : fit; // cover | contain | 100% 100%
+      imgLayer = `url('${s.sbBgImage}') center / ${sizeCSS} no-repeat`;
+    }
     const imgOp = (s.sbBgImageOpacity ?? 100) / 100;
     if (imgOp >= 1) {
       sbBgValue = `${imgLayer}, ${sbBgValue}`;
