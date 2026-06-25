@@ -375,7 +375,11 @@ body.sb-score-above .players-container > .score-center .series-dots {
 .player-info {
   display: flex;
   flex-direction: column;
-  /* Alignement vertical des noms/tags piloté par Customisation (haut/milieu/bas) */
+  /* Alignement vertical des noms/tags piloté par Customisation (haut/milieu/bas).
+     align-self:stretch force le bloc à occuper toute la hauteur de la carte
+     (sinon .player { align-items:center } le réduit à la taille du contenu et
+     justify-content n'a aucune marge pour agir). */
+  align-self: stretch;
   justify-content: var(--sb-valign, center);
   flex: 1;
   position: relative;
