@@ -170,6 +170,14 @@ body.sb-event-stack-vertical .event-bar .sep {
   overflow: hidden;
 }
 
+/* Adapter le bloc à l'image de fond : le container prend les proportions
+   (aspect-ratio) de l'image native. La largeur reste pilotée par le contenu,
+   la hauteur suit le ratio pour épouser la forme de l'image. */
+body.sb-bg-adapt .players-container {
+  aspect-ratio: var(--sb-bg-ar, auto);
+  height: auto;
+}
+
 /* Position du contour — Interne (défaut) = border classique ci-dessus.
    Milieu / Externe = on bascule sur outline (qui peut sortir de la box,
    contrairement à border) avec un outline-offset négatif pour le milieu.

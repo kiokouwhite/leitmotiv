@@ -411,6 +411,17 @@ function syncFromState(s) {
     if (s.sbBgImage) { _sbBgImgPrev.style.backgroundImage = `url('${s.sbBgImage}')`; _sbBgImgPrev.textContent = ''; }
     else { _sbBgImgPrev.style.backgroundImage = 'none'; _sbBgImgPrev.textContent = '∅'; }
   }
+  // Conserve les dimensions natives de l'image (option « adapter le bloc »)
+  if (s.sbBgImageW != null) state.sbBgImageW = s.sbBgImageW;
+  if (s.sbBgImageH != null) state.sbBgImageH = s.sbBgImageH;
+  const _sbBgFit = document.getElementById('sb-bg-image-fit');
+  if (_sbBgFit) _sbBgFit.value = s.sbBgImageFit || 'cover';
+  const _sbBgImgOpR = document.getElementById('sb-bg-image-opacity-range');
+  const _sbBgImgOpN = document.getElementById('sb-bg-image-opacity-num');
+  if (_sbBgImgOpR) _sbBgImgOpR.value = s.sbBgImageOpacity ?? 100;
+  if (_sbBgImgOpN) _sbBgImgOpN.value = s.sbBgImageOpacity ?? 100;
+  const _sbBgAdapt = document.getElementById('sb-bg-image-adapt');
+  if (_sbBgAdapt) _sbBgAdapt.checked = !!s.sbBgImageAdapt;
 
   // Scoreboard scale/position
   const sbScale = s.sbScale ?? 100;
@@ -555,6 +566,11 @@ function buildStateFromForm() {
     eventTextColor: document.getElementById('event-text-color')?.value || '#5A5A7A',
     sbBgColor: document.getElementById('sb-bg-color')?.value || '#0E0E12',
     sbBgImage: state.sbBgImage || null,
+    sbBgImageFit: document.getElementById('sb-bg-image-fit')?.value || 'cover',
+    sbBgImageOpacity: parseInt(document.getElementById('sb-bg-image-opacity-num')?.value ?? 100),
+    sbBgImageAdapt: !!document.getElementById('sb-bg-image-adapt')?.checked,
+    sbBgImageW: state.sbBgImageW || 0,
+    sbBgImageH: state.sbBgImageH || 0,
     sbBgOpacity: parseInt(document.getElementById('sb-bg-opacity')?.value ?? 100),
     format: state.format,
     customWins: (document.getElementById('custom-wins').value || '').trim(),
@@ -3246,6 +3262,7 @@ const SCOREBOARD_DEFAULTS = {
   // Couleurs textes + fond + textures (anciennement onglet Textes/Fond, maintenant Scoreboard)
   tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A',
   sbBgColor: '#0E0E12', sbBgOpacity: 100, sbBgImage: null,
+  sbBgImageFit: 'cover', sbBgImageOpacity: 100, sbBgImageAdapt: false, sbBgImageW: 0, sbBgImageH: 0,
   overlayTexture: null, overlayTextureOpacity: 50, overlayTextureBlend: 'normal', overlayTextureSize: 'repeat',
   // Event bar (champs hors Lot 6 qui manquaient)
   eventTextColor: '#EAB830', eventTextSize: 12,
@@ -8646,6 +8663,14 @@ document.getElementById('sb-bg-image-input')?.addEventListener('change', functio
           state.sbBgImage = res.url;
           const prev = document.getElementById('sb-bg-image-preview');
           if (prev) { prev.style.backgroundImage = `url('${res.url}')`; prev.textContent = ''; }
+          // Mesure les dimensions natives (pour l'option « adapter le bloc »).
+          const probe = new Image();
+          probe.onload = function () {
+            state.sbBgImageW = probe.naturalWidth || 0;
+            state.sbBgImageH = probe.naturalHeight || 0;
+            emitState(buildStateFromForm());
+          };
+          probe.src = res.url;
           emitState(buildStateFromForm());
           setStatus('Image de fond chargée');
         } else {
@@ -8659,11 +8684,24 @@ document.getElementById('sb-bg-image-input')?.addEventListener('change', functio
 });
 document.getElementById('sb-bg-image-clear')?.addEventListener('click', function () {
   state.sbBgImage = null;
+  state.sbBgImageW = 0; state.sbBgImageH = 0;
   const prev = document.getElementById('sb-bg-image-preview');
   if (prev) { prev.style.backgroundImage = 'none'; prev.textContent = '∅'; }
   emitState(buildStateFromForm());
   setStatus('Image de fond retirée');
 });
+// Ajustement de l'image de fond (couvrir / contenir / étirer)
+document.getElementById('sb-bg-image-fit')?.addEventListener('change', () => emitState(buildStateFromForm()));
+// Opacité de l'image de fond (slider <-> number liés)
+(function () {
+  const range = document.getElementById('sb-bg-image-opacity-range');
+  const num   = document.getElementById('sb-bg-image-opacity-num');
+  const sync = (src, dst) => { if (src && dst) dst.value = src.value; emitState(buildStateFromForm()); };
+  range?.addEventListener('input', () => sync(range, num));
+  num?.addEventListener('input', () => sync(num, range));
+})();
+// Adapter le bloc à l'image (proportions)
+document.getElementById('sb-bg-image-adapt')?.addEventListener('change', () => emitState(buildStateFromForm()));
 
 document.getElementById('btn-texture-clear')?.addEventListener('click', () => {
   if (state.overlayTexture) {

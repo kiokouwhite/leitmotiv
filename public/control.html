@@ -820,7 +820,7 @@
                           <button type="button" id="sb-bg-color-2-clear" class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px" title="Retirer le dégradé">×</button>
                         </div>
                       </div>
-                      <div class="form-group" style="margin:0">
+                      <div class="form-group" style="margin-bottom:7px">
                         <label>Image de fond <span style="opacity:0.5;font-weight:400">— remplace la couleur</span></label>
                         <div style="display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap">
                           <div id="sb-bg-image-preview" style="width:48px;height:30px;border:1px solid var(--border);border-radius:4px;background:center/cover no-repeat var(--surface2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-muted)">∅</div>
@@ -830,6 +830,27 @@
                           </label>
                           <button type="button" id="sb-bg-image-clear" class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px;color:var(--danger);border-color:var(--danger)" title="Retirer l'image">✕</button>
                         </div>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Ajustement de l'image</label>
+                        <select id="sb-bg-image-fit" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                          <option value="cover">Couvrir (remplit, recadre)</option>
+                          <option value="contain">Contenir (image entière)</option>
+                          <option value="stretch">Étirer (déforme pour remplir)</option>
+                        </select>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Opacité de l'image %</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-bg-image-opacity-range" min="0" max="100" value="100" step="1" />
+                          <input type="number" id="sb-bg-image-opacity-num" min="0" max="100" value="100" step="1" style="width:58px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;justify-content:center">
+                          <input type="checkbox" id="sb-bg-image-adapt" />
+                          Adapter le bloc à l'image (proportions)
+                        </label>
                       </div>
                     </div>
 

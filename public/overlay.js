@@ -568,10 +568,31 @@ function update(s) {
     sbBgValue = `linear-gradient(to right, rgba(${r},${g},${b},${a}), rgba(${r2},${g2},${b2},${a}))`;
   }
   // Image de fond du scoreboard — si définie, remplace couleur/dégradé.
-  // url() en center/cover, posée par-dessus la couleur (fallback si l'image
-  // a de la transparence / ne charge pas).
+  // Posée par-dessus la couleur (qui sert de fallback si l'image a de la
+  // transparence / ne charge pas). Ajustement + opacité réglables.
   if (s.sbBgImage) {
-    sbBgValue = `url('${s.sbBgImage}') center / cover no-repeat, ${sbBgValue}`;
+    const fit = s.sbBgImageFit || 'cover';
+    const sizeCSS = fit === 'stretch' ? '100% 100%' : fit; // cover | contain | 100% 100%
+    const imgLayer = `url('${s.sbBgImage}') center / ${sizeCSS} no-repeat`;
+    const imgOp = (s.sbBgImageOpacity ?? 100) / 100;
+    if (imgOp >= 1) {
+      sbBgValue = `${imgLayer}, ${sbBgValue}`;
+    } else {
+      // Pas d'opacité par-couche en CSS : on voile l'image avec la couleur de
+      // fond à (1 - opacité) posée par-dessus, ce qui la fait fondre vers le fond.
+      const veilA = (1 - imgOp) * a;
+      const veil = `linear-gradient(rgba(${r},${g},${b},${veilA}), rgba(${r},${g},${b},${veilA}))`;
+      sbBgValue = `${veil}, ${imgLayer}, ${sbBgValue}`;
+    }
+    // Adapter le bloc à l'image (proportions) — aspect-ratio = largeur/hauteur native.
+    if (s.sbBgImageAdapt && s.sbBgImageW && s.sbBgImageH) {
+      document.body.classList.add('sb-bg-adapt');
+      sb.style.setProperty('--sb-bg-ar', (s.sbBgImageW / s.sbBgImageH).toFixed(4));
+    } else {
+      document.body.classList.remove('sb-bg-adapt');
+    }
+  } else {
+    document.body.classList.remove('sb-bg-adapt');
   }
   sb.style.setProperty('--sb-bg', sbBgValue);
 
