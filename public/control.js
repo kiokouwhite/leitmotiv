@@ -3132,24 +3132,19 @@ document.getElementById('btn-particles-toggle').addEventListener('click', () => 
 });
 
 function updateHidePlayerColorsBtn(hidden) {
-  const btn = document.getElementById('btn-hide-player-colors');
-  if (!btn) return;
-  if (hidden) {
-    btn.textContent = '🎨 Couleurs joueurs : OFF';
-    btn.classList.add('btn-danger');
-    btn.classList.remove('btn-outline');
-  } else {
-    btn.textContent = '🎨 Couleurs joueurs : ON';
-    btn.classList.remove('btn-danger');
-    btn.classList.add('btn-outline');
-  }
+  // Toggle Off/On dans le titre du sous-encadré. On = couleurs visibles (hidden=false).
+  const on = !hidden;
+  document.querySelectorAll('.sb-pcolor-btn').forEach(b =>
+    b.classList.toggle('active', (b.dataset.pcolor === 'on') === on));
 }
 
-document.getElementById('btn-hide-player-colors').addEventListener('click', () => {
-  state.hidePlayerColors = !state.hidePlayerColors;
-  updateHidePlayerColorsBtn(state.hidePlayerColors);
-  emitState(buildStateFromForm());
-  setStatus(state.hidePlayerColors ? 'Couleurs joueurs masquées' : 'Couleurs joueurs visibles');
+document.querySelectorAll('.sb-pcolor-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.hidePlayerColors = (btn.dataset.pcolor === 'off');
+    updateHidePlayerColorsBtn(state.hidePlayerColors);
+    emitState(buildStateFromForm());
+    setStatus(state.hidePlayerColors ? 'Couleurs joueurs masquées' : 'Couleurs joueurs visibles');
+  });
 });
 
 // Lot 1 : 9 toggles de visibilité des champs (Customisation > Scoreboard > Affichage).

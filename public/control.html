@@ -888,10 +888,16 @@
                       </div>
                     </div>
 
-                    <!-- Sous-encadré Couleurs joueurs (accents + toggle on/off) -->
+                    <!-- Sous-encadré Couleurs joueurs (accents + toggle on/off dans le titre) -->
                     <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:10px;background:rgba(0,0,0,0.15);overflow:hidden">
-                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border)">Couleurs joueurs</div>
-                      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px">
+                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px">
+                        <span>Couleurs joueurs</span>
+                        <span style="display:flex;gap:4px">
+                          <button class="sb-pcolor-btn theme-btn" data-pcolor="off" style="font-size:11px;padding:2px 9px">Off</button>
+                          <button class="sb-pcolor-btn theme-btn active" data-pcolor="on" style="font-size:11px;padding:2px 9px">On</button>
+                        </span>
+                      </div>
+                      <div style="display:flex;gap:16px;flex-wrap:wrap;margin:0">
                         <div class="form-group" style="margin:0">
                           <label>Accent J1</label>
                           <input type="color" id="p1-accent-color" value="#E83030" />
@@ -901,7 +907,6 @@
                           <input type="color" id="p2-accent-color" value="#3070E8" />
                         </div>
                       </div>
-                      <button id="btn-hide-player-colors" class="btn btn-outline btn-full">🎨 Couleurs joueurs : ON</button>
                     </div>
                   </div>
 
