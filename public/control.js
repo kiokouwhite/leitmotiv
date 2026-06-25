@@ -150,6 +150,8 @@ function syncFromState(s) {
     ['character-size',            'characterSize',           100],
     ['name-font-size',            'nameFontSize',            24],
     ['tag-font-size',             'tagFontSize',             16],
+    ['sb-name-x',                 'sbNameX',                 0],
+    ['sb-name-y',                 'sbNameY',                 0],
   ].forEach(([idBase, field, def]) => {
     const v = (s[field] != null) ? s[field] : def;
     const rng = document.getElementById(idBase + '-range');
@@ -567,6 +569,8 @@ function buildStateFromForm() {
     eventTextSize: parseInt(document.getElementById('event-text-size')?.value ?? 12),
     eventTextColor: document.getElementById('event-text-color')?.value || '#5A5A7A',
     sbNameAlign: document.getElementById('sb-name-valign')?.value || 'middle',
+    sbNameX: parseInt(document.getElementById('sb-name-x-num')?.value ?? 0),
+    sbNameY: parseInt(document.getElementById('sb-name-y-num')?.value ?? 0),
     sbBgColor: document.getElementById('sb-bg-color')?.value || '#0E0E12',
     sbBgImage: state.sbBgImage || null,
     sbBgImageFit: document.getElementById('sb-bg-image-fit')?.value || 'cover',
@@ -3169,7 +3173,7 @@ document.getElementById('btn-hide-player-colors').addEventListener('click', () =
   'player-min-width', 'sb-height', 'player-card-radius', 'player-card-padding', 'player-card-skew',
   'sb-border-width',
   'sb-shadow', 'sb-shadow-opacity', 'sb-shadow-distance', 'sb-shadow-spread', 'sb-shadow-angle',
-  'character-size', 'name-font-size', 'tag-font-size',
+  'character-size', 'name-font-size', 'tag-font-size', 'sb-name-x', 'sb-name-y',
   // Lot 4 : event-bar
   'eb-left-width', 'eb-right-width',
   // Lot 6 : onglet Événement — sliders typo + chrome de la barre
@@ -3267,7 +3271,7 @@ const SCOREBOARD_DEFAULTS = {
   hidePlayerColors: false, charDisplayMode: 'normal',
   // Couleurs textes + fond + textures (anciennement onglet Textes/Fond, maintenant Scoreboard)
   tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A',
-  sbNameAlign: 'middle',
+  sbNameAlign: 'middle', sbNameX: 0, sbNameY: 0,
   sbBgColor: '#0E0E12', sbBgOpacity: 100, sbBgImage: null,
   sbBgImageFit: 'cover', sbBgImageOpacity: 100, sbBgImageAdapt: false, sbBgImageW: 0, sbBgImageH: 0,
   overlayTexture: null, overlayTextureOpacity: 50, overlayTextureBlend: 'normal', overlayTextureSize: 'repeat',

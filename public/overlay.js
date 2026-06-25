@@ -617,6 +617,8 @@ function update(s) {
   // Alignement vertical des noms/tags dans les cartes (haut / milieu / bas).
   const valignMap = { top: 'flex-start', middle: 'center', bottom: 'flex-end' };
   sb.style.setProperty('--sb-valign', valignMap[s.sbNameAlign] || 'center');
+  sb.style.setProperty('--sb-name-x', (s.sbNameX ?? 0) + 'px');
+  sb.style.setProperty('--sb-name-y', (s.sbNameY ?? 0) + 'px');
 
   // Lot 2 : logo central enrichi + écart entre cartes (Customisation > Scoreboard).
   sb.style.setProperty('--center-logo-size',           (s.centerLogoSize ?? 52) + 'px');

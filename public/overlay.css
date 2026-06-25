@@ -381,6 +381,8 @@ body.sb-score-above .players-container > .score-center .series-dots {
      justify-content n'a aucune marge pour agir). */
   align-self: stretch;
   justify-content: var(--sb-valign, center);
+  /* Décalage fin du bloc nom/tag (Customisation > Tailles texte) */
+  transform: translate(var(--sb-name-x, 0px), var(--sb-name-y, 0px));
   flex: 1;
   position: relative;
   z-index: 2;
