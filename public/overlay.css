@@ -510,6 +510,8 @@ body.sb-score-above .players-container > .score-center .series-dots {
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Alignement vertical du score piloté par l'onglet Score (haut/milieu/bas) */
+  justify-content: var(--score-valign, flex-start);
   background: var(--sb-bg, #0A0A10);
   padding: 0;
   min-width: 160px;
@@ -542,6 +544,8 @@ body.sb-no-border .event-bar { border-bottom: none !important; }
   padding: 10px 12px 4px;
   position: relative;
   z-index: 2;
+  /* Décalage fin du score (onglet Score > Position du texte) */
+  transform: translate(var(--score-x, 0px), var(--score-y, 0px));
 }
 
 .center-logo-area {

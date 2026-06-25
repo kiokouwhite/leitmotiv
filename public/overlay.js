@@ -870,6 +870,11 @@ function update(s) {
   if (s.scoreVsColor)   sb.style.setProperty('--score-vs-color', s.scoreVsColor);
   sb.style.setProperty('--score-font-size', (s.scoreFontSize ?? 52) + 'px');
   if (s.dotColor)       sb.style.setProperty('--dot-color',      s.dotColor);
+  // Position du texte du score : alignement vertical + décalage X/Y.
+  const scoreValignMap = { top: 'flex-start', middle: 'center', bottom: 'flex-end' };
+  sb.style.setProperty('--score-valign', scoreValignMap[s.scoreAlign] || 'flex-start');
+  sb.style.setProperty('--score-x', (s.scoreX ?? 0) + 'px');
+  sb.style.setProperty('--score-y', (s.scoreY ?? 0) + 'px');
   // Toggles couleur joueur (chiffre) + carré derrière + vars associées
   document.body.classList.toggle('sb-score-player-color',    s.scoreUsePlayerColor === true);
   document.body.classList.toggle('sb-score-box',             s.scoreBgOn === true);

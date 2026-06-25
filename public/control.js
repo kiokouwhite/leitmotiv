@@ -152,6 +152,8 @@ function syncFromState(s) {
     ['tag-font-size',             'tagFontSize',             16],
     ['sb-name-x',                 'sbNameX',                 0],
     ['sb-name-y',                 'sbNameY',                 0],
+    ['score-x',                   'scoreX',                  0],
+    ['score-y',                   'scoreY',                  0],
   ].forEach(([idBase, field, def]) => {
     const v = (s[field] != null) ? s[field] : def;
     const rng = document.getElementById(idBase + '-range');
@@ -409,6 +411,8 @@ function syncFromState(s) {
   if (sbOpacityEl) sbOpacityEl.value = s.sbBgOpacity ?? 100;
   const sbNameAlignEl = document.getElementById('sb-name-valign');
   if (sbNameAlignEl) sbNameAlignEl.value = s.sbNameAlign || 'middle';
+  const scoreAlignEl = document.getElementById('score-valign');
+  if (scoreAlignEl) scoreAlignEl.value = s.scoreAlign || 'top';
   // Image de fond du scoreboard — miniature
   const _sbBgImgPrev = document.getElementById('sb-bg-image-preview');
   if (_sbBgImgPrev) {
@@ -558,6 +562,9 @@ function buildStateFromForm() {
     scoreUsePlayerColor:  document.getElementById('score-use-player-color')?.checked === true,
     scoreVsColor:         document.getElementById('score-vs-color')?.value || '#E8B830',
     scoreFontSize:        parseInt(document.getElementById('score-font-size-num')?.value ?? 52),
+    scoreAlign:           document.getElementById('score-valign')?.value || 'top',
+    scoreX:               parseInt(document.getElementById('score-x-num')?.value ?? 0),
+    scoreY:               parseInt(document.getElementById('score-y-num')?.value ?? 0),
     dotColor:             document.getElementById('dot-color')?.value || '#E8B830',
     // Carré derrière le score
     scoreBgOn:              document.getElementById('score-bg-on')?.checked === true,
@@ -3179,7 +3186,7 @@ document.querySelectorAll('.sb-pcolor-btn').forEach(btn => {
   'event-bar-shadow-opacity', 'event-bar-shadow-blur', 'event-bar-shadow-distance',
   'event-bar-shadow-spread', 'event-bar-shadow-angle',
   // Onglet Score
-  'score-font-size', 'score-bg-padding', 'score-bg-radius',
+  'score-font-size', 'score-bg-padding', 'score-bg-radius', 'score-x', 'score-y',
 ].forEach(idBase => {
   const rng = document.getElementById(idBase + '-range');
   // Le num input n'a pas toujours le suffixe -num (ex. event-text-size).
@@ -3292,6 +3299,7 @@ const SCOREBOARD_DEFAULTS = {
   characterSize: 100, nameFontSize: 24, tagFontSize: 16,
   scorePositionMode: 'between', swapPlayers: false, cardsSeparated: false,
   scoreColor: '#F0EEF8', scoreVsColor: '#E8B830', scoreFontSize: 52, dotColor: '#E8B830',
+  scoreAlign: 'top', scoreX: 0, scoreY: 0,
   scoreUsePlayerColor: false,
   scoreBgOn: false, scoreBgColor: '#E83030', scoreBgColorP2: '#3070E8', scoreBgUsePlayerColor: true,
   scoreBgPadding: 12, scoreBgRadius: 6,
@@ -8700,6 +8708,8 @@ document.getElementById('sb-bg-image-clear')?.addEventListener('click', function
 document.getElementById('sb-bg-image-fit')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Alignement vertical des noms (haut / milieu / bas)
 document.getElementById('sb-name-valign')?.addEventListener('change', () => emitState(buildStateFromForm()));
+// Alignement vertical du score (haut / milieu / bas)
+document.getElementById('score-valign')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Opacité de l'image de fond (slider <-> number liés)
 (function () {
   const range = document.getElementById('sb-bg-image-opacity-range');
