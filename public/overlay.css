@@ -178,6 +178,16 @@ body.sb-bg-adapt .players-container {
   height: auto;
 }
 
+/* Image de fond : .player-left/right et .score-center portent aussi
+   var(--sb-bg), ce qui répétait l'image sur chaque carte. En mode joint
+   (non séparé), on les rend transparents pour que seule la barre globale
+   (.players-container) affiche l'image — une seule fois. */
+body.sb-has-bg-image:not(.sb-cards-separated) .player-left,
+body.sb-has-bg-image:not(.sb-cards-separated) .player-right,
+body.sb-has-bg-image:not(.sb-cards-separated) .players-container > .score-center {
+  background: transparent;
+}
+
 /* Position du contour — Interne (défaut) = border classique ci-dessus.
    Milieu / Externe = on bascule sur outline (qui peut sortir de la box,
    contrairement à border) avec un outline-offset négatif pour le milieu.

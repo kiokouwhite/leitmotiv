@@ -571,6 +571,7 @@ function update(s) {
   // Posée par-dessus la couleur (qui sert de fallback si l'image a de la
   // transparence / ne charge pas). Ajustement + opacité réglables.
   if (s.sbBgImage) {
+    document.body.classList.add('sb-has-bg-image');
     const fit = s.sbBgImageFit || 'cover';
     const sizeCSS = fit === 'stretch' ? '100% 100%' : fit; // cover | contain | 100% 100%
     const imgLayer = `url('${s.sbBgImage}') center / ${sizeCSS} no-repeat`;
@@ -593,6 +594,7 @@ function update(s) {
     }
   } else {
     document.body.classList.remove('sb-bg-adapt');
+    document.body.classList.remove('sb-has-bg-image');
   }
   sb.style.setProperty('--sb-bg', sbBgValue);
 
