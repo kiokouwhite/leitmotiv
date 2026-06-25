@@ -695,11 +695,14 @@ function update(s) {
     const _sbA = (s.sbShadowOpacity ?? 80) / 100;
     const _sbCol = `rgba(${_sbR},${_sbG},${_sbB},${_sbA})`;
     const _sbLayers = [`drop-shadow(${_sbBx.toFixed(1)}px ${_sbBy.toFixed(1)}px ${_sbBlur}px ${_sbCol})`];
-    for (let r = 1; r <= _sbSpread; r++) {
+    // Spread : UN seul anneau de 8 directions au rayon = spread (≤ 9 couches au
+    // total). L'ancien empilement r=1..spread × 8 générait jusqu'à 80 drop-shadows
+    // flous sur tout le scoreboard → surcharge GPU et crash du navigateur.
+    if (_sbSpread > 0) {
       for (let a = 0; a < 8; a++) {
         const ang = (a * 45) * Math.PI / 180;
-        const ox = _sbBx + Math.cos(ang) * r;
-        const oy = _sbBy + Math.sin(ang) * r;
+        const ox = _sbBx + Math.cos(ang) * _sbSpread;
+        const oy = _sbBy + Math.sin(ang) * _sbSpread;
         _sbLayers.push(`drop-shadow(${ox.toFixed(1)}px ${oy.toFixed(1)}px ${_sbBlur}px ${_sbCol})`);
       }
     }
@@ -826,14 +829,14 @@ function update(s) {
       const _a = (s.eventBarShadowOpacity ?? 50) / 100;
       const _col = `rgba(${_r},${_g},${_b},${_a})`;
       const _layers = [`drop-shadow(${_bx.toFixed(1)}px ${_by.toFixed(1)}px ${_blur}px ${_col})`];
-      // Spread : pour chaque pixel d'intensité, ajoute 8 shadows à 45° autour
-      // du point de base pour épaissir le contour. Limité à 10 pour ne pas
-      // générer 80+ filters (performances GPU).
-      for (let r = 1; r <= _spread; r++) {
+      // Spread : UN seul anneau de 8 directions au rayon = spread (≤ 9 couches).
+      // L'ancien empilement r=1..spread × 8 pouvait générer 80 drop-shadows flous
+      // → surcharge GPU et crash. Un anneau suffit visuellement avec le flou.
+      if (_spread > 0) {
         for (let a = 0; a < 8; a++) {
           const ang = (a * 45) * Math.PI / 180;
-          const ox = _bx + Math.cos(ang) * r;
-          const oy = _by + Math.sin(ang) * r;
+          const ox = _bx + Math.cos(ang) * _spread;
+          const oy = _by + Math.sin(ang) * _spread;
           _layers.push(`drop-shadow(${ox.toFixed(1)}px ${oy.toFixed(1)}px ${_blur}px ${_col})`);
         }
       }
