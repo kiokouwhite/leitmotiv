@@ -424,6 +424,8 @@ function syncFromState(s) {
   if (s.sbBgImageH != null) state.sbBgImageH = s.sbBgImageH;
   const _sbBgFit = document.getElementById('sb-bg-image-fit');
   if (_sbBgFit) _sbBgFit.value = s.sbBgImageFit || 'cover';
+  const _sbBgBlend = document.getElementById('sb-bg-image-blend');
+  if (_sbBgBlend) _sbBgBlend.value = s.sbBgImageBlend || 'normal';
   const _sbBgImgOpR = document.getElementById('sb-bg-image-opacity-range');
   const _sbBgImgOpN = document.getElementById('sb-bg-image-opacity-num');
   if (_sbBgImgOpR) _sbBgImgOpR.value = s.sbBgImageOpacity ?? 100;
@@ -581,6 +583,7 @@ function buildStateFromForm() {
     sbBgColor: document.getElementById('sb-bg-color')?.value || '#0E0E12',
     sbBgImage: state.sbBgImage || null,
     sbBgImageFit: document.getElementById('sb-bg-image-fit')?.value || 'cover',
+    sbBgImageBlend: document.getElementById('sb-bg-image-blend')?.value || 'normal',
     sbBgImageOpacity: parseInt(document.getElementById('sb-bg-image-opacity-num')?.value ?? 100),
     sbBgImageAdapt: !!document.getElementById('sb-bg-image-adapt')?.checked,
     sbBgImageW: state.sbBgImageW || 0,
@@ -3275,7 +3278,7 @@ const SCOREBOARD_DEFAULTS = {
   tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A',
   sbNameAlign: 'middle', sbNameX: 0, sbNameY: 0,
   sbBgColor: '#0E0E12', sbBgOpacity: 100, sbBgImage: null,
-  sbBgImageFit: 'cover', sbBgImageOpacity: 100, sbBgImageAdapt: false, sbBgImageW: 0, sbBgImageH: 0,
+  sbBgImageFit: 'cover', sbBgImageBlend: 'normal', sbBgImageOpacity: 100, sbBgImageAdapt: false, sbBgImageW: 0, sbBgImageH: 0,
   overlayTexture: null, overlayTextureOpacity: 50, overlayTextureBlend: 'normal', overlayTextureSize: 'repeat',
   // Event bar (champs hors Lot 6 qui manquaient)
   eventTextColor: '#EAB830', eventTextSize: 12,
@@ -8706,6 +8709,8 @@ document.getElementById('sb-bg-image-clear')?.addEventListener('click', function
 });
 // Ajustement de l'image de fond (couvrir / contenir / étirer)
 document.getElementById('sb-bg-image-fit')?.addEventListener('change', () => emitState(buildStateFromForm()));
+// Mode de fusion de l'image de fond
+document.getElementById('sb-bg-image-blend')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Alignement vertical des noms (haut / milieu / bas)
 document.getElementById('sb-name-valign')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Alignement vertical du score (haut / milieu / bas)

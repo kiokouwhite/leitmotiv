@@ -156,6 +156,8 @@ body.sb-event-stack-vertical .event-bar .sep {
   display: flex;
   align-items: stretch;
   background: var(--sb-bg, var(--smash-bg));
+  /* Mode de fusion de l'image de fond avec la couleur (onglet Image de fond) */
+  background-blend-mode: var(--sb-bg-blend, normal);
   border: var(--sb-border-width, 1px) var(--sb-border-style, solid) var(--sb-border-color, var(--smash-border));
   border-top: none;
   position: relative;

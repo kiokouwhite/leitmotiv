@@ -572,6 +572,7 @@ function update(s) {
   // transparence / ne charge pas). Ajustement + opacité réglables.
   if (s.sbBgImage) {
     document.body.classList.add('sb-has-bg-image');
+    sb.style.setProperty('--sb-bg-blend', s.sbBgImageBlend || 'normal');
     const fit = s.sbBgImageFit || 'cover';
     // repeat → mosaïque à taille native ; sinon image unique (cover/contain/étirer).
     let imgLayer;
@@ -601,6 +602,7 @@ function update(s) {
   } else {
     document.body.classList.remove('sb-bg-adapt');
     document.body.classList.remove('sb-has-bg-image');
+    sb.style.setProperty('--sb-bg-blend', 'normal');
   }
   sb.style.setProperty('--sb-bg', sbBgValue);
 
