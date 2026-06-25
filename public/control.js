@@ -405,6 +405,12 @@ function syncFromState(s) {
   const sbOpacityEl = document.getElementById('sb-bg-opacity');
   if (sbColorEl) sbColorEl.value = s.sbBgColor || '#0E0E12';
   if (sbOpacityEl) sbOpacityEl.value = s.sbBgOpacity ?? 100;
+  // Image de fond du scoreboard — miniature
+  const _sbBgImgPrev = document.getElementById('sb-bg-image-preview');
+  if (_sbBgImgPrev) {
+    if (s.sbBgImage) { _sbBgImgPrev.style.backgroundImage = `url('${s.sbBgImage}')`; _sbBgImgPrev.textContent = ''; }
+    else { _sbBgImgPrev.style.backgroundImage = 'none'; _sbBgImgPrev.textContent = '∅'; }
+  }
 
   // Scoreboard scale/position
   const sbScale = s.sbScale ?? 100;
@@ -548,6 +554,7 @@ function buildStateFromForm() {
     eventTextSize: parseInt(document.getElementById('event-text-size')?.value ?? 12),
     eventTextColor: document.getElementById('event-text-color')?.value || '#5A5A7A',
     sbBgColor: document.getElementById('sb-bg-color')?.value || '#0E0E12',
+    sbBgImage: state.sbBgImage || null,
     sbBgOpacity: parseInt(document.getElementById('sb-bg-opacity')?.value ?? 100),
     format: state.format,
     customWins: (document.getElementById('custom-wins').value || '').trim(),
@@ -3238,7 +3245,7 @@ const SCOREBOARD_DEFAULTS = {
   hidePlayerColors: false, charDisplayMode: 'normal',
   // Couleurs textes + fond + textures (anciennement onglet Textes/Fond, maintenant Scoreboard)
   tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A',
-  sbBgColor: '#0E0E12', sbBgOpacity: 100,
+  sbBgColor: '#0E0E12', sbBgOpacity: 100, sbBgImage: null,
   overlayTexture: null, overlayTextureOpacity: 50, overlayTextureBlend: 'normal', overlayTextureSize: 'repeat',
   // Event bar (champs hors Lot 6 qui manquaient)
   eventTextColor: '#EAB830', eventTextSize: 12,
@@ -8620,6 +8627,42 @@ document.getElementById('texture-file-input')?.addEventListener('change', functi
   reader.readAsDataURL(file);
   // Reset input to allow re-selecting the same file
   e.target.value = '';
+});
+
+// Image de fond du scoreboard — réutilise /api/texture/upload (stockage image générique).
+document.getElementById('sb-bg-image-input')?.addEventListener('change', function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function (ev) {
+    fetch('/api/texture/upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: file.name, data: ev.target.result }),
+    })
+      .then(r => r.json())
+      .then(res => {
+        if (res.url) {
+          state.sbBgImage = res.url;
+          const prev = document.getElementById('sb-bg-image-preview');
+          if (prev) { prev.style.backgroundImage = `url('${res.url}')`; prev.textContent = ''; }
+          emitState(buildStateFromForm());
+          setStatus('Image de fond chargée');
+        } else {
+          setStatus('Erreur upload image');
+        }
+      })
+      .catch(err => setStatus('Erreur upload image : ' + err.message));
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+});
+document.getElementById('sb-bg-image-clear')?.addEventListener('click', function () {
+  state.sbBgImage = null;
+  const prev = document.getElementById('sb-bg-image-preview');
+  if (prev) { prev.style.backgroundImage = 'none'; prev.textContent = '∅'; }
+  emitState(buildStateFromForm());
+  setStatus('Image de fond retirée');
 });
 
 document.getElementById('btn-texture-clear')?.addEventListener('click', () => {

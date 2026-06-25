@@ -567,6 +567,12 @@ function update(s) {
     const b2 = parseInt(hex2.substring(4, 6), 16);
     sbBgValue = `linear-gradient(to right, rgba(${r},${g},${b},${a}), rgba(${r2},${g2},${b2},${a}))`;
   }
+  // Image de fond du scoreboard — si définie, remplace couleur/dégradé.
+  // url() en center/cover, posée par-dessus la couleur (fallback si l'image
+  // a de la transparence / ne charge pas).
+  if (s.sbBgImage) {
+    sbBgValue = `url('${s.sbBgImage}') center / cover no-repeat, ${sbBgValue}`;
+  }
   sb.style.setProperty('--sb-bg', sbBgValue);
 
   // Particule opacity & count scale

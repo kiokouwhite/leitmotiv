@@ -804,11 +804,22 @@
                           <span style="font-size:11px;color:var(--text-muted)">%</span>
                         </div>
                       </div>
-                      <div class="form-group" style="margin:0">
+                      <div class="form-group" style="margin-bottom:7px">
                         <label>Dégradé G→D (vide=off)</label>
                         <div style="display:flex;gap:6px;align-items:center">
                           <input type="color" id="sb-bg-color-2" value="#0E0E12" />
                           <button type="button" id="sb-bg-color-2-clear" class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px" title="Retirer le dégradé">×</button>
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label>Image de fond <span style="opacity:0.5;font-weight:400">— remplace la couleur</span></label>
+                        <div style="display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap">
+                          <div id="sb-bg-image-preview" style="width:48px;height:30px;border:1px solid var(--border);border-radius:4px;background:center/cover no-repeat var(--surface2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-muted)">∅</div>
+                          <label class="btn btn-outline btn-sm" style="cursor:pointer;font-size:11px">
+                            📁 Fichier
+                            <input type="file" id="sb-bg-image-input" accept="image/*" style="display:none" />
+                          </label>
+                          <button type="button" id="sb-bg-image-clear" class="btn btn-outline btn-sm" style="font-size:11px;padding:3px 8px;color:var(--danger);border-color:var(--danger)" title="Retirer l'image">✕</button>
                         </div>
                       </div>
                     </div>
