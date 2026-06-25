@@ -644,54 +644,63 @@
                   <!-- Position & Taille (déplacé depuis l'ex-onglet Affichage) -->
                   <div class="custom-card">
                     <h3>Position &amp; Taille</h3>
-                    <div class="form-group" style="margin-bottom:8px">
-                      <label>Ancrage</label>
-                      <div class="sb-anchor-grid" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:4px;margin-top:4px;max-width:140px">
-                        <button class="sb-anchor-btn theme-btn"        data-anchor="top-left"      title="Haut-gauche"   style="aspect-ratio:1;padding:0;font-size:14px">↖</button>
-                        <button class="sb-anchor-btn theme-btn active" data-anchor="top-center"    title="Haut-centre"   style="aspect-ratio:1;padding:0;font-size:14px">↑</button>
-                        <button class="sb-anchor-btn theme-btn"        data-anchor="top-right"     title="Haut-droite"   style="aspect-ratio:1;padding:0;font-size:14px">↗</button>
-                        <button class="sb-anchor-btn theme-btn"        data-anchor="middle-left"   title="Milieu-gauche" style="aspect-ratio:1;padding:0;font-size:14px">←</button>
-                        <button class="sb-anchor-btn theme-btn"        data-anchor="middle-center" title="Centre"        style="aspect-ratio:1;padding:0;font-size:14px">●</button>
-                        <button class="sb-anchor-btn theme-btn"        data-anchor="middle-right"  title="Milieu-droite" style="aspect-ratio:1;padding:0;font-size:14px">→</button>
-                        <button class="sb-anchor-btn theme-btn"        data-anchor="bottom-left"   title="Bas-gauche"    style="aspect-ratio:1;padding:0;font-size:14px">↙</button>
-                        <button class="sb-anchor-btn theme-btn"        data-anchor="bottom-center" title="Bas-centre"    style="aspect-ratio:1;padding:0;font-size:14px">↓</button>
-                        <button class="sb-anchor-btn theme-btn"        data-anchor="bottom-right"  title="Bas-droite"    style="aspect-ratio:1;padding:0;font-size:14px">↘</button>
+
+                    <!-- Sous-encadré Ancrage & position -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:8px;background:rgba(0,0,0,0.15);overflow:hidden">
+                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border)">Ancrage &amp; position</div>
+                      <div class="form-group" style="margin-bottom:8px">
+                        <label>Ancrage</label>
+                        <div class="sb-anchor-grid" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:4px;margin-top:4px;max-width:140px">
+                          <button class="sb-anchor-btn theme-btn"        data-anchor="top-left"      title="Haut-gauche"   style="aspect-ratio:1;padding:0;font-size:14px">↖</button>
+                          <button class="sb-anchor-btn theme-btn active" data-anchor="top-center"    title="Haut-centre"   style="aspect-ratio:1;padding:0;font-size:14px">↑</button>
+                          <button class="sb-anchor-btn theme-btn"        data-anchor="top-right"     title="Haut-droite"   style="aspect-ratio:1;padding:0;font-size:14px">↗</button>
+                          <button class="sb-anchor-btn theme-btn"        data-anchor="middle-left"   title="Milieu-gauche" style="aspect-ratio:1;padding:0;font-size:14px">←</button>
+                          <button class="sb-anchor-btn theme-btn"        data-anchor="middle-center" title="Centre"        style="aspect-ratio:1;padding:0;font-size:14px">●</button>
+                          <button class="sb-anchor-btn theme-btn"        data-anchor="middle-right"  title="Milieu-droite" style="aspect-ratio:1;padding:0;font-size:14px">→</button>
+                          <button class="sb-anchor-btn theme-btn"        data-anchor="bottom-left"   title="Bas-gauche"    style="aspect-ratio:1;padding:0;font-size:14px">↙</button>
+                          <button class="sb-anchor-btn theme-btn"        data-anchor="bottom-center" title="Bas-centre"    style="aspect-ratio:1;padding:0;font-size:14px">↓</button>
+                          <button class="sb-anchor-btn theme-btn"        data-anchor="bottom-right"  title="Bas-droite"    style="aspect-ratio:1;padding:0;font-size:14px">↘</button>
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Taille %</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-scale-range" min="50" max="200" value="100" step="1" />
+                          <input type="number" id="sb-scale-num" min="50" max="200" value="100" step="1" style="width:54px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>X px</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-x-range" min="-960" max="960" value="0" step="1" />
+                          <input type="number" id="sb-x-num" min="-960" max="960" value="0" step="1" style="width:58px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label>Y px</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-y-range" min="-200" max="600" value="0" step="1" />
+                          <input type="number" id="sb-y-num" min="-200" max="600" value="0" step="1" style="width:58px" />
+                        </div>
                       </div>
                     </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Taille %</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-scale-range" min="50" max="200" value="100" step="1" />
-                        <input type="number" id="sb-scale-num" min="50" max="200" value="100" step="1" style="width:54px" />
+
+                    <!-- Sous-encadré Tailles texte -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:10px;background:rgba(0,0,0,0.15);overflow:hidden">
+                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border)">Tailles texte</div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Nom joueur</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="name-font-size-range" min="12" max="48" value="24" step="1" />
+                          <input type="number" id="name-font-size-num" min="12" max="48" value="24" step="1" style="width:58px" />
+                        </div>
                       </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>X px</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-x-range" min="-960" max="960" value="0" step="1" />
-                        <input type="number" id="sb-x-num" min="-960" max="960" value="0" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Y px</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-y-range" min="-200" max="600" value="0" step="1" />
-                        <input type="number" id="sb-y-num" min="-200" max="600" value="0" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:12px 0 8px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08)">Tailles texte</div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Nom joueur</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="name-font-size-range" min="12" max="48" value="24" step="1" />
-                        <input type="number" id="name-font-size-num" min="12" max="48" value="24" step="1" style="width:58px" />
-                      </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Tag joueur</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="tag-font-size-range" min="8" max="28" value="16" step="1" />
-                        <input type="number" id="tag-font-size-num" min="8" max="28" value="16" step="1" style="width:58px" />
+                      <div class="form-group" style="margin:0">
+                        <label>Tag joueur</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="tag-font-size-range" min="8" max="28" value="16" step="1" />
+                          <input type="number" id="tag-font-size-num" min="8" max="28" value="16" step="1" style="width:58px" />
+                        </div>
                       </div>
                     </div>
                   </div>
