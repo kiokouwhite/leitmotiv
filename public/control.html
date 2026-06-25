@@ -765,42 +765,9 @@
                     </div>
                   </div>
 
-                  <!-- Cadre & couleurs (Contour + Fond + Couleurs textes fusionnés) -->
+                  <!-- Fond & couleurs (Fond + Couleurs textes ; le Contour est passé dans Effets) -->
                   <div class="custom-card">
-                    <h3>Cadre &amp; couleurs</h3>
-
-                    <!-- Sous-encadré Contour -->
-                    <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:8px;background:rgba(0,0,0,0.15);overflow:hidden">
-                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border)">Contour</div>
-                      <div class="form-group" style="margin-bottom:7px">
-                        <label>Couleur</label>
-                        <input type="color" id="sb-border-color" value="#2A2A3E" />
-                      </div>
-                      <div class="form-group" style="margin-bottom:7px">
-                        <label>Épaisseur (px)</label>
-                        <div class="logo-particles-row">
-                          <input type="range" id="sb-border-width-range" min="0" max="12" value="1" step="1" />
-                          <input type="number" id="sb-border-width-num" min="0" max="12" value="1" step="1" style="width:58px" />
-                        </div>
-                      </div>
-                      <div class="form-group" style="margin-bottom:7px">
-                        <label>Style</label>
-                        <select id="sb-border-style" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
-                          <option value="solid">Plein</option>
-                          <option value="dashed">Tirets</option>
-                          <option value="dotted">Points</option>
-                          <option value="double">Double</option>
-                        </select>
-                      </div>
-                      <div class="form-group" style="margin:0">
-                        <label>Position</label>
-                        <select id="sb-border-position" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
-                          <option value="inside">Interne</option>
-                          <option value="center">Milieu</option>
-                          <option value="outside">Externe</option>
-                        </select>
-                      </div>
-                    </div>
+                    <h3>Fond &amp; couleurs</h3>
 
                     <!-- Sous-encadré Fond du scoreboard -->
                     <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:10px;background:rgba(0,0,0,0.15);overflow:hidden">
@@ -874,65 +841,103 @@
                     </div>
                   </div>
 
-                  <!-- Ombre portée du scoreboard (style Photoshop) -->
+                  <!-- Effets : Contour + Ombre portée -->
                   <div class="custom-card">
-                    <h3 style="display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left">
-                      <span>Ombre portée</span>
-                      <span style="display:flex;gap:4px">
-                        <button class="sb-shadow-on-btn theme-btn" data-shadow="off" style="font-size:11px;padding:3px 10px">Off</button>
-                        <button class="sb-shadow-on-btn theme-btn active" data-shadow="on" style="font-size:11px;padding:3px 10px">On</button>
-                      </span>
-                    </h3>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Mode de fusion</label>
-                      <select id="sb-shadow-blend" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
-                        <option value="normal" selected>Normal</option>
-                        <option value="multiply">Produit</option>
-                        <option value="screen">Écran</option>
-                        <option value="overlay">Superposition</option>
-                        <option value="darken">Obscurcir</option>
-                        <option value="lighten">Éclaircir</option>
-                        <option value="hard-light">Lumière forte</option>
-                        <option value="soft-light">Lumière douce</option>
-                      </select>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Couleur</label>
-                      <input type="color" id="sb-shadow-color" value="#000000" />
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Opacité %</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-shadow-opacity-range" min="0" max="100" value="80" step="1" />
-                        <input type="number" id="sb-shadow-opacity-num" min="0" max="100" value="80" step="1" style="width:54px" />
+                    <h3>Effets</h3>
+
+                    <!-- Sous-encadré Contour (déplacé depuis Cadre & couleurs) -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:8px;background:rgba(0,0,0,0.15);overflow:hidden">
+                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border)">Contour</div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Couleur</label>
+                        <input type="color" id="sb-border-color" value="#2A2A3E" />
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Épaisseur (px)</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-border-width-range" min="0" max="12" value="1" step="1" />
+                          <input type="number" id="sb-border-width-num" min="0" max="12" value="1" step="1" style="width:58px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Style</label>
+                        <select id="sb-border-style" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                          <option value="solid">Plein</option>
+                          <option value="dashed">Tirets</option>
+                          <option value="dotted">Points</option>
+                          <option value="double">Double</option>
+                        </select>
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label>Position</label>
+                        <select id="sb-border-position" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                          <option value="inside">Interne</option>
+                          <option value="center">Milieu</option>
+                          <option value="outside">Externe</option>
+                        </select>
                       </div>
                     </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Rayon / Flou (px)</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-shadow-range" min="0" max="64" value="32" step="1" />
-                        <input type="number" id="sb-shadow-num" min="0" max="64" value="32" step="1" style="width:54px" />
+
+                    <!-- Sous-encadré Ombre portée (style Photoshop) — toggle dans la barre de titre -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:10px;background:rgba(0,0,0,0.15);overflow:hidden">
+                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px">
+                        <span>Ombre portée</span>
+                        <span style="display:flex;gap:4px">
+                          <button class="sb-shadow-on-btn theme-btn" data-shadow="off" style="font-size:11px;padding:2px 9px">Off</button>
+                          <button class="sb-shadow-on-btn theme-btn active" data-shadow="on" style="font-size:11px;padding:2px 9px">On</button>
+                        </span>
                       </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Décalage (px)</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-shadow-distance-range" min="0" max="40" value="4" step="1" />
-                        <input type="number" id="sb-shadow-distance-num" min="0" max="40" value="4" step="1" style="width:54px" />
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Mode de fusion</label>
+                        <select id="sb-shadow-blend" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                          <option value="normal" selected>Normal</option>
+                          <option value="multiply">Produit</option>
+                          <option value="screen">Écran</option>
+                          <option value="overlay">Superposition</option>
+                          <option value="darken">Obscurcir</option>
+                          <option value="lighten">Éclaircir</option>
+                          <option value="hard-light">Lumière forte</option>
+                          <option value="soft-light">Lumière douce</option>
+                        </select>
                       </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:7px">
-                      <label>Intensité / Spread (px)</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-shadow-spread-range" min="0" max="10" value="0" step="1" />
-                        <input type="number" id="sb-shadow-spread-num" min="0" max="10" value="0" step="1" style="width:54px" />
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Couleur</label>
+                        <input type="color" id="sb-shadow-color" value="#000000" />
                       </div>
-                    </div>
-                    <div class="form-group" style="margin:0">
-                      <label>Angle (°)</label>
-                      <div class="logo-particles-row">
-                        <input type="range" id="sb-shadow-angle-range" min="0" max="360" value="270" step="1" />
-                        <input type="number" id="sb-shadow-angle-num" min="0" max="360" value="270" step="1" style="width:54px" />
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Opacité %</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-shadow-opacity-range" min="0" max="100" value="80" step="1" />
+                          <input type="number" id="sb-shadow-opacity-num" min="0" max="100" value="80" step="1" style="width:54px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Rayon / Flou (px)</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-shadow-range" min="0" max="64" value="32" step="1" />
+                          <input type="number" id="sb-shadow-num" min="0" max="64" value="32" step="1" style="width:54px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Décalage (px)</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-shadow-distance-range" min="0" max="40" value="4" step="1" />
+                          <input type="number" id="sb-shadow-distance-num" min="0" max="40" value="4" step="1" style="width:54px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Intensité / Spread (px)</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-shadow-spread-range" min="0" max="10" value="0" step="1" />
+                          <input type="number" id="sb-shadow-spread-num" min="0" max="10" value="0" step="1" style="width:54px" />
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label>Angle (°)</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-shadow-angle-range" min="0" max="360" value="270" step="1" />
+                          <input type="number" id="sb-shadow-angle-num" min="0" max="360" value="270" step="1" style="width:54px" />
+                        </div>
                       </div>
                     </div>
                   </div>
