@@ -695,37 +695,38 @@
                           <input type="number" id="name-font-size-num" min="12" max="48" value="24" step="1" style="width:58px" />
                         </div>
                       </div>
-                      <div class="form-group" style="margin-bottom:7px">
+                      <div class="form-group" style="margin:0">
                         <label>Tag joueur</label>
                         <div class="logo-particles-row">
                           <input type="range" id="tag-font-size-range" min="8" max="28" value="16" step="1" />
                           <input type="number" id="tag-font-size-num" min="8" max="28" value="16" step="1" style="width:58px" />
                         </div>
                       </div>
-                      <!-- Sous-sous-section : positionnement du texte -->
-                      <div style="border:1px solid var(--border);border-radius:6px;padding:0 10px 9px;margin-top:10px;background:rgba(255,255,255,0.03);overflow:hidden">
-                        <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin:0 -10px 9px;padding:5px 10px;background:rgba(255,255,255,0.04);border-bottom:1px solid var(--border)">Position du texte</div>
-                        <div class="form-group" style="margin-bottom:7px">
-                          <label>Alignement vertical des noms</label>
-                          <select id="sb-name-valign" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
-                            <option value="top">Haut</option>
-                            <option value="middle" selected>Milieu</option>
-                            <option value="bottom">Bas</option>
-                          </select>
+                    </div>
+
+                    <!-- Sous-encadré Position du texte -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:10px;background:rgba(0,0,0,0.15);overflow:hidden">
+                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border)">Position du texte</div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Alignement vertical des noms</label>
+                        <select id="sb-name-valign" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                          <option value="top">Haut</option>
+                          <option value="middle" selected>Milieu</option>
+                          <option value="bottom">Bas</option>
+                        </select>
+                      </div>
+                      <div class="form-group" style="margin-bottom:7px">
+                        <label>Décalage texte X (px)</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-name-x-range" min="-100" max="100" value="0" step="1" />
+                          <input type="number" id="sb-name-x-num" min="-100" max="100" value="0" step="1" style="width:58px" />
                         </div>
-                        <div class="form-group" style="margin-bottom:7px">
-                          <label>Décalage texte X (px)</label>
-                          <div class="logo-particles-row">
-                            <input type="range" id="sb-name-x-range" min="-100" max="100" value="0" step="1" />
-                            <input type="number" id="sb-name-x-num" min="-100" max="100" value="0" step="1" style="width:58px" />
-                          </div>
-                        </div>
-                        <div class="form-group" style="margin:0">
-                          <label>Décalage texte Y (px)</label>
-                          <div class="logo-particles-row">
-                            <input type="range" id="sb-name-y-range" min="-100" max="100" value="0" step="1" />
-                            <input type="number" id="sb-name-y-num" min="-100" max="100" value="0" step="1" style="width:58px" />
-                          </div>
+                      </div>
+                      <div class="form-group" style="margin:0">
+                        <label>Décalage texte Y (px)</label>
+                        <div class="logo-particles-row">
+                          <input type="range" id="sb-name-y-range" min="-100" max="100" value="0" step="1" />
+                          <input type="number" id="sb-name-y-num" min="-100" max="100" value="0" step="1" style="width:58px" />
                         </div>
                       </div>
                     </div>
