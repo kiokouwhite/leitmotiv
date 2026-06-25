@@ -375,7 +375,8 @@ body.sb-score-above .players-container > .score-center .series-dots {
 .player-info {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* Alignement vertical des noms/tags piloté par Customisation (haut/milieu/bas) */
+  justify-content: var(--sb-valign, center);
   flex: 1;
   position: relative;
   z-index: 2;

@@ -405,6 +405,8 @@ function syncFromState(s) {
   const sbOpacityEl = document.getElementById('sb-bg-opacity');
   if (sbColorEl) sbColorEl.value = s.sbBgColor || '#0E0E12';
   if (sbOpacityEl) sbOpacityEl.value = s.sbBgOpacity ?? 100;
+  const sbNameAlignEl = document.getElementById('sb-name-valign');
+  if (sbNameAlignEl) sbNameAlignEl.value = s.sbNameAlign || 'middle';
   // Image de fond du scoreboard — miniature
   const _sbBgImgPrev = document.getElementById('sb-bg-image-preview');
   if (_sbBgImgPrev) {
@@ -564,6 +566,7 @@ function buildStateFromForm() {
     scoreBgRadius:          parseInt(document.getElementById('score-bg-radius-num')?.value ?? 6),
     eventTextSize: parseInt(document.getElementById('event-text-size')?.value ?? 12),
     eventTextColor: document.getElementById('event-text-color')?.value || '#5A5A7A',
+    sbNameAlign: document.getElementById('sb-name-valign')?.value || 'middle',
     sbBgColor: document.getElementById('sb-bg-color')?.value || '#0E0E12',
     sbBgImage: state.sbBgImage || null,
     sbBgImageFit: document.getElementById('sb-bg-image-fit')?.value || 'cover',
@@ -3264,6 +3267,7 @@ const SCOREBOARD_DEFAULTS = {
   hidePlayerColors: false, charDisplayMode: 'normal',
   // Couleurs textes + fond + textures (anciennement onglet Textes/Fond, maintenant Scoreboard)
   tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A',
+  sbNameAlign: 'middle',
   sbBgColor: '#0E0E12', sbBgOpacity: 100, sbBgImage: null,
   sbBgImageFit: 'cover', sbBgImageOpacity: 100, sbBgImageAdapt: false, sbBgImageW: 0, sbBgImageH: 0,
   overlayTexture: null, overlayTextureOpacity: 50, overlayTextureBlend: 'normal', overlayTextureSize: 'repeat',
@@ -8695,6 +8699,8 @@ document.getElementById('sb-bg-image-clear')?.addEventListener('click', function
 });
 // Ajustement de l'image de fond (couvrir / contenir / étirer)
 document.getElementById('sb-bg-image-fit')?.addEventListener('change', () => emitState(buildStateFromForm()));
+// Alignement vertical des noms (haut / milieu / bas)
+document.getElementById('sb-name-valign')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Opacité de l'image de fond (slider <-> number liés)
 (function () {
   const range = document.getElementById('sb-bg-image-opacity-range');
