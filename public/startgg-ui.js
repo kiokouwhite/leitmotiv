@@ -766,10 +766,15 @@
       if (evInput) { evInput.value = _evName; evInput.dispatchEvent(new Event('input', { bubbles: true })); }
     }
 
-    // Logo du tournoi → champ center-logo
+    // Logo du tournoi → champ center-logo, UNIQUEMENT si l'utilisateur n'a pas
+    // déjà mis un logo (manuel ou URL). Sinon l'import du tournoi écrasait le
+    // logo central importé à la main.
     if (tournamentLogo) {
       const logoInput = document.getElementById('center-logo');
-      if (logoInput) { logoInput.value = tournamentLogo; logoInput.dispatchEvent(new Event('input', { bubbles: true })); }
+      if (logoInput && !logoInput.value.trim()) {
+        logoInput.value = tournamentLogo;
+        logoInput.dispatchEvent(new Event('input', { bubbles: true }));
+      }
     }
 
     p1NameInput?.dispatchEvent(new Event('input', { bubbles: true }));
