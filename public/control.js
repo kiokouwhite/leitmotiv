@@ -3108,10 +3108,13 @@ document.getElementById('center-logo-file-input')?.addEventListener('change', (e
 function updateLogoPreview() {
   const url = document.getElementById('center-logo').value.trim();
   const box = document.getElementById('center-logo-preview');
-  if (url) {
-    box.innerHTML = `<img src="${url}" onerror="this.parentElement.innerHTML='<span>Erreur</span>'" />`;
-  } else {
+  if (!url) {
     box.innerHTML = '<span>Aperçu</span>';
+  } else if (/\.html?(\?|#|$)/i.test(url)) {
+    // Logo HTML animé → aperçu en iframe.
+    box.innerHTML = `<iframe src="${url}" scrolling="no" style="width:100%;height:100%;border:0;background:transparent"></iframe>`;
+  } else {
+    box.innerHTML = `<img src="${url}" onerror="this.parentElement.innerHTML='<span>Erreur</span>'" />`;
   }
 }
 

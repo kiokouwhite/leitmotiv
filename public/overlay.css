@@ -560,7 +560,8 @@ body.sb-no-border .event-bar { border-bottom: none !important; }
   transform: translateY(var(--center-logo-offset-y, 0px));
 }
 
-.center-logo-area img {
+.center-logo-area img,
+.center-logo-area iframe {
   width: var(--center-logo-size, 52px);
   height: var(--center-logo-size, 52px);
   object-fit: contain;
@@ -568,14 +569,32 @@ body.sb-no-border .event-bar { border-bottom: none !important; }
   filter: drop-shadow(0 0 var(--center-logo-glow-intensity, 0px) var(--center-logo-glow-color, transparent));
   transition: filter 200ms ease, opacity 200ms ease;
 }
+/* Logo HTML (iframe) : fond transparent, pas de bordure */
+.center-logo-area iframe,
+.slim-center-logo iframe {
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+}
+.slim-center-logo iframe {
+  width: var(--center-logo-size, 52px);
+  height: var(--center-logo-size, 52px);
+  opacity: var(--center-logo-opacity, 1);
+}
 
 /* Forme du logo central (clip-path appliqué via classe body) */
 body.sb-logo-shape-circle .center-logo-area img,
-body.sb-logo-shape-circle .slim-center-logo img { border-radius: 50%; clip-path: circle(50% at 50% 50%); background: rgba(255,255,255,0.04); }
+body.sb-logo-shape-circle .center-logo-area iframe,
+body.sb-logo-shape-circle .slim-center-logo img,
+body.sb-logo-shape-circle .slim-center-logo iframe { border-radius: 50%; clip-path: circle(50% at 50% 50%); background: rgba(255,255,255,0.04); }
 body.sb-logo-shape-square .center-logo-area img,
-body.sb-logo-shape-square .slim-center-logo img { border-radius: 12%; clip-path: inset(0 round 12%); background: rgba(255,255,255,0.04); }
+body.sb-logo-shape-square .center-logo-area iframe,
+body.sb-logo-shape-square .slim-center-logo img,
+body.sb-logo-shape-square .slim-center-logo iframe { border-radius: 12%; clip-path: inset(0 round 12%); background: rgba(255,255,255,0.04); }
 body.sb-logo-shape-hex .center-logo-area img,
-body.sb-logo-shape-hex .slim-center-logo img    { clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); background: rgba(255,255,255,0.04); }
+body.sb-logo-shape-hex .center-logo-area iframe,
+body.sb-logo-shape-hex .slim-center-logo img,
+body.sb-logo-shape-hex .slim-center-logo iframe    { clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); background: rgba(255,255,255,0.04); }
 
 .score {
   font-family: var(--custom-font, 'Russo One'), sans-serif;

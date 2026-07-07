@@ -511,7 +511,10 @@ function update(s) {
   // Logo particules
   const isCustomTheme = CUSTOM_THEMES.includes(s.overlayTheme || 'default');
   const lpCount = Math.min(100, Math.max(1, s.logoParticleCount || 3));
-  if (isCustomTheme && s.centerLogo && !s.centerLogoHidden) {
+  // Les logo-particules dupliquent le logo en <img> : incompatible avec un
+  // logo HTML (.html). Dans ce cas on ne lance pas les particules de logo.
+  const _lpLogoIsHtml = !!s.centerLogo && /\.html?(\?|#|$)/i.test(s.centerLogo);
+  if (isCustomTheme && s.centerLogo && !s.centerLogoHidden && !_lpLogoIsHtml) {
     if (_lp.src !== s.centerLogo || _lp.count !== lpCount || !_lp.rafId) {
       _lp.src = s.centerLogo;
       _lpStart(s.centerLogo, lpCount);
@@ -1062,28 +1065,37 @@ function update(s) {
     sb.style.setProperty('--p2-flag-y', (s.player2?.flagOffsetY ?? 0) + 'px');
   }
 
-  // Center logo — full layout
-  const centerImg = document.getElementById('center-logo-img');
-  const vsEl = document.getElementById('score-vs');
-  if (s.centerLogo && !s.centerLogoHidden) {
-    centerImg.src = s.centerLogo;
-    centerImg.style.display = 'block';
-    vsEl.style.display = 'none';
-  } else {
-    centerImg.style.display = 'none';
-    vsEl.style.display = 'inline';
-  }
-  // Center logo — slim layout
-  const centerImgSlim = document.getElementById('center-logo-img-slim');
-  const vsSlim = document.getElementById('slim-vs');
-  if (s.centerLogo && !s.centerLogoHidden) {
-    centerImgSlim.src = s.centerLogo;
-    centerImgSlim.style.display = 'block';
-    vsSlim.style.display = 'none';
-  } else {
-    centerImgSlim.style.display = 'none';
-    vsSlim.style.display = 'inline';
-  }
+  // Logo central — image OU fichier HTML (animation). Un .html/.htm est rendu
+  // dans une iframe pour exécuter son CSS/JS ; sinon on garde le rendu <img>.
+  const _logoIsHtml = !!s.centerLogo && /\.html?(\?|#|$)/i.test(s.centerLogo);
+  const _applyCenterLogo = (imgEl, frameEl, vsEl) => {
+    if (!imgEl || !vsEl) return;
+    const show = s.centerLogo && !s.centerLogoHidden;
+    if (show && _logoIsHtml) {
+      if (frameEl) { if (frameEl.getAttribute('src') !== s.centerLogo) frameEl.src = s.centerLogo; frameEl.style.display = 'block'; }
+      imgEl.style.display = 'none';
+      vsEl.style.display = 'none';
+    } else if (show) {
+      imgEl.src = s.centerLogo;
+      imgEl.style.display = 'block';
+      if (frameEl) frameEl.style.display = 'none';
+      vsEl.style.display = 'none';
+    } else {
+      imgEl.style.display = 'none';
+      if (frameEl) frameEl.style.display = 'none';
+      vsEl.style.display = 'inline';
+    }
+  };
+  // Full layout
+  _applyCenterLogo(
+    document.getElementById('center-logo-img'),
+    document.getElementById('center-logo-frame'),
+    document.getElementById('score-vs'));
+  // Slim layout
+  _applyCenterLogo(
+    document.getElementById('center-logo-img-slim'),
+    document.getElementById('center-logo-frame-slim'),
+    document.getElementById('slim-vs'));
 
   // Scores with flash animation
   const s1El = document.getElementById('p1-score');
