@@ -98,6 +98,8 @@ function syncFromState(s) {
     _logoToggle.classList.toggle('active', !logoHidden);
     _logoToggle.textContent = logoHidden ? '🖼 Logo central : Masqué' : '🖼 Logo central : Affiché';
   }
+  const _logoFloat = document.getElementById('logo-float');
+  if (_logoFloat) _logoFloat.checked = s.logoFloat === true;
   const lpVal = s.logoParticleCount ?? 0;
   const lpOn  = lpVal > 0;
   document.getElementById('logo-particles-enabled').checked = lpOn;
@@ -551,6 +553,7 @@ function buildStateFromForm() {
     stage: document.getElementById('event-stage').value.trim() || '',
     centerLogo: document.getElementById('center-logo').value.trim(),
     centerLogoHidden: document.getElementById('btn-logo-toggle')?.classList.contains('active') === false,
+    logoFloat: document.getElementById('logo-float')?.checked === true,
     swapped: state.swapped ?? false,
     overlayStyle: state.overlayStyle || 'full',
     scoreDisplay: state.scoreDisplay || 'numbers',
@@ -3293,7 +3296,7 @@ const SCOREBOARD_DEFAULTS = {
   showFlags: true, showPronouns: true, showTag: true, showCharacter: true, showSeed: true,
   // Lot 2
   centerLogoSize: 52, centerLogoOffsetY: 0, centerLogoOpacity: 100,
-  centerLogoShape: 'none', centerLogoGlowColor: '#00f0ff', centerLogoGlowIntensity: 0,
+  centerLogoShape: 'none', centerLogoGlowColor: '#00f0ff', centerLogoGlowIntensity: 0, logoFloat: false,
   playersGap: 0,
   // Lot 3
   playerCardMinWidth: 320, scoreboardHeight: 0, playerCardRadius: 0, playerCardPadding: 0,
@@ -3454,6 +3457,8 @@ document.getElementById('logo-particles-num').addEventListener('change', functio
   document.getElementById('logo-particles-range').value = v;
   emitState(buildStateFromForm());
 });
+// Logo qui survole le scoreboard
+document.getElementById('logo-float')?.addEventListener('change', () => emitState(buildStateFromForm()));
 
 // Scoreboard scale/position sliders — sync range ↔ number and emit.
 // Optional chaining sur addEventListener car les sliders lt-* peuvent ne plus

@@ -636,6 +636,9 @@ function update(s) {
   const shape = ['none','circle','square','hex'].includes(s.centerLogoShape) ? s.centerLogoShape : 'none';
   document.body.classList.forEach(c => { if (c.startsWith('sb-logo-shape-')) document.body.classList.remove(c); });
   if (shape !== 'none') document.body.classList.add('sb-logo-shape-' + shape);
+  // Logo qui « survole » le scoreboard : sort du clipping des conteneurs et
+  // flotte au-dessus sans redimensionner la barre (position absolue).
+  document.body.classList.toggle('sb-logo-float', s.logoFloat === true);
 
   // Lot 3 : géométrie des cartes joueur (Customisation > Scoreboard).
   sb.style.setProperty('--player-min-width',     (s.playerCardMinWidth ?? 320) + 'px');

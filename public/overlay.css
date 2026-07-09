@@ -596,6 +596,35 @@ body.sb-logo-shape-hex .center-logo-area iframe,
 body.sb-logo-shape-hex .slim-center-logo img,
 body.sb-logo-shape-hex .slim-center-logo iframe    { clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); background: rgba(255,255,255,0.04); }
 
+/* Logo qui survole le scoreboard : on retire le clipping des conteneurs et on
+   sort le logo du flux (position absolue centrée sur son point d'ancrage) pour
+   qu'il puisse dépasser au-dessus du reste sans agrandir la barre. */
+body.sb-logo-float .players-container,
+body.sb-logo-float .player,
+body.sb-logo-float .score-center,
+body.sb-logo-float .score-box,
+body.sb-logo-float .center-logo-area,
+body.sb-logo-float .slim-bar,
+body.sb-logo-float .slim-scores,
+body.sb-logo-float .slim-center-logo { overflow: visible; }
+body.sb-logo-float .center-logo-area,
+body.sb-logo-float .slim-center-logo {
+  width: 0;
+  height: 0;
+  z-index: 100;
+  position: relative;
+}
+body.sb-logo-float .center-logo-area img,
+body.sb-logo-float .center-logo-area iframe,
+body.sb-logo-float .slim-center-logo img,
+body.sb-logo-float .slim-center-logo iframe {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
 .score {
   font-family: var(--custom-font, 'Russo One'), sans-serif;
   font-size: var(--score-font-size, 52px);
