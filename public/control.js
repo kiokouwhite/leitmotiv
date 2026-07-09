@@ -3744,8 +3744,19 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
   // Pas envoyé à l'overlay réel — juste cosmétique côté contrôle.
   const _previewBgPicker = document.getElementById('preview-bg-picker');
   const _PREVIEW_BG_KEY = 'pso-preview-bg';
+  const _PREVIEW_BG_IMG_KEY = 'pso-preview-bg-image';
+  // Couleur seule (backgroundColor) pour ne pas écraser l'image de fond.
   function applyPreviewBg(col) {
-    document.querySelectorAll('.overlay-preview-wrap').forEach(w => { w.style.background = col; });
+    document.querySelectorAll('.overlay-preview-wrap').forEach(w => { w.style.backgroundColor = col; });
+  }
+  // Image de fond de la preview (posée par-dessus la couleur, cover).
+  function applyPreviewBgImage(url) {
+    document.querySelectorAll('.overlay-preview-wrap').forEach(w => {
+      w.style.backgroundImage = url ? `url('${url}')` : '';
+      w.style.backgroundSize = 'cover';
+      w.style.backgroundPosition = 'center';
+      w.style.backgroundRepeat = 'no-repeat';
+    });
   }
   if (_previewBgPicker) {
     const saved = (typeof localStorage !== 'undefined' && localStorage.getItem(_PREVIEW_BG_KEY)) || '#000000';
@@ -3756,6 +3767,35 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
       try { localStorage.setItem(_PREVIEW_BG_KEY, _previewBgPicker.value); } catch (_) {}
     });
   }
+  // Restaure l'image de fond persistée
+  const _savedPreviewImg = (typeof localStorage !== 'undefined' && localStorage.getItem(_PREVIEW_BG_IMG_KEY)) || '';
+  if (_savedPreviewImg) applyPreviewBgImage(_savedPreviewImg);
+  // Upload d'une image de fond de preview → /api/texture/upload (stockage générique)
+  document.getElementById('preview-bg-image-input')?.addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (ev) {
+      fetch('/api/texture/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: file.name, data: ev.target.result }),
+      })
+        .then(r => r.json())
+        .then(res => {
+          if (!res.url) return;
+          applyPreviewBgImage(res.url);
+          try { localStorage.setItem(_PREVIEW_BG_IMG_KEY, res.url); } catch (_) {}
+        })
+        .catch(() => {});
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  });
+  document.getElementById('preview-bg-image-clear')?.addEventListener('click', function () {
+    applyPreviewBgImage(null);
+    try { localStorage.removeItem(_PREVIEW_BG_IMG_KEY); } catch (_) {}
+  });
 
   // Re-recadrer chaque aperçu quand son overlay se rend / se met à jour (même origine).
   document.querySelectorAll('.overlay-preview-frame').forEach(frame => {

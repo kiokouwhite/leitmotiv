@@ -1662,10 +1662,12 @@
             <div style="flex:0 0 40%;border-left:1px solid var(--border);background:var(--surface2);display:flex;flex-direction:column;padding:12px;gap:10px;overflow:hidden">
               <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
                 <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em">Preview en direct</div>
-                <label style="display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;cursor:pointer" title="Couleur du fond de la preview (n'affecte pas l'overlay réel — juste la visibilité ici)">
+                <div style="display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em" title="Fond de la preview (n'affecte pas l'overlay réel — juste la visibilité ici)">
                   Fond&nbsp;preview
-                  <input type="color" id="preview-bg-picker" value="#000000" style="width:22px;height:22px;padding:0;border:1px solid var(--border);border-radius:3px;cursor:pointer;background:transparent" />
-                </label>
+                  <input type="color" id="preview-bg-picker" value="#000000" style="width:22px;height:22px;padding:0;border:1px solid var(--border);border-radius:3px;cursor:pointer;background:transparent" title="Couleur de fond" />
+                  <label style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border:1px solid var(--border);border-radius:3px;cursor:pointer;background:var(--surface2)" title="Image de fond de la preview">📁<input type="file" id="preview-bg-image-input" accept="image/*" style="display:none" /></label>
+                  <button type="button" id="preview-bg-image-clear" title="Retirer l'image" style="width:22px;height:22px;border:1px solid var(--danger);border-radius:3px;cursor:pointer;background:transparent;color:var(--danger);font-size:11px;line-height:1;padding:0">✕</button>
+                </div>
               </div>
               <div class="overlay-preview-wrap" id="preview-wrap-scoreboard" style="border-radius:8px;overflow:hidden;background:#000;box-shadow:0 4px 24px rgba(0,0,0,0.5)">
                 <iframe data-src="/overlay" class="overlay-preview-frame" id="preview-frame-scoreboard"></iframe>
