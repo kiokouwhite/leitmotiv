@@ -118,6 +118,8 @@ function syncFromState(s) {
   document.getElementById('particle-count-num').value   = pCt;
   const _pType = document.getElementById('particle-type');
   if (_pType) _pType.value = s.particleType || 'auto';
+  const _pPh = document.getElementById('preview-placeholders');
+  if (_pPh) _pPh.checked = s.previewPlaceholders === true;
   updateParticlesToggle(s.particlesEnabled !== false);
   updateHidePlayerColorsBtn(s.hidePlayerColors === true);
   updateCharDisplayModeBtn(s.charDisplayMode || 'normal');
@@ -605,6 +607,7 @@ function buildStateFromForm() {
     logoParticleCount: document.getElementById('logo-particles-enabled')?.checked
       ? (parseInt(document.getElementById('logo-particles-num').value) || 3)
       : 0,
+    previewPlaceholders: document.getElementById('preview-placeholders')?.checked === true,
     particleType:       document.getElementById('particle-type')?.value || 'auto',
     particleOpacity:    parseInt(document.getElementById('particle-opacity-num')?.value ?? 100),
     particleCountScale: parseInt(document.getElementById('particle-count-num')?.value ?? 100),
@@ -3156,6 +3159,8 @@ document.getElementById('btn-particles-toggle').addEventListener('click', () => 
 });
 // Type de particules (theme maker)
 document.getElementById('particle-type')?.addEventListener('change', () => emitState(buildStateFromForm()));
+// Placeholders d'aperçu (tag / pronoms / seed)
+document.getElementById('preview-placeholders')?.addEventListener('change', () => emitState(buildStateFromForm()));
 
 function updateHidePlayerColorsBtn(hidden) {
   // Toggle Off/On dans le titre du sous-encadré. On = couleurs visibles (hidden=false).
@@ -3299,6 +3304,7 @@ const SCOREBOARD_DEFAULTS = {
   // Event bar (champs hors Lot 6 qui manquaient)
   eventTextColor: '#EAB830', eventTextSize: 12,
   // Particules + drapeaux
+  previewPlaceholders: false,
   particleType: 'auto', particleOpacity: 100, particleCountScale: 100, particlesEnabled: true, logoParticleCount: 3,
   flagSize: 52,
   // Lot 1 — visibilité des champs

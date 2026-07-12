@@ -172,29 +172,35 @@ const CHAR_THEME_COLORS = {
 };
 
 
-function renderPlayerName(elId, player) {
+// ph = mode « placeholder aperçu » : remplit tag/pronoms/seed d'exemples quand
+// ils sont vides, pour visualiser les couleurs de texte. idx = 1|2 (varie les
+// exemples J1/J2). N'écrase jamais une vraie valeur.
+function renderPlayerName(elId, player, ph, idx) {
   const el = document.getElementById(elId);
   el.innerHTML = '';
-  if (player.seeding != null) {
+  const seeding  = player.seeding != null ? player.seeding : (ph ? idx : null);
+  const tagVal   = player.tag      || (ph ? (idx === 1 ? 'TAG' : 'SPON') : '');
+  const pronVal  = player.pronouns || (ph ? (idx === 1 ? 'il/lui' : 'elle') : '');
+  if (seeding != null) {
     const seed = document.createElement('span');
     seed.className = 'player-seed';
-    seed.textContent = '#' + player.seeding;
+    seed.textContent = '#' + seeding;
     el.appendChild(seed);
   }
-  if (player.tag) {
+  if (tagVal) {
     const tag = document.createElement('span');
     tag.className = 'player-tag';
-    tag.textContent = player.tag;
+    tag.textContent = tagVal;
     el.appendChild(tag);
   }
   const name = document.createElement('span');
   name.className = 'player-name-text';
   name.textContent = player.name;
   el.appendChild(name);
-  if (player.pronouns) {
+  if (pronVal) {
     const pro = document.createElement('span');
     pro.className = 'player-pronouns';
-    pro.textContent = player.pronouns;
+    pro.textContent = pronVal;
     el.appendChild(pro);
   }
 }
@@ -920,10 +926,11 @@ function update(s) {
   document.getElementById('player2-block-slim').style.setProperty('--p2-color', c2);
 
   // Player names — both layouts
-  renderPlayerName('p1-name', s.player1);
-  renderPlayerName('p2-name', s.player2);
-  renderPlayerName('p1-name-slim', s.player1);
-  renderPlayerName('p2-name-slim', s.player2);
+  const _ph = s.previewPlaceholders === true;
+  renderPlayerName('p1-name', s.player1, _ph, 1);
+  renderPlayerName('p2-name', s.player2, _ph, 2);
+  renderPlayerName('p1-name-slim', s.player1, _ph, 1);
+  renderPlayerName('p2-name-slim', s.player2, _ph, 2);
   document.getElementById('event-name').textContent = s.event;
   document.getElementById('event-stage').textContent = s.stage;
   document.getElementById('format-info').textContent = s.format === 'custom' ? (s.customWins || 'Custom') : s.format;
