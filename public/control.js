@@ -6510,7 +6510,15 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
         '<div id="themes-custom-modal-body">' +
           '<div id="themes-custom-controls"></div>' +
           '<div id="themes-custom-preview">' +
-            '<div class="themes-custom-preview-label">Aperçu en direct</div>' +
+            '<div class="themes-custom-preview-label" style="display:flex;align-items:center;justify-content:space-between;gap:8px">' +
+              '<span>Aperçu en direct</span>' +
+              '<span style="display:inline-flex;align-items:center;gap:4px">' +
+                '<button type="button" id="themes-custom-zoom-out" class="btn btn-outline btn-sm" style="padding:2px 8px;font-size:13px" title="Dézoomer (molette ↓)">−</button>' +
+                '<span id="themes-custom-zoom-val" style="min-width:40px;text-align:center;font-size:11px;color:var(--text-muted)">100%</span>' +
+                '<button type="button" id="themes-custom-zoom-in" class="btn btn-outline btn-sm" style="padding:2px 8px;font-size:13px" title="Zoomer (molette ↑)">+</button>' +
+                '<button type="button" id="themes-custom-zoom-reset" class="btn btn-outline btn-sm" style="padding:2px 8px;font-size:12px" title="Réinitialiser le zoom">⌂</button>' +
+              '</span>' +
+            '</div>' +
             '<div id="themes-custom-preview-wrap">' +
               '<iframe id="themes-custom-preview-frame" data-src="/overlay" scrolling="no"></iframe>' +
             '</div>' +
@@ -6521,17 +6529,75 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
     const cmControls    = document.getElementById('themes-custom-controls');
     const cmPreview     = document.getElementById('themes-custom-preview-frame');
     const cmPreviewWrap = document.getElementById('themes-custom-preview-wrap');
-    // Aperçu plein cadre 16:9 (pas de recadrage) : on met l'iframe à l'échelle de la colonne
+    // Aperçu plein cadre 16:9 (pas de recadrage) : iframe 1920×1080 mise à
+    // l'échelle de la colonne, + zoom (molette/boutons) et pan (glisser).
+    let cmZoom = 1, cmPanX = 0, cmPanY = 0;
+    function _cmDims() {
+      const w = cmPreviewWrap ? cmPreviewWrap.clientWidth : 0;
+      return { w, h: 1080 * (w / 1920) };
+    }
+    function _cmClampPan() {
+      const { w, h } = _cmDims();
+      cmPanX = Math.min(0, Math.max(w - w * cmZoom, cmPanX));
+      cmPanY = Math.min(0, Math.max(h - h * cmZoom, cmPanY));
+    }
     function scaleCustomPreview() {
       if (!cmPreviewWrap || !cmPreview) return;
-      const w = cmPreviewWrap.clientWidth;
+      const { w, h } = _cmDims();
       if (!w) return;
-      const scale = w / 1920;
-      cmPreview.style.transform = 'scale(' + scale + ')';
-      cmPreviewWrap.style.height = Math.round(1080 * scale) + 'px';
+      const base = w / 1920;
+      _cmClampPan();
+      cmPreview.style.transformOrigin = '0 0';
+      cmPreview.style.transform = 'translate(' + cmPanX + 'px,' + cmPanY + 'px) scale(' + (base * cmZoom) + ')';
+      cmPreviewWrap.style.height = Math.round(h) + 'px';
+      const valEl = document.getElementById('themes-custom-zoom-val');
+      if (valEl) valEl.textContent = Math.round(cmZoom * 100) + '%';
+    }
+    function cmSetZoom(z, cx, cy) {
+      const { w, h } = _cmDims();
+      cx = (cx == null) ? w / 2 : cx;
+      cy = (cy == null) ? h / 2 : cy;
+      const prev = cmZoom;
+      cmZoom = Math.max(1, Math.min(6, z));
+      // Zoom centré sur le point (cx, cy)
+      const k = cmZoom / prev;
+      cmPanX = cx - (cx - cmPanX) * k;
+      cmPanY = cy - (cy - cmPanY) * k;
+      scaleCustomPreview();
     }
     if (cmPreview) cmPreview.addEventListener('load', () => setTimeout(scaleCustomPreview, 50));
     window.addEventListener('resize', scaleCustomPreview);
+    // Boutons de zoom
+    document.getElementById('themes-custom-zoom-in')?.addEventListener('click', () => cmSetZoom(cmZoom * 1.25));
+    document.getElementById('themes-custom-zoom-out')?.addEventListener('click', () => cmSetZoom(cmZoom / 1.25));
+    document.getElementById('themes-custom-zoom-reset')?.addEventListener('click', () => { cmZoom = 1; cmPanX = 0; cmPanY = 0; scaleCustomPreview(); });
+    // Molette = zoom au curseur
+    if (cmPreviewWrap) {
+      cmPreviewWrap.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const r = cmPreviewWrap.getBoundingClientRect();
+        cmSetZoom(cmZoom * (e.deltaY < 0 ? 1.12 : 1 / 1.12), e.clientX - r.left, e.clientY - r.top);
+      }, { passive: false });
+      // Glisser = pan (quand zoomé). Overlay transparent au-dessus de l'iframe
+      // pour capter le drag (sinon l'iframe avale les events).
+      let dragging = false, sx = 0, sy = 0, px0 = 0, py0 = 0;
+      const catcher = document.createElement('div');
+      catcher.style.cssText = 'position:absolute;inset:0;cursor:grab;z-index:2';
+      cmPreviewWrap.style.position = 'relative';
+      cmPreviewWrap.appendChild(catcher);
+      catcher.addEventListener('mousedown', (e) => {
+        if (cmZoom <= 1) return;
+        dragging = true; sx = e.clientX; sy = e.clientY; px0 = cmPanX; py0 = cmPanY;
+        catcher.style.cursor = 'grabbing'; e.preventDefault();
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+        cmPanX = px0 + (e.clientX - sx);
+        cmPanY = py0 + (e.clientY - sy);
+        scaleCustomPreview();
+      });
+      window.addEventListener('mouseup', () => { dragging = false; catcher.style.cursor = 'grab'; });
+    }
     const RELOC = ['sb-sect-score', 'sb-sect-scoreboard', 'sb-sect-particules']; // Score, Scoreboard (contient aussi Fond/Texture/Textes), Particules
 
     // Sélecteur de police : l'overlay applique state.fontFamily (--custom-font, charge la Google Font si besoin)
