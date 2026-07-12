@@ -6674,6 +6674,9 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       '</div>';
     cmControls.appendChild(palSect);
 
+    // Mélange 2 hex : t = poids de h1 (0..1). Sert au dégradé teinté du fond.
+    const _hx  = h => { h = h.replace('#', ''); return [parseInt(h.substr(0, 2), 16), parseInt(h.substr(2, 2), 16), parseInt(h.substr(4, 2), 16)]; };
+    const _mix = (h1, h2, t) => { const a = _hx(h1), b = _hx(h2); return '#' + a.map((v, i) => Math.round(v * t + b[i] * (1 - t)).toString(16).padStart(2, '0')).join(''); };
     function applyThemePalette() {
       const P = document.getElementById('theme-pal-primary')?.value   || '#E8B830';
       const S = document.getElementById('theme-pal-secondary')?.value || '#3070E8';
@@ -6681,15 +6684,20 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       const B = document.getElementById('theme-pal-black')?.value     || '#0E0E12';
       state.themePalette = { primary: P, secondary: S, white: W, black: B };
       const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
-      // Fond = noir ; textes principaux = blanc
+      // Fond = noir, + léger dégradé teinté vers la couleur principale (présence ambiante)
       setVal('sb-bg-color', B);
+      setVal('sb-bg-color-2', _mix(P, B, 0.35));
+      state.sbBgColor2Active = true;
+      // Pseudo = blanc ; SCORE (gros chiffres centraux) = PRINCIPALE pour la rendre dominante
       setVal('name-color', W);
-      setVal('score-color', W);
-      // Couleur principale → tag, VS, dots, contour, halo logo, carré score J1
+      setVal('score-color', P);
+      setVal('score-vs-color', W); // « VS » en blanc pour contraster avec les scores principaux
+      // Couleur principale → tag, dots, contour (rendu visible), halo logo, carré score J1
       setVal('tag-color', P);
-      setVal('score-vs-color', P);
       setVal('dot-color', P);
       setVal('sb-border-color', P);
+      setVal('sb-border-width-range', 2);
+      setVal('sb-border-width-num', 2);
       setVal('center-logo-glow-color', P);
       setVal('score-bg-color', P);
       // Couleur secondaire → pronoms, texte événement, carré score J2
