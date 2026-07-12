@@ -127,6 +127,8 @@ function syncFromState(s) {
   document.getElementById('particle-count-num').value   = pCt;
   const _pType = document.getElementById('particle-type');
   if (_pType) _pType.value = s.particleType || 'auto';
+  const _pTint = document.getElementById('particle-tint-theme');
+  if (_pTint) _pTint.checked = s.particleTintTheme === true;
   const _pPh = document.getElementById('preview-placeholders');
   if (_pPh) _pPh.checked = s.previewPlaceholders === true;
   updateParticlesToggle(s.particlesEnabled !== false);
@@ -619,6 +621,7 @@ function buildStateFromForm() {
     previewPlaceholders: document.getElementById('preview-placeholders')?.checked === true,
     themePalette: state.themePalette || { primary: '#E8B830', secondary: '#3070E8', white: '#F0EEF8', black: '#0E0E12' },
     particleType:       document.getElementById('particle-type')?.value || 'auto',
+    particleTintTheme:  document.getElementById('particle-tint-theme')?.checked === true,
     particleOpacity:    parseInt(document.getElementById('particle-opacity-num')?.value ?? 100),
     particleCountScale: parseInt(document.getElementById('particle-count-num')?.value ?? 100),
     particlesEnabled:   state.particlesEnabled !== false,
@@ -3180,6 +3183,8 @@ document.getElementById('btn-particles-toggle').addEventListener('click', () => 
 document.getElementById('particle-type')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Placeholders d'aperçu (tag / pronoms / seed)
 document.getElementById('preview-placeholders')?.addEventListener('change', () => emitState(buildStateFromForm()));
+// Particules aux couleurs du thème (principale / secondaire)
+document.getElementById('particle-tint-theme')?.addEventListener('change', () => emitState(buildStateFromForm()));
 
 function updateHidePlayerColorsBtn(hidden) {
   // Toggle Off/On dans le titre du sous-encadré. On = couleurs visibles (hidden=false).
@@ -3326,7 +3331,7 @@ const SCOREBOARD_DEFAULTS = {
   eventTextColor: '#EAB830', eventTextSize: 12,
   // Particules + drapeaux
   previewPlaceholders: false,
-  particleType: 'auto', particleOpacity: 100, particleCountScale: 100, particlesEnabled: true, logoParticleCount: 3,
+  particleType: 'auto', particleTintTheme: false, particleOpacity: 100, particleCountScale: 100, particlesEnabled: true, logoParticleCount: 3,
   flagSize: 52,
   // Lot 1 — visibilité des champs
   showEventName: true, showTournament: true, showFormat: true, showRound: true,
@@ -6709,6 +6714,9 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       setVal('p2-accent-color', S);
       if (state.player1) state.player1.color = P;
       if (state.player2) state.player2.color = S;
+      // Active la teinte des particules aux couleurs de la palette (case cochée).
+      const _tintCb = document.getElementById('particle-tint-theme');
+      if (_tintCb) _tintCb.checked = true;
       emitState(buildStateFromForm());
     }
     ['theme-pal-primary', 'theme-pal-secondary', 'theme-pal-white', 'theme-pal-black'].forEach(id => {

@@ -4,7 +4,25 @@ window.createParticleSystem = function(canvasId, containerId) {
   let _opacityScale = 1.0, _countScale = 1.0;
   let _lastType = null, _lastCount = 0, _lastType2 = null, _lastCount2 = 0;
   let _n1 = 0; // number of player-1 particles (dual mode)
+  let _tintHues = null, _tintKey = ''; // teinte optionnelle (couleurs du thème)
   const pts = [];
+
+  // hex → teinte HSL (0..360), pour forcer la couleur des particules.
+  function _hexToHue(hex) {
+    hex = String(hex).replace('#', '');
+    const r = parseInt(hex.substr(0, 2), 16) / 255, g = parseInt(hex.substr(2, 2), 16) / 255, b = parseInt(hex.substr(4, 2), 16) / 255;
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+    let h = 0;
+    if (d !== 0) {
+      if (mx === r) h = ((g - b) / d) % 6;
+      else if (mx === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60; if (h < 0) h += 360;
+    }
+    return h;
+  }
+  // Applique la teinte à une particule (index → alterne principale/secondaire).
+  function _tint(p, i) { if (_tintHues) { p.hue = _tintHues[i % _tintHues.length]; p.pink = (i % 2 === 1); } return p; }
 
   // ── Factories ──────────────────────────────────────────────
   function mkSnow(W, H) {
@@ -1731,7 +1749,7 @@ window.createParticleSystem = function(canvasId, containerId) {
     resize(); pts.length = 0;
     const W=canvas.width, H=canvas.height;
     const n = Math.max(1, Math.round(count * _countScale));
-    for (let i=0; i<n; i++) pts.push(FAC[type](W,H));
+    for (let i=0; i<n; i++) pts.push(_tint(FAC[type](W,H), i));
     tick();
   }
 
@@ -1753,12 +1771,12 @@ window.createParticleSystem = function(canvasId, containerId) {
     const n1 = Math.max(1, Math.round(count1 * _countScale));
     const n2 = Math.max(1, Math.round(count2 * _countScale));
     if (type1 && FAC[type1]) {
-      for (let i = 0; i < n1; i++) pts.push(FAC[type1](half, H));
+      for (let i = 0; i < n1; i++) pts.push(_tint(FAC[type1](half, H), 0)); // gauche = principale
     }
     _n1 = pts.length;
     if (type2 && FAC[type2]) {
       for (let i = 0; i < n2; i++) {
-        const p = FAC[type2](half, H);
+        const p = _tint(FAC[type2](half, H), 1); // droite = secondaire
         p.x += half;
         pts.push(p);
       }
@@ -1808,7 +1826,18 @@ window.createParticleSystem = function(canvasId, containerId) {
     }
   }
 
-  return { init, start, stop, resize, startDual, setOpacity, setCountScale,
+  // Teinte des particules : colors = [hexPrincipale, hexSecondaire] ou null.
+  // Re-génère les particules pour appliquer la nouvelle teinte (guard interne).
+  function setTint(colors) {
+    const key = (Array.isArray(colors) && colors.length) ? colors.join('|') : '';
+    if (key === _tintKey) return;
+    _tintKey = key;
+    _tintHues = key ? colors.map(_hexToHue) : null;
+    if (_type === '__dual__') startDual(_lastType, _lastCount, _lastType2, _lastCount2);
+    else if (_lastType) start(_lastType, _lastCount);
+  }
+
+  return { init, start, stop, resize, startDual, setOpacity, setCountScale, setTint,
            get type() { return _type; }, get dualKey() { return _dualKey; },
            get opacity() { return _opacityScale; }, get countScale() { return _countScale; } };
 

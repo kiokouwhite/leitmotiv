@@ -575,6 +575,11 @@ function update(s) {
       PS.stop();
     }
   }
+  // Teinte des particules avec la palette (principale/secondaire) si activé.
+  const _pal = s.themePalette || {};
+  const _pTint = (s.particleTintTheme && _pal.primary && _pal.secondary)
+    ? [_pal.primary, _pal.secondary] : null;
+  PS.setTint(_pTint);
 
   // Background color + opacity (+ Lot 4 : dégradé G→D optionnel)
   const hex = (s.sbBgColor || '#0E0E12').replace('#', '');
