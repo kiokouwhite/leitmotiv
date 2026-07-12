@@ -552,6 +552,10 @@ function update(s) {
     if (PS.type !== '__dual__' || PS.dualKey !== key) {
       PS.startDual(typeLeft, countLeft, typeRight, countRight);
     }
+  } else if (s.particleType && s.particleType !== 'auto') {
+    // Type de particules choisi explicitement (theme maker) — prioritaire sur
+    // le type déduit du thème. La quantité globale (particleCountScale) module.
+    if (s.particleType !== PS.type) PS.start(s.particleType, 60);
   } else if ((s.overlayTheme || 'default') === 'custom') {
     const ct = s.customTheme || {};
     const pType  = ct.particleType  || 'sparkle';

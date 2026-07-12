@@ -116,6 +116,8 @@ function syncFromState(s) {
   const pCt = s.particleCountScale ?? 100;
   document.getElementById('particle-count-range').value = pCt;
   document.getElementById('particle-count-num').value   = pCt;
+  const _pType = document.getElementById('particle-type');
+  if (_pType) _pType.value = s.particleType || 'auto';
   updateParticlesToggle(s.particlesEnabled !== false);
   updateHidePlayerColorsBtn(s.hidePlayerColors === true);
   updateCharDisplayModeBtn(s.charDisplayMode || 'normal');
@@ -603,6 +605,7 @@ function buildStateFromForm() {
     logoParticleCount: document.getElementById('logo-particles-enabled')?.checked
       ? (parseInt(document.getElementById('logo-particles-num').value) || 3)
       : 0,
+    particleType:       document.getElementById('particle-type')?.value || 'auto',
     particleOpacity:    parseInt(document.getElementById('particle-opacity-num')?.value ?? 100),
     particleCountScale: parseInt(document.getElementById('particle-count-num')?.value ?? 100),
     particlesEnabled:   state.particlesEnabled !== false,
@@ -3151,6 +3154,8 @@ document.getElementById('btn-particles-toggle').addEventListener('click', () => 
   emitState(buildStateFromForm());
   setStatus(state.particlesEnabled === false ? 'Particules désactivées' : 'Particules activées');
 });
+// Type de particules (theme maker)
+document.getElementById('particle-type')?.addEventListener('change', () => emitState(buildStateFromForm()));
 
 function updateHidePlayerColorsBtn(hidden) {
   // Toggle Off/On dans le titre du sous-encadré. On = couleurs visibles (hidden=false).
@@ -3294,7 +3299,7 @@ const SCOREBOARD_DEFAULTS = {
   // Event bar (champs hors Lot 6 qui manquaient)
   eventTextColor: '#EAB830', eventTextSize: 12,
   // Particules + drapeaux
-  particleOpacity: 100, particleCountScale: 100, particlesEnabled: true, logoParticleCount: 3,
+  particleType: 'auto', particleOpacity: 100, particleCountScale: 100, particlesEnabled: true, logoParticleCount: 3,
   flagSize: 52,
   // Lot 1 — visibilité des champs
   showEventName: true, showTournament: true, showFormat: true, showRound: true,
