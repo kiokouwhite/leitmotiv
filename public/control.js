@@ -100,6 +100,10 @@ function syncFromState(s) {
   }
   const _logoFloat = document.getElementById('logo-float');
   if (_logoFloat) _logoFloat.checked = s.logoFloat === true;
+  // Police (thème maker) : conserve dans state + reflète dans le sélecteur.
+  if (s.fontFamily) state.fontFamily = s.fontFamily;
+  const _fontSel = document.getElementById('theme-custom-font');
+  if (_fontSel && s.fontFamily) _fontSel.value = s.fontFamily;
   const lpVal = s.logoParticleCount ?? 0;
   const lpOn  = lpVal > 0;
   document.getElementById('logo-particles-enabled').checked = lpOn;
@@ -555,6 +559,7 @@ function buildStateFromForm() {
     centerLogoHidden: document.getElementById('btn-logo-toggle')?.classList.contains('active') === false,
     logoFloat: document.getElementById('logo-float')?.checked === true,
     swapped: state.swapped ?? false,
+    fontFamily: state.fontFamily || 'Russo One',
     overlayStyle: state.overlayStyle || 'full',
     scoreDisplay: state.scoreDisplay || 'numbers',
     dotsOrientation: state.dotsOrientation || 'row',
@@ -3277,7 +3282,7 @@ if (sepCb) sepCb.addEventListener('change', () => emitState(buildStateFromForm()
 // et repasse le scoreboardLayout sur 'classic'. Préserve les données joueurs.
 const SCOREBOARD_DEFAULTS = {
   scoreboardLayout: 'classic',
-  overlayStyle: 'full',
+  overlayStyle: 'full', fontFamily: 'Russo One',
   // Affichage global
   hidePlayerColors: false, charDisplayMode: 'normal',
   // Couleurs textes + fond + textures (anciennement onglet Textes/Fond, maintenant Scoreboard)

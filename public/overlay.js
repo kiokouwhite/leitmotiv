@@ -199,6 +199,27 @@ function renderPlayerName(elId, player) {
   }
 }
 
+// ── Police personnalisée (charge la Google Font si besoin + pose --custom-font).
+// Utilisée par le thème custom ET par le sélecteur de police du « thème maker »
+// (qui édite le scoreboard live quel que soit le thème). ──────────────────────
+function applyFontFamily(fam, sb) {
+  fam = fam || 'Russo One';
+  const builtinFonts = ['Russo One'];
+  if (!builtinFonts.includes(fam)) {
+    let gfLink = document.getElementById('pso-gfont');
+    const fontParam = fam.replace(/ /g, '+');
+    const gfUrl = `https://fonts.googleapis.com/css2?family=${fontParam}:wght@400;700&display=swap`;
+    if (!gfLink) {
+      gfLink = document.createElement('link');
+      gfLink.id = 'pso-gfont';
+      gfLink.rel = 'stylesheet';
+      document.head.appendChild(gfLink);
+    }
+    if (gfLink.href !== gfUrl) gfLink.href = gfUrl;
+  }
+  sb.style.setProperty('--custom-font', `'${fam}'`);
+}
+
 // ── Custom theme application ──────────────────────────────────────────────
 
 function applyCustomTheme(ct, sb) {
@@ -215,20 +236,8 @@ function applyCustomTheme(ct, sb) {
   };
   const c = { ...defaults, ...ct };
 
-  // ── Google Fonts dynamic loading ─────────────────────────────
-  const builtinFonts = ['Russo One'];
-  if (!builtinFonts.includes(c.fontFamily)) {
-    let gfLink = document.getElementById('pso-gfont');
-    const fontParam = c.fontFamily.replace(/ /g, '+');
-    const gfUrl = `https://fonts.googleapis.com/css2?family=${fontParam}:wght@400;700&display=swap`;
-    if (!gfLink) {
-      gfLink = document.createElement('link');
-      gfLink.id = 'pso-gfont';
-      gfLink.rel = 'stylesheet';
-      document.head.appendChild(gfLink);
-    }
-    if (gfLink.href !== gfUrl) gfLink.href = gfUrl;
-  }
+  // ── Google Fonts dynamic loading + --custom-font ─────────────
+  applyFontFamily(c.fontFamily, sb);
 
   // ── CSS vars on scoreboard element ───────────────────────────
   // Background
@@ -247,7 +256,6 @@ function applyCustomTheme(ct, sb) {
   sb.style.setProperty('--event-text-color',c.eventColor);
   sb.style.setProperty('--score-color',     c.scoreColor);
   sb.style.setProperty('--smash-gold',      c.scoreSepColor);
-  sb.style.setProperty('--custom-font',     `'${c.fontFamily}'`);
 
   // ── Player accent colors ─────────────────────────────────────
   const p1Block = document.getElementById('player1-block');
@@ -504,8 +512,10 @@ function update(s) {
     if (oldStyle) oldStyle.remove();
     // Reset custom CSS vars that may have been set
     sb.style.removeProperty('--score-color');
-    sb.style.removeProperty('--custom-font');
     sb.style.removeProperty('--smash-gold');
+    // Police : le « thème maker » édite le scoreboard live quel que soit le
+    // thème → on applique state.fontFamily (défaut Russo One) hors thème custom.
+    applyFontFamily(s.fontFamily || 'Russo One', sb);
   }
 
   // Logo particules
