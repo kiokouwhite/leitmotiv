@@ -6674,9 +6674,6 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       '</div>';
     cmControls.appendChild(palSect);
 
-    // Mélange 2 hex : t = poids de h1 (0..1). Sert au dégradé teinté du fond.
-    const _hx  = h => { h = h.replace('#', ''); return [parseInt(h.substr(0, 2), 16), parseInt(h.substr(2, 2), 16), parseInt(h.substr(4, 2), 16)]; };
-    const _mix = (h1, h2, t) => { const a = _hx(h1), b = _hx(h2); return '#' + a.map((v, i) => Math.round(v * t + b[i] * (1 - t)).toString(16).padStart(2, '0')).join(''); };
     function applyThemePalette() {
       const P = document.getElementById('theme-pal-primary')?.value   || '#E8B830';
       const S = document.getElementById('theme-pal-secondary')?.value || '#3070E8';
@@ -6684,10 +6681,9 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       const B = document.getElementById('theme-pal-black')?.value     || '#0E0E12';
       state.themePalette = { primary: P, secondary: S, white: W, black: B };
       const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
-      // Fond = noir, + léger dégradé teinté vers la couleur principale (présence ambiante)
+      // Fond = noir pur (pas de dégradé — on désactive tout dégradé résiduel)
       setVal('sb-bg-color', B);
-      setVal('sb-bg-color-2', _mix(P, B, 0.35));
-      state.sbBgColor2Active = true;
+      state.sbBgColor2Active = false;
       // Pseudo = blanc ; SCORE (gros chiffres centraux) = PRINCIPALE pour la rendre dominante
       setVal('name-color', W);
       setVal('score-color', P);
