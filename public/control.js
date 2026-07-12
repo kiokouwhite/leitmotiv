@@ -6598,7 +6598,10 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       });
       window.addEventListener('mouseup', () => { dragging = false; catcher.style.cursor = 'grab'; });
     }
-    const RELOC = ['sb-sect-score', 'sb-sect-scoreboard', 'sb-sect-particules']; // Score, Scoreboard (contient aussi Fond/Texture/Textes), Particules
+    // Le thème maker se limite à ce qui définit un THÈME : police (ci-dessus),
+    // couleurs (carte « Fond & couleurs ») et particules. Pas de layout/position/
+    // géométrie/visibilité (ça reste dans l'onglet Scoreboard).
+    const RELOC = ['card-fond-couleurs', 'sb-sect-particules'];
 
     // Sélecteur de police : l'overlay applique state.fontFamily (--custom-font, charge la Google Font si besoin)
     const FONTS = ['Russo One', 'Inter', 'Bebas Neue', 'Oswald', 'Rajdhani', 'Anton', 'Teko', 'Montserrat'];
@@ -6619,7 +6622,14 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
         if (!el) return;
         if (!el._customPH) el._customPH = document.createComment('cust-slot-' + id);
         if (el.parentNode) el.parentNode.insertBefore(el._customPH, el); // marque la place d'origine
-        cmControls.appendChild(el);
+        if (el.classList.contains('custom-card')) {
+          // Carte isolée : on l'enrobe d'un padding pour l'aligner sur les sections.
+          if (!el._customWrap) { const wr = document.createElement('div'); wr.style.padding = '0 16px 16px'; el._customWrap = wr; }
+          el._customWrap.appendChild(el);
+          cmControls.appendChild(el._customWrap);
+        } else {
+          cmControls.appendChild(el);
+        }
       });
       if (fontSel) fontSel.value = state.fontFamily || 'Russo One'; // reflète la police courante
       if (cmPreview && cmPreview.dataset.src) cmPreview.src = cmPreview.dataset.src; // charge l'aperçu /overlay
