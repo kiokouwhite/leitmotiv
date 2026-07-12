@@ -6635,6 +6635,10 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
         } else {
           cmControls.appendChild(el);
         }
+        // Les sections d'onglet (sb-sect-*) sont en display:none sauf l'onglet
+        // actif → on force l'affichage dans le modal, restauré à la fermeture.
+        el._prevDisplay = el.style.display;
+        el.style.display = '';
       });
       if (fontSel) fontSel.value = state.fontFamily || 'Russo One'; // reflète la police courante
       // « Image de fond » n'a pas sa place dans un thème → masquée ici (reste
@@ -6650,6 +6654,7 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
         const el = document.getElementById(id);
         const ph = el && el._customPH;
         if (el && ph && ph.parentNode) ph.parentNode.replaceChild(el, ph); // remet à sa place d'origine
+        if (el && el._prevDisplay !== undefined) el.style.display = el._prevDisplay; // restaure l'état d'onglet
       });
       const _bgImg = document.getElementById('sub-bg-image');
       if (_bgImg) _bgImg.style.display = ''; // restaure « Image de fond » dans l'onglet Scoreboard
