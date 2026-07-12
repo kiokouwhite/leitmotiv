@@ -6637,6 +6637,10 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
         }
       });
       if (fontSel) fontSel.value = state.fontFamily || 'Russo One'; // reflète la police courante
+      // « Image de fond » n'a pas sa place dans un thème → masquée ici (reste
+      // dispo dans l'onglet Scoreboard, restaurée à la fermeture).
+      const _bgImg = document.getElementById('sub-bg-image');
+      if (_bgImg) _bgImg.style.display = 'none';
       if (cmPreview && cmPreview.dataset.src) cmPreview.src = cmPreview.dataset.src; // charge l'aperçu /overlay
       cm.classList.add('open');
       setTimeout(scaleCustomPreview, 120); // (re)cale l'aperçu une fois affiché
@@ -6647,6 +6651,8 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
         const ph = el && el._customPH;
         if (el && ph && ph.parentNode) ph.parentNode.replaceChild(el, ph); // remet à sa place d'origine
       });
+      const _bgImg = document.getElementById('sub-bg-image');
+      if (_bgImg) _bgImg.style.display = ''; // restaure « Image de fond » dans l'onglet Scoreboard
       if (cmPreview) cmPreview.src = 'about:blank'; // décharge l'aperçu (coupe la socket)
       cm.classList.remove('open');
     }
