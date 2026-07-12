@@ -6680,6 +6680,10 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       const W = document.getElementById('theme-pal-white')?.value     || '#F0EEF8';
       const B = document.getElementById('theme-pal-black')?.value     || '#0E0E12';
       state.themePalette = { primary: P, secondary: S, white: W, black: B };
+      // Repasse en thème « default » : les thèmes nommés (cyberpunk, synthwave…)
+      // forcent border-color/fond de .players-container en dur et écraseraient la
+      // palette. Le thème default utilise les variables → la palette pilote tout.
+      state.overlayTheme = 'default';
       const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
       // Fond = noir pur (pas de dégradé — on désactive tout dégradé résiduel)
       setVal('sb-bg-color', B);
