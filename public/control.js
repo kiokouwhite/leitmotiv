@@ -104,6 +104,15 @@ function syncFromState(s) {
   if (s.fontFamily) state.fontFamily = s.fontFamily;
   const _fontSel = document.getElementById('theme-custom-font');
   if (_fontSel && s.fontFamily) _fontSel.value = s.fontFamily;
+  // Palette du thème : conserve + reflète dans les pastilles (si le modal existe).
+  if (s.themePalette) {
+    state.themePalette = s.themePalette;
+    const _sp = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+    _sp('theme-pal-primary',   s.themePalette.primary);
+    _sp('theme-pal-secondary', s.themePalette.secondary);
+    _sp('theme-pal-white',     s.themePalette.white);
+    _sp('theme-pal-black',     s.themePalette.black);
+  }
   const lpVal = s.logoParticleCount ?? 0;
   const lpOn  = lpVal > 0;
   document.getElementById('logo-particles-enabled').checked = lpOn;
@@ -608,6 +617,7 @@ function buildStateFromForm() {
       ? (parseInt(document.getElementById('logo-particles-num').value) || 3)
       : 0,
     previewPlaceholders: document.getElementById('preview-placeholders')?.checked === true,
+    themePalette: state.themePalette || { primary: '#E8B830', secondary: '#3070E8', white: '#F0EEF8', black: '#0E0E12' },
     particleType:       document.getElementById('particle-type')?.value || 'auto',
     particleOpacity:    parseInt(document.getElementById('particle-opacity-num')?.value ?? 100),
     particleCountScale: parseInt(document.getElementById('particle-count-num')?.value ?? 100),
@@ -3304,6 +3314,8 @@ const SCOREBOARD_DEFAULTS = {
   overlayStyle: 'full', fontFamily: 'Russo One',
   // Affichage global
   hidePlayerColors: false, charDisplayMode: 'normal',
+  // Palette du theme maker : 4 couleurs qui pilotent tous les champs couleur.
+  themePalette: { primary: '#E8B830', secondary: '#3070E8', white: '#F0EEF8', black: '#0E0E12' },
   // Couleurs textes + fond + textures (anciennement onglet Textes/Fond, maintenant Scoreboard)
   tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A',
   sbNameAlign: 'middle', sbNameX: 0, sbNameY: 0,
@@ -6623,9 +6635,9 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       window.addEventListener('mouseup', () => { dragging = false; catcher.style.cursor = 'grab'; });
     }
     // Le thème maker se limite à ce qui définit un THÈME : police (ci-dessus),
-    // couleurs (carte « Fond & couleurs ») et particules. Pas de layout/position/
-    // géométrie/visibilité (ça reste dans l'onglet Scoreboard).
-    const RELOC = ['card-fond-couleurs', 'sb-sect-particules'];
+    // palette de 4 couleurs (carte construite plus bas, qui pilote tous les
+    // champs couleur par id) et particules. Pas de layout/position/géométrie.
+    const RELOC = ['sb-sect-particules'];
 
     // Sélecteur de police : l'overlay applique state.fontFamily (--custom-font, charge la Google Font si besoin)
     const FONTS = ['Russo One', 'Inter', 'Bebas Neue', 'Oswald', 'Rajdhani', 'Anton', 'Teko', 'Montserrat'];
@@ -6639,6 +6651,61 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
     cmControls.appendChild(fontSect);
     const fontSel = document.getElementById('theme-custom-font');
     if (fontSel) fontSel.addEventListener('change', () => { state.fontFamily = fontSel.value; emitState(buildStateFromForm()); });
+
+    // ── Palette du thème : 4 couleurs qui pilotent TOUT le scoreboard ──────────
+    // Chaque pastille écrit dans les champs couleur détaillés (par id, où qu'ils
+    // soient) + les couleurs joueurs, puis émet l'état.
+    const _palField = (id, label, val) =>
+      '<div class="form-group" style="margin:0;text-align:center">' +
+        '<label>' + label + '</label>' +
+        '<input type="color" id="' + id + '" value="' + val + '" style="width:44px;height:30px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;background:var(--surface2)" />' +
+      '</div>';
+    const palSect = document.createElement('div');
+    palSect.style.padding = '0 16px 16px';
+    palSect.innerHTML =
+      '<div class="custom-card"><h3>Palette du thème</h3>' +
+        '<p class="hint" style="margin:0 0 10px;text-align:center">Ces 4 couleurs pilotent tout le scoreboard.</p>' +
+        '<div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center">' +
+          _palField('theme-pal-primary',   'Principale', '#E8B830') +
+          _palField('theme-pal-secondary', 'Secondaire', '#3070E8') +
+          _palField('theme-pal-white',     'Blanc',      '#F0EEF8') +
+          _palField('theme-pal-black',     'Noir',       '#0E0E12') +
+        '</div>' +
+      '</div>';
+    cmControls.appendChild(palSect);
+
+    function applyThemePalette() {
+      const P = document.getElementById('theme-pal-primary')?.value   || '#E8B830';
+      const S = document.getElementById('theme-pal-secondary')?.value || '#3070E8';
+      const W = document.getElementById('theme-pal-white')?.value     || '#F0EEF8';
+      const B = document.getElementById('theme-pal-black')?.value     || '#0E0E12';
+      state.themePalette = { primary: P, secondary: S, white: W, black: B };
+      const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+      // Fond = noir ; textes principaux = blanc
+      setVal('sb-bg-color', B);
+      setVal('name-color', W);
+      setVal('score-color', W);
+      // Couleur principale → tag, VS, dots, contour, halo logo, carré score J1
+      setVal('tag-color', P);
+      setVal('score-vs-color', P);
+      setVal('dot-color', P);
+      setVal('sb-border-color', P);
+      setVal('center-logo-glow-color', P);
+      setVal('score-bg-color', P);
+      // Couleur secondaire → pronoms, texte événement, carré score J2
+      setVal('pronouns-color', S);
+      setVal('event-text-color', S);
+      setVal('score-bg-color-p2', S);
+      // Accents joueurs : J1 = principale, J2 = secondaire
+      setVal('p1-accent-color', P);
+      setVal('p2-accent-color', S);
+      if (state.player1) state.player1.color = P;
+      if (state.player2) state.player2.color = S;
+      emitState(buildStateFromForm());
+    }
+    ['theme-pal-primary', 'theme-pal-secondary', 'theme-pal-white', 'theme-pal-black'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', applyThemePalette);
+    });
 
     // Bouton « Créer le thème » : sauvegarde l'état courant (police/couleurs/
     // particules…) comme preset nommé, réutilisable depuis la grille des presets.
@@ -6679,10 +6746,13 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
         el.style.display = '';
       });
       if (fontSel) fontSel.value = state.fontFamily || 'Russo One'; // reflète la police courante
-      // « Image de fond » n'a pas sa place dans un thème → masquée ici (reste
-      // dispo dans l'onglet Scoreboard, restaurée à la fermeture).
-      const _bgImg = document.getElementById('sub-bg-image');
-      if (_bgImg) _bgImg.style.display = 'none';
+      // Initialise les 4 pastilles de la palette depuis l'état courant.
+      const _pal = state.themePalette || {};
+      const _setPal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+      _setPal('theme-pal-primary',   _pal.primary   || '#E8B830');
+      _setPal('theme-pal-secondary', _pal.secondary || '#3070E8');
+      _setPal('theme-pal-white',     _pal.white     || '#F0EEF8');
+      _setPal('theme-pal-black',     _pal.black     || '#0E0E12');
       if (cmPreview && cmPreview.dataset.src) cmPreview.src = cmPreview.dataset.src; // charge l'aperçu /overlay
       cm.classList.add('open');
       setTimeout(scaleCustomPreview, 120); // (re)cale l'aperçu une fois affiché
@@ -6694,8 +6764,6 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
         if (el && ph && ph.parentNode) ph.parentNode.replaceChild(el, ph); // remet à sa place d'origine
         if (el && el._prevDisplay !== undefined) el.style.display = el._prevDisplay; // restaure l'état d'onglet
       });
-      const _bgImg = document.getElementById('sub-bg-image');
-      if (_bgImg) _bgImg.style.display = ''; // restaure « Image de fond » dans l'onglet Scoreboard
       if (cmPreview) cmPreview.src = 'about:blank'; // décharge l'aperçu (coupe la socket)
       cm.classList.remove('open');
     }
