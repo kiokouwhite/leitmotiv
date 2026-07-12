@@ -2434,26 +2434,35 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
   function _closeSaveModal() {
     if (_modal) _modal.style.display = 'none';
   }
-  function _commitSavePreset() {
-    const name = (_modalIn.value || '').trim();
-    if (!name) { _modalErr.textContent = 'Donne un nom.'; return; }
-    if (name.length > 40) { _modalErr.textContent = 'Max 40 caractères.'; return; }
+  // Sauvegarde un preset/thème depuis l'état courant (snapshot des clés
+  // SCOREBOARD_DEFAULTS). Exposé en global pour être réutilisé par le theme
+  // maker (bouton « Créer le thème »). Renvoie { ok, error?, name? }.
+  window.createSbPreset = function (rawName) {
+    const name = (rawName || '').trim();
+    if (!name) return { ok: false, error: 'Donne un nom.' };
+    if (name.length > 40) return { ok: false, error: 'Max 40 caractères.' };
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'preset';
     const id = 'user-' + slug + '-' + Date.now().toString(36);
-    // Snapshot des champs « customisation » via SCOREBOARD_DEFAULTS
+    // Snapshot depuis buildStateFromForm() (lit tous les contrôles : police,
+    // couleurs, particules…) avec repli sur state pour les champs hors formulaire.
+    const form = (typeof buildStateFromForm === 'function') ? buildStateFromForm() : {};
     const data = {};
     if (typeof SCOREBOARD_DEFAULTS === 'object') {
       Object.keys(SCOREBOARD_DEFAULTS).forEach(k => {
-        if (state[k] !== undefined) data[k] = state[k];
+        const v = (form[k] !== undefined) ? form[k] : state[k];
+        if (v !== undefined) data[k] = v;
       });
     }
-    const preset = { id, name, data, builtin: false };
-    SB_PRESETS.push(preset);
+    SB_PRESETS.push({ id, name, data, builtin: false });
     persistUserPresets();
-    _closeSaveModal();
-    // Rafraîchit la grille des presets si elle est visible
     if (currentMode === 'presets') renderPresets(currentOverlay);
-    if (typeof setStatus === 'function') setStatus('Preset « ' + name + ' » sauvegardé', 'success');
+    return { ok: true, name };
+  };
+  function _commitSavePreset() {
+    const r = window.createSbPreset(_modalIn.value);
+    if (!r.ok) { _modalErr.textContent = r.error; return; }
+    _closeSaveModal();
+    if (typeof setStatus === 'function') setStatus('Preset « ' + r.name + ' » sauvegardé', 'success');
   }
   if (_saveBtn)    _saveBtn.addEventListener('click', _openSaveModal);
   if (_modalOk)    _modalOk.addEventListener('click', _commitSavePreset);
@@ -6516,7 +6525,11 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       '<div class="themes-cat-modal-box">' +
         '<div class="themes-cat-modal-head">' +
           '<h3 class="themes-sect-title">Créer un thème custom</h3>' +
-          '<button type="button" id="themes-custom-modal-close" aria-label="Fermer">✕</button>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-left:auto">' +
+            '<input type="text" id="themes-custom-name" placeholder="Nom du thème…" maxlength="40" style="padding:6px 10px;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);min-width:180px" />' +
+            '<button type="button" id="themes-custom-create" class="btn btn-primary btn-sm" style="white-space:nowrap">✨ Créer le thème</button>' +
+          '</div>' +
+          '<button type="button" id="themes-custom-modal-close" aria-label="Fermer" style="margin-left:8px">✕</button>' +
         '</div>' +
         '<div id="themes-custom-modal-body">' +
           '<div id="themes-custom-controls"></div>' +
@@ -6626,6 +6639,25 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
     cmControls.appendChild(fontSect);
     const fontSel = document.getElementById('theme-custom-font');
     if (fontSel) fontSel.addEventListener('change', () => { state.fontFamily = fontSel.value; emitState(buildStateFromForm()); });
+
+    // Bouton « Créer le thème » : sauvegarde l'état courant (police/couleurs/
+    // particules…) comme preset nommé, réutilisable depuis la grille des presets.
+    const createBtn = document.getElementById('themes-custom-create');
+    const nameInput = document.getElementById('themes-custom-name');
+    function _doCreateTheme() {
+      const r = (typeof window.createSbPreset === 'function')
+        ? window.createSbPreset(nameInput ? nameInput.value : '')
+        : { ok: false, error: 'Indisponible' };
+      if (!r.ok) {
+        if (typeof setStatus === 'function') setStatus(r.error || 'Erreur', 'error');
+        if (nameInput) nameInput.focus();
+        return;
+      }
+      if (nameInput) nameInput.value = '';
+      if (typeof setStatus === 'function') setStatus('Thème « ' + r.name + ' » créé', 'success');
+    }
+    if (createBtn) createBtn.addEventListener('click', _doCreateTheme);
+    if (nameInput) nameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') _doCreateTheme(); });
 
     function openCustomModal() {
       RELOC.forEach(id => {
