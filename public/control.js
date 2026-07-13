@@ -2413,9 +2413,12 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
           const id = card.dataset.layout;
           const preset = SB_PRESETS.find(p => p.id === id);
           if (preset && !preset.builtin && preset.data) {
-            // User preset : applique le snapshot complet
+            // User preset : applique le snapshot complet.
             Object.assign(state, preset.data);
-            if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data });
+            // Marque CE preset comme actif : sinon le scoreboardLayout='classic'
+            // stocké dans le snapshot laissait « Classique » surligné.
+            state.scoreboardLayout = id;
+            if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data, scoreboardLayout: id });
             emitState(buildStateFromForm());
           } else {
             // Built-in : ancien comportement (juste scoreboardLayout)
