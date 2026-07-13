@@ -2521,6 +2521,7 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
         }
         // Charge le thème puis ouvre le theme maker en mode édition.
         Object.assign(state, preset.data);
+        state.customThemeActive = true; // swatches « Couleurs du thème » = palette custom
         if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data });
         emitState(buildStateFromForm());
         if (ev.target.closest('.user-theme-edit')) {
@@ -3388,7 +3389,7 @@ const SCOREBOARD_DEFAULTS = {
   // Affichage global
   hidePlayerColors: false, charDisplayMode: 'normal',
   // Palette du theme maker : 4 couleurs qui pilotent tous les champs couleur.
-  themePalette: { primary: '#E8B830', secondary: '#3070E8', white: '#F0EEF8', black: '#0E0E12' },
+  themePalette: { primary: '#E8B830', secondary: '#3070E8', white: '#F0EEF8', black: '#0E0E12' }, customThemeActive: false,
   // Couleurs textes + fond + textures (anciennement onglet Textes/Fond, maintenant Scoreboard)
   tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A',
   sbNameAlign: 'middle', sbNameX: 0, sbNameY: 0,
@@ -6399,6 +6400,7 @@ function applyTheme(key) {
 
   // Scoreboard state
   state.overlayTheme   = key;
+  state.customThemeActive = false; // thème nommé → les swatches reprennent ses couleurs
   state.sbBgColor      = t.sbBgColor;
   state.sbBgOpacity    = t.sbBgOpacity;
   state.eventTextColor = t.eventTextColor;
@@ -6753,6 +6755,7 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       const W = document.getElementById('theme-pal-white')?.value     || '#F0EEF8';
       const B = document.getElementById('theme-pal-black')?.value     || '#0E0E12';
       state.themePalette = { primary: P, secondary: S, white: W, black: B };
+      state.customThemeActive = true; // les swatches « Couleurs du thème » suivront la palette
       // Repasse en thème « default » : les thèmes nommés (cyberpunk, synthwave…)
       // forcent border-color/fond de .players-container en dur et écraseraient la
       // palette. Le thème default utilise les variables → la palette pilote tout.
@@ -13800,6 +13803,16 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
 
   function getThemePalette() {
     try {
+      // Thème custom actif → on affiche SA palette (principale/secondaire/blanc/noir).
+      if (typeof state !== 'undefined' && state && state.customThemeActive && state.themePalette) {
+        const p = state.themePalette;
+        return [
+          { label: 'Principale', hex: normalizeToHex(p.primary) },
+          { label: 'Secondaire', hex: normalizeToHex(p.secondary) },
+          { label: 'Blanc',      hex: normalizeToHex(p.white) },
+          { label: 'Noir',       hex: normalizeToHex(p.black) },
+        ];
+      }
       const themeId = (typeof state !== 'undefined' && state && state.overlayTheme) || 'default';
       const T = (typeof THEMES !== 'undefined' && THEMES) ? (THEMES[themeId] || THEMES.default) : null;
       if (T) {
