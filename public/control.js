@@ -2469,7 +2469,49 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
     SB_PRESETS.push({ id, name, data, builtin: false });
     persistUserPresets();
     if (currentMode === 'presets') renderPresets(currentOverlay);
+    window.renderCustomThemeCards();
     return { ok: true, name };
+  };
+
+  // Rend les thèmes utilisateur comme cartes dans la catégorie « Custom » de la
+  // grille des thèmes (à côté du « + Créer un thème custom »).
+  window.renderCustomThemeCards = function () {
+    const grid = document.querySelector('#themes-sect-0 .themes-grid');
+    if (!grid) return;
+    grid.querySelectorAll('.user-theme-card').forEach(c => c.remove());
+    SB_PRESETS.filter(p => !p.builtin).forEach(preset => {
+      const pal = (preset.data && preset.data.themePalette) || null;
+      const grad = pal ? `linear-gradient(135deg, ${pal.black} 0%, ${pal.primary} 140%)`
+                       : 'linear-gradient(135deg,#0E0E12,#16161E)';
+      const dot = c => `<i style="width:11px;height:11px;border-radius:50%;background:${c};box-shadow:0 0 0 1px rgba(0,0,0,0.4)"></i>`;
+      const card = document.createElement('div');
+      card.className = 'theme-preset-card user-theme-card';
+      card.dataset.userTheme = preset.id;
+      card.style.cursor = 'pointer';
+      card.style.position = 'relative';
+      card.innerHTML =
+        '<button class="user-theme-del" data-del="' + preset.id + '" title="Supprimer ce thème" ' +
+          'style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:#ff6688;border:1px solid rgba(255,102,136,0.4);' +
+          'border-radius:4px;font-size:11px;padding:1px 6px;cursor:pointer;line-height:1;z-index:2">✕</button>' +
+        '<div class="theme-preset-preview" style="background:' + grad + ';display:flex;align-items:center;justify-content:center;gap:5px">' +
+          (pal ? dot(pal.primary) + dot(pal.secondary) + dot(pal.white) : '') +
+        '</div>' +
+        '<div class="theme-preset-name">' + preset.name + '</div>';
+      card.addEventListener('click', (ev) => {
+        if (ev.target.closest('.user-theme-del')) {
+          ev.stopPropagation();
+          const i = SB_PRESETS.findIndex(p => p.id === preset.id);
+          if (i >= 0) { SB_PRESETS.splice(i, 1); persistUserPresets(); window.renderCustomThemeCards(); }
+          return;
+        }
+        // Applique le thème sauvegardé (palette + couleurs + police + particules).
+        Object.assign(state, preset.data);
+        if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data });
+        emitState(buildStateFromForm());
+        if (typeof setStatus === 'function') setStatus('Thème « ' + preset.name + ' » appliqué', 'success');
+      });
+      grid.appendChild(card);
+    });
   };
   function _commitSavePreset() {
     const r = window.createSbPreset(_modalIn.value);
@@ -6790,6 +6832,8 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       if (e.target === cm || e.target.closest('#themes-custom-modal-close')) closeCustomModal();
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && cm.classList.contains('open')) closeCustomModal(); });
+    // Affiche les thèmes utilisateur déjà sauvegardés dans la catégorie « Custom ».
+    if (typeof window.renderCustomThemeCards === 'function') window.renderCustomThemeCards();
   })();
 })();
 
