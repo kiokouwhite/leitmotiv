@@ -2466,6 +2466,18 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
         if (v !== undefined) data[k] = v;
       });
     }
+    // Mode édition : met à jour le thème existant au lieu d'en créer un nouveau.
+    if (window.__editingThemeId) {
+      const p = SB_PRESETS.find(x => x.id === window.__editingThemeId);
+      window.__editingThemeId = null;
+      if (p) {
+        p.name = name; p.data = data;
+        persistUserPresets();
+        if (currentMode === 'presets') renderPresets(currentOverlay);
+        window.renderCustomThemeCards();
+        return { ok: true, name, updated: true };
+      }
+    }
     SB_PRESETS.push({ id, name, data, builtin: false });
     persistUserPresets();
     if (currentMode === 'presets') renderPresets(currentOverlay);
@@ -2489,10 +2501,13 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
       card.dataset.userTheme = preset.id;
       card.style.cursor = 'pointer';
       card.style.position = 'relative';
+      const cornerBtn = (cls, data, title, color, glyph, right) =>
+        '<button class="' + cls + '" data-id="' + data + '" title="' + title + '" ' +
+          'style="position:absolute;top:6px;right:' + right + 'px;background:rgba(0,0,0,0.6);color:' + color + ';border:1px solid ' + color + '55;' +
+          'border-radius:4px;font-size:11px;padding:1px 6px;cursor:pointer;line-height:1;z-index:2">' + glyph + '</button>';
       card.innerHTML =
-        '<button class="user-theme-del" data-del="' + preset.id + '" title="Supprimer ce thème" ' +
-          'style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:#ff6688;border:1px solid rgba(255,102,136,0.4);' +
-          'border-radius:4px;font-size:11px;padding:1px 6px;cursor:pointer;line-height:1;z-index:2">✕</button>' +
+        cornerBtn('user-theme-del',  preset.id, 'Supprimer ce thème', '#ff6688', '✕', 6) +
+        cornerBtn('user-theme-edit', preset.id, 'Éditer ce thème',     '#6bc9ff', '✎', 32) +
         '<div class="theme-preset-preview" style="background:' + grad + ';display:flex;align-items:center;justify-content:center;gap:5px">' +
           (pal ? dot(pal.primary) + dot(pal.secondary) + dot(pal.white) : '') +
         '</div>' +
@@ -2504,10 +2519,21 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
           if (i >= 0) { SB_PRESETS.splice(i, 1); persistUserPresets(); window.renderCustomThemeCards(); }
           return;
         }
-        // Applique le thème sauvegardé (palette + couleurs + police + particules).
+        // Charge le thème puis ouvre le theme maker en mode édition.
         Object.assign(state, preset.data);
         if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data });
         emitState(buildStateFromForm());
+        if (ev.target.closest('.user-theme-edit')) {
+          ev.stopPropagation();
+          document.getElementById('theme-card-custom')?.click(); // ouvre le modal
+          setTimeout(() => {
+            window.__editingThemeId = preset.id;
+            const ni = document.getElementById('themes-custom-name'); if (ni) ni.value = preset.name;
+            const cb = document.getElementById('themes-custom-create'); if (cb) cb.textContent = '💾 Enregistrer';
+          }, 60);
+          return;
+        }
+        // Clic simple = applique le thème.
         if (typeof setStatus === 'function') setStatus('Thème « ' + preset.name + ' » appliqué', 'success');
       });
       grid.appendChild(card);
@@ -6779,7 +6805,10 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
         return;
       }
       if (nameInput) nameInput.value = '';
-      if (typeof setStatus === 'function') setStatus('Thème « ' + r.name + ' » créé', 'success');
+      if (createBtn) createBtn.textContent = '✨ Créer le thème'; // repasse en mode création
+      if (typeof setStatus === 'function') {
+        setStatus('Thème « ' + r.name + (r.updated ? ' » mis à jour' : ' » créé'), 'success');
+      }
     }
     if (createBtn) createBtn.addEventListener('click', _doCreateTheme);
     if (nameInput) nameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') _doCreateTheme(); });
@@ -6803,6 +6832,11 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
         el._prevDisplay = el.style.display;
         el.style.display = '';
       });
+      // Par défaut = création d'un nouveau thème (le mode édition est réactivé
+      // juste après par le bouton ✎ si besoin).
+      window.__editingThemeId = null;
+      const _createBtn = document.getElementById('themes-custom-create');
+      if (_createBtn) _createBtn.textContent = '✨ Créer le thème';
       if (fontSel) fontSel.value = state.fontFamily || 'Russo One'; // reflète la police courante
       // Initialise les 4 pastilles de la palette depuis l'état courant.
       const _pal = state.themePalette || {};
