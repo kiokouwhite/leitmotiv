@@ -105,6 +105,7 @@ function syncFromState(s) {
   const _fontSel = document.getElementById('theme-custom-font');
   if (_fontSel && s.fontFamily) _fontSel.value = s.fontFamily;
   // Palette du thème : conserve + reflète dans les pastilles (si le modal existe).
+  if (s.customThemeActive !== undefined) state.customThemeActive = s.customThemeActive;
   if (s.themePalette) {
     state.themePalette = s.themePalette;
     const _sp = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
