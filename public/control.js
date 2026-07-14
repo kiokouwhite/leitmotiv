@@ -2516,8 +2516,9 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
       card.innerHTML =
         cornerBtn('user-theme-del',  preset.id, 'Supprimer ce thème', '#ff6688', '✕', 6) +
         cornerBtn('user-theme-edit', preset.id, 'Éditer ce thème',     '#6bc9ff', '✎', 32) +
-        '<div class="theme-preset-preview" style="background:' + grad + ';display:flex;align-items:center;justify-content:center;gap:5px">' +
-          (pal ? dot(pal.primary) + dot(pal.secondary) + dot(pal.white) : '') +
+        '<div class="theme-preset-preview" style="background:' + grad + ';display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">' +
+          '<span style="font-size:10px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:0.06em;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,0.7)">' + preset.name + '</span>' +
+          (pal ? '<span style="display:flex;gap:5px">' + dot(pal.primary) + dot(pal.secondary) + dot(pal.white) + '</span>' : '') +
         '</div>' +
         '<div class="theme-preset-name">' + preset.name + '</div>';
       card.addEventListener('click', (ev) => {
