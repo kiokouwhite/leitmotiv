@@ -2383,14 +2383,19 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
       const cur = state.scoreboardLayout || 'classic';
       grid.innerHTML = SB_PRESETS.map(p => {
         const active = (p.id === cur) ? ' active' : '';
-        const previewLabel = p.builtin ? p.id : '★ user';
+        // Aperçu : nom du layout (au lieu de « ★ user »), sur le dégradé de sa
+        // palette si le preset en a une.
+        const previewLabel = p.builtin ? p.id : p.name;
+        const pal = (!p.builtin && p.data && p.data.themePalette) || null;
+        const previewBg = pal ? 'linear-gradient(135deg,' + pal.black + ' 0%,' + pal.primary + ' 150%)'
+                              : 'linear-gradient(135deg,#0E0E12,#16161E)';
         const delBtn = p.builtin ? '' :
           '<button class="sb-preset-del" data-del="' + p.id + '" type="button" title="Supprimer ce preset" ' +
             'style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:#ff6688;border:1px solid rgba(255,102,136,0.4);' +
             'border-radius:4px;font-size:11px;padding:2px 6px;cursor:pointer;line-height:1;z-index:2">✕</button>';
         return '<div class="theme-preset-card sb-preset-card' + active + '" data-layout="' + p.id + '" role="button" tabindex="0" style="position:relative">' +
           delBtn +
-          '<div class="theme-preset-preview" style="background:linear-gradient(135deg,#0E0E12,#16161E);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:0.06em;text-transform:uppercase">' + previewLabel + '</div>' +
+          '<div class="theme-preset-preview" style="background:' + previewBg + ';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:0.06em;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,0.7)">' + previewLabel + '</div>' +
           '<div class="theme-preset-name">' + p.name + '</div>' +
         '</div>';
       }).join('');
