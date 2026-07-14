@@ -6789,6 +6789,9 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       setVal('pronouns-color', S);
       setVal('event-text-color', S);
       setVal('score-bg-color-p2', S);
+      // Cadre événement : fond = noir du thème, bordure = principale
+      setVal('event-bar-bg-color', B);
+      setVal('event-bar-border-color', P);
       // Accents joueurs : J1 = principale, J2 = secondaire
       setVal('p1-accent-color', P);
       setVal('p2-accent-color', S);
