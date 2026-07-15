@@ -2509,6 +2509,8 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
       card.dataset.userTheme = preset.id;
       card.style.cursor = 'pointer';
       card.style.position = 'relative';
+      // Ombre portée néon dans la couleur secondaire du thème.
+      if (pal && pal.secondary) card.style.boxShadow = '0 0 18px ' + pal.secondary + '66, 0 4px 14px ' + pal.secondary + '33';
       const cornerBtn = (cls, data, title, color, glyph, right) =>
         '<button class="' + cls + '" data-id="' + data + '" title="' + title + '" ' +
           'style="position:absolute;top:6px;right:' + right + 'px;background:rgba(0,0,0,0.6);color:' + color + ';border:1px solid ' + color + '55;' +
