@@ -3418,6 +3418,7 @@ const SCOREBOARD_DEFAULTS = {
   showEventName: true, showTournament: true, showFormat: true, showRound: true,
   showFlags: true, showPronouns: true, showTag: true, showCharacter: true, showSeed: true,
   // Lot 2
+  centerLogo: '', centerLogoHidden: false,
   centerLogoSize: 52, centerLogoOffsetY: 0, centerLogoOpacity: 100,
   centerLogoShape: 'none', centerLogoGlowColor: '#00f0ff', centerLogoGlowIntensity: 0, logoFloat: false,
   playersGap: 0,
