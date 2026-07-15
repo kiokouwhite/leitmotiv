@@ -2418,6 +2418,7 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
           card.classList.add('active');
           const id = card.dataset.layout;
           const preset = SB_PRESETS.find(p => p.id === id);
+          window.__activePresetId = id; // suit le preset sélectionné pour « Sauvegarder »
           if (preset && !preset.builtin && preset.data) {
             // User preset : applique le snapshot complet.
             Object.assign(state, preset.data);
@@ -2481,6 +2482,7 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
       window.__editingThemeId = null;
       if (p) {
         p.name = name; p.data = data;
+        state.scoreboardLayout = p.id; window.__activePresetId = p.id; // reste le preset actif
         persistUserPresets();
         if (currentMode === 'presets') renderPresets(currentOverlay);
         window.renderCustomThemeCards();
@@ -2488,6 +2490,7 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
       }
     }
     SB_PRESETS.push({ id, name, data, builtin: false });
+    state.scoreboardLayout = id; window.__activePresetId = id; // le nouveau preset devient l'actif
     persistUserPresets();
     if (currentMode === 'presets') renderPresets(currentOverlay);
     window.renderCustomThemeCards();
@@ -2534,7 +2537,8 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
         // Charge le thème puis ouvre le theme maker en mode édition.
         Object.assign(state, preset.data);
         state.customThemeActive = true; // swatches « Couleurs du thème » = palette custom
-        if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data });
+        state.scoreboardLayout = preset.id; window.__activePresetId = preset.id; // devient le preset actif
+        if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data, scoreboardLayout: preset.id });
         emitState(buildStateFromForm());
         if (ev.target.closest('.user-theme-edit')) {
           ev.stopPropagation();
@@ -2562,7 +2566,9 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
   // « Sauvegarder » : met à jour le preset ACTIF (state.scoreboardLayout).
   const _saveCurBtn = document.getElementById('btn-sb-save-current');
   if (_saveCurBtn) _saveCurBtn.addEventListener('click', () => {
-    const curId = state.scoreboardLayout;
+    // __activePresetId suit le dernier preset/thème appliqué ou créé ; contrairement
+    // à state.scoreboardLayout il n'est pas réécrit par les stateUpdate du serveur.
+    const curId = window.__activePresetId || state.scoreboardLayout;
     const preset = SB_PRESETS.find(p => p.id === curId && !p.builtin);
     if (!preset) {
       // Aucun preset user actif (ex. « Classique » built-in) → on crée un nouveau.
