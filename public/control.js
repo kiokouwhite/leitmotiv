@@ -2502,9 +2502,8 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
     grid.querySelectorAll('.user-theme-card').forEach(c => c.remove());
     SB_PRESETS.filter(p => !p.builtin).forEach(preset => {
       const pal = (preset.data && preset.data.themePalette) || null;
-      const grad = pal ? `linear-gradient(135deg, ${pal.black} 0%, ${pal.primary} 140%)`
-                       : 'linear-gradient(135deg,#0E0E12,#16161E)';
-      const dot = c => `<i style="width:11px;height:11px;border-radius:50%;background:${c};box-shadow:0 0 0 1px rgba(0,0,0,0.4)"></i>`;
+      const bg = pal ? pal.black : '#0E0E12';       // fond = noir du thème
+      const nameCol = pal ? pal.primary : '#E8B830'; // texte = couleur principale
       const card = document.createElement('div');
       card.className = 'theme-preset-card user-theme-card';
       card.dataset.userTheme = preset.id;
@@ -2517,9 +2516,8 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
       card.innerHTML =
         cornerBtn('user-theme-del',  preset.id, 'Supprimer ce thème', '#ff6688', '✕', 6) +
         cornerBtn('user-theme-edit', preset.id, 'Éditer ce thème',     '#6bc9ff', '✎', 32) +
-        '<div class="theme-preset-preview" style="background:' + grad + ';display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">' +
-          '<span style="font-size:10px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:0.06em;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,0.7)">' + preset.name + '</span>' +
-          (pal ? '<span style="display:flex;gap:5px">' + dot(pal.primary) + dot(pal.secondary) + dot(pal.white) + '</span>' : '') +
+        '<div class="theme-preset-preview" style="background:' + bg + ';display:flex;align-items:center;justify-content:center">' +
+          '<span style="font-size:13px;font-weight:700;color:' + nameCol + ';letter-spacing:0.08em;text-transform:uppercase">' + preset.name + '</span>' +
         '</div>' +
         '<div class="theme-preset-name">' + preset.name + '</div>';
       card.addEventListener('click', (ev) => {
