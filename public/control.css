@@ -2359,6 +2359,19 @@ section:has(#themes-cust-grid) { border-top: none; padding: 0; }
   box-shadow: 0 0 0 2px rgba(232,184,48,0.3), 0 8px 24px rgba(0,0,0,0.4);
 }
 
+/* Boutons éditer/supprimer des thèmes custom : visibles seulement au survol. */
+.user-theme-card .user-theme-edit,
+.user-theme-card .user-theme-del {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.user-theme-card:hover .user-theme-edit,
+.user-theme-card:hover .user-theme-del,
+.user-theme-card:focus-within .user-theme-edit,
+.user-theme-card:focus-within .user-theme-del {
+  opacity: 1;
+}
+
 .theme-preset-preview {
   height: 90px;
   display: flex;
