@@ -2509,8 +2509,10 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
       card.dataset.userTheme = preset.id;
       card.style.cursor = 'pointer';
       card.style.position = 'relative';
-      // Ombre portée néon dans la couleur secondaire du thème.
-      if (pal && pal.secondary) card.style.boxShadow = '0 0 18px ' + pal.secondary + '66, 0 4px 14px ' + pal.secondary + '33';
+      // Lueur néon du texte dans la couleur secondaire (comme les thèmes néon).
+      const nameGlow = (pal && pal.secondary)
+        ? 'text-shadow:0 0 6px ' + pal.secondary + ',0 0 14px ' + pal.secondary + 'aa;'
+        : '';
       const cornerBtn = (cls, data, title, color, glyph, right) =>
         '<button class="' + cls + '" data-id="' + data + '" title="' + title + '" ' +
           'style="position:absolute;top:6px;right:' + right + 'px;background:rgba(0,0,0,0.6);color:' + color + ';border:1px solid ' + color + '55;' +
@@ -2519,7 +2521,7 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
         cornerBtn('user-theme-del',  preset.id, 'Supprimer ce thème', '#ff6688', '✕', 6) +
         cornerBtn('user-theme-edit', preset.id, 'Éditer ce thème',     '#6bc9ff', '✎', 32) +
         '<div class="theme-preset-preview" style="background:' + bg + ';display:flex;align-items:center;justify-content:center">' +
-          '<span style="font-size:13px;font-weight:700;color:' + nameCol + ';letter-spacing:0.08em;text-transform:uppercase">' + preset.name + '</span>' +
+          '<span style="font-size:13px;font-weight:700;color:' + nameCol + ';letter-spacing:0.08em;text-transform:uppercase;' + nameGlow + '">' + preset.name + '</span>' +
         '</div>' +
         '<div class="theme-preset-name">' + preset.name + '</div>';
       card.addEventListener('click', (ev) => {
