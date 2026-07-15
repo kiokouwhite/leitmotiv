@@ -1112,7 +1112,9 @@ function update(s) {
     } else {
       imgEl.style.display = 'none';
       if (frameEl) frameEl.style.display = 'none';
-      vsEl.style.display = 'inline';
+      // Logo explicitement masqué → on cache aussi le « VS » (bloc central vide).
+      // Sinon (pas de logo mais pas masqué) → « VS » par défaut.
+      vsEl.style.display = s.centerLogoHidden ? 'none' : 'inline';
     }
   };
   // Full layout
