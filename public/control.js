@@ -2559,6 +2559,23 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
     if (typeof setStatus === 'function') setStatus('Preset « ' + r.name + ' » sauvegardé', 'success');
   }
   if (_saveBtn)    _saveBtn.addEventListener('click', _openSaveModal);
+  // « Sauvegarder » : met à jour le preset ACTIF (state.scoreboardLayout).
+  const _saveCurBtn = document.getElementById('btn-sb-save-current');
+  if (_saveCurBtn) _saveCurBtn.addEventListener('click', () => {
+    const curId = state.scoreboardLayout;
+    const preset = SB_PRESETS.find(p => p.id === curId && !p.builtin);
+    if (!preset) {
+      // Aucun preset user actif (ex. « Classique » built-in) → on crée un nouveau.
+      if (typeof setStatus === 'function') setStatus('Aucun preset perso actif — donne un nom pour en créer un.', 'info');
+      _openSaveModal();
+      return;
+    }
+    window.__editingThemeId = curId;              // réutilise la logique de mise à jour
+    const r = window.createSbPreset(preset.name);
+    if (typeof setStatus === 'function') {
+      setStatus(r.ok ? ('Preset « ' + preset.name + ' » mis à jour') : (r.error || 'Erreur'), r.ok ? 'success' : 'error');
+    }
+  });
   if (_modalOk)    _modalOk.addEventListener('click', _commitSavePreset);
   if (_modalCanc)  _modalCanc.addEventListener('click', _closeSaveModal);
   if (_modalClse)  _modalClse.addEventListener('click', _closeSaveModal);
