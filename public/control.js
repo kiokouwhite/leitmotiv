@@ -2428,8 +2428,13 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
             if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data, scoreboardLayout: id });
             emitState(buildStateFromForm());
           } else {
-            // Built-in : ancien comportement (juste scoreboardLayout)
+            // Built-in « Classique » = apparence par défaut : on réinitialise
+            // toutes les clés de customisation (sinon l'aperçu gardait les
+            // couleurs/palette du thème précédent → semblait ne rien changer).
+            if (typeof SCOREBOARD_DEFAULTS === 'object') Object.assign(state, SCOREBOARD_DEFAULTS);
             state.scoreboardLayout = id;
+            state.customThemeActive = false;
+            if (typeof syncFromState === 'function') syncFromState({ ...state, scoreboardLayout: id });
             emitState(buildStateFromForm());
           }
         });
