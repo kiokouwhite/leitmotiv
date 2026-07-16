@@ -1099,7 +1099,9 @@ function update(s) {
   const _logoIsHtml = !!s.centerLogo && /\.html?(\?|#|$)/i.test(s.centerLogo);
   const _applyCenterLogo = (imgEl, frameEl, vsEl) => {
     if (!imgEl || !vsEl) return;
+    const area = imgEl.parentElement; // .center-logo-area / .slim-center-logo
     const show = s.centerLogo && !s.centerLogoHidden;
+    if (area) area.style.display = ''; // visible par défaut ; masqué plus bas si logo masqué
     if (show && _logoIsHtml) {
       if (frameEl) { if (frameEl.getAttribute('src') !== s.centerLogo) frameEl.src = s.centerLogo; frameEl.style.display = 'block'; }
       imgEl.style.display = 'none';
@@ -1109,12 +1111,17 @@ function update(s) {
       imgEl.style.display = 'block';
       if (frameEl) frameEl.style.display = 'none';
       vsEl.style.display = 'none';
-    } else {
+    } else if (s.centerLogoHidden) {
+      // Logo explicitement masqué → tout le bloc central disparaît (ni VS ni carré).
       imgEl.style.display = 'none';
       if (frameEl) frameEl.style.display = 'none';
-      // Logo explicitement masqué → on cache aussi le « VS » (bloc central vide).
-      // Sinon (pas de logo mais pas masqué) → « VS » par défaut.
-      vsEl.style.display = s.centerLogoHidden ? 'none' : 'inline';
+      vsEl.style.display = 'none';
+      if (area) area.style.display = 'none';
+    } else {
+      // Pas de logo mais non masqué → « VS » par défaut.
+      imgEl.style.display = 'none';
+      if (frameEl) frameEl.style.display = 'none';
+      vsEl.style.display = 'inline';
     }
   };
   // Full layout
