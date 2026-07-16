@@ -1096,6 +1096,9 @@ function update(s) {
 
   // Logo central — image OU fichier HTML (animation). Un .html/.htm est rendu
   // dans une iframe pour exécuter son CSS/JS ; sinon on garde le rendu <img>.
+  // Logo masqué → classe body qui annule le min-width du bloc central (sinon un
+  // carré vide de 160px restait au milieu).
+  document.body.classList.toggle('sb-logo-hidden', s.centerLogoHidden === true);
   const _logoIsHtml = !!s.centerLogo && /\.html?(\?|#|$)/i.test(s.centerLogo);
   const _applyCenterLogo = (imgEl, frameEl, vsEl) => {
     if (!imgEl || !vsEl) return;

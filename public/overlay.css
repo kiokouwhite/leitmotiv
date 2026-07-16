@@ -235,6 +235,11 @@ body.sb-cards-separated #particle-canvas {
   display: none !important;
 }
 
+/* Logo central masqué : le bloc central .center-logo-area est retiré (JS) ; on
+   annule aussi le min-width du .score-center pour qu'il n'y ait plus de carré
+   vide au milieu (les scores se rapprochent). */
+body.sb-logo-hidden .score-center { min-width: 0; }
+
 /* Score dans les cartes — le JS déplace p1-score à la fin de player1-block et
    p2-score au début de player2-block. CSS aligne chaque score sur le côté
    intérieur de sa carte (P1 → bord droit, P2 → bord gauche) façon TSH. */
