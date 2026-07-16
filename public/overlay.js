@@ -773,6 +773,35 @@ function update(s) {
   document.body.classList.toggle('sb-mirror', s.swapPlayers === true);
   document.body.classList.toggle('sb-cards-separated', s.cardsSeparated === true);
 
+  // Mode cartes séparées : on veut des particules AU-DESSUS de chaque carte
+  // mais pas dans les gaps. Le canvas couvre toute la barre → on le masque aux
+  // seules zones des cartes (mask CSS multi-rectangles, recalculé à chaque rendu).
+  (function _maskSeparatedParticles() {
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return;
+    if (s.cardsSeparated !== true) {
+      canvas.style.webkitMaskImage = ''; canvas.style.maskImage = '';
+      return;
+    }
+    const cRect = canvas.getBoundingClientRect();
+    if (!cRect.width) return;
+    const cards = Array.from(document.querySelectorAll('.players-container > .player, .players-container > .score-center'))
+      .filter(el => el.offsetParent !== null && el.getBoundingClientRect().width > 0);
+    if (!cards.length) { canvas.style.webkitMaskImage = ''; canvas.style.maskImage = ''; return; }
+    const grads = [], pos = [], size = [];
+    cards.forEach(el => {
+      const r = el.getBoundingClientRect();
+      grads.push('linear-gradient(#000,#000)');
+      pos.push(Math.round(r.left - cRect.left) + 'px ' + Math.round(r.top - cRect.top) + 'px');
+      size.push(Math.round(r.width) + 'px ' + Math.round(r.height) + 'px');
+    });
+    const gi = grads.join(','), pi = pos.join(','), si = size.join(',');
+    canvas.style.webkitMaskImage = gi;    canvas.style.maskImage = gi;
+    canvas.style.webkitMaskRepeat = 'no-repeat'; canvas.style.maskRepeat = 'no-repeat';
+    canvas.style.webkitMaskPosition = pi; canvas.style.maskPosition = pi;
+    canvas.style.webkitMaskSize = si;     canvas.style.maskSize = si;
+  })();
+
   // Ancrage 9 points du scoreboard. Préfère sbAnchor (nouveau, 9 valeurs)
   // sinon dérive depuis sbAnchorY legacy (top/middle/bottom → *-center).
   const _sbAnch = s.sbAnchor

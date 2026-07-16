@@ -231,9 +231,9 @@ body.sb-cards-separated #scoreboard::before,
 body.sb-cards-separated #scoreboard::after {
   display: none !important;
 }
-body.sb-cards-separated #particle-canvas {
-  display: none !important;
-}
+/* En mode cartes séparées, le canvas de particules reste visible mais il est
+   masqué (mask CSS calculé par overlay.js) aux seules zones des cartes → des
+   particules au-dessus de chaque carte, aucune dans les gaps. */
 
 /* Logo central masqué : le bloc central .center-logo-area est retiré (JS). On
    efface aussi le « carré » résiduel du .score-center (min-width + fond +
