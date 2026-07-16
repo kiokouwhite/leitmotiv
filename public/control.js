@@ -3858,6 +3858,7 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
   // l'overflow:auto — comme ça les boutons absolute (zoom, plein cadre) qui
   // vivent sur le wrap restent VISIBLES quand l'utilisateur scroll/pan dans
   // le contenu zoomé (sinon ils défilaient hors du cadre avec le contenu).
+  let _previewBgImageUrl = ''; // image de fond de la preview (couche zoomable)
   function scalePreviewWrap(wrap) {
     const frame = wrap.querySelector('.overlay-preview-frame');
     if (!frame) return;
@@ -3871,6 +3872,20 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
     }
     const baseScale = wrap.offsetWidth / 1920;
     const userZoom  = parseFloat(wrap.dataset.userZoom || '1') || 1;
+    // Couche d'image de fond de la preview, placée DANS le scroller derrière
+    // l'iframe et scalée avec le même transform → elle zoome avec l'overlay.
+    let bgLayer = scroller.querySelector('.overlay-preview-bg');
+    if (!bgLayer) {
+      bgLayer = document.createElement('div');
+      bgLayer.className = 'overlay-preview-bg';
+      bgLayer.style.cssText = 'position:absolute;top:0;left:0;width:1920px;height:1080px;background-size:cover;background-position:center;background-repeat:no-repeat;pointer-events:none;z-index:0';
+      scroller.insertBefore(bgLayer, scroller.firstChild);
+    }
+    bgLayer.style.backgroundImage = _previewBgImageUrl ? `url('${_previewBgImageUrl}')` : '';
+    bgLayer.style.transformOrigin = 'top left';
+    bgLayer.style.transform = `scale(${baseScale * userZoom})`;
+    frame.style.position = 'relative';
+    frame.style.zIndex = '1';
     frame.style.transformOrigin = 'top left';
     frame.style.transform = `scale(${baseScale * userZoom})`;
     wrap.style.height   = Math.round(1080 * baseScale) + 'px';
@@ -3901,14 +3916,13 @@ document.getElementById('btn-vs-hide')?.addEventListener('click', () => {
   function applyPreviewBg(col) {
     document.querySelectorAll('.overlay-preview-wrap').forEach(w => { w.style.backgroundColor = col; });
   }
-  // Image de fond de la preview (posée par-dessus la couleur, cover).
+  // Image de fond de la preview : stockée dans _previewBgImageUrl et appliquée
+  // sur la couche zoomable (.overlay-preview-bg) par scalePreviewWrap.
   function applyPreviewBgImage(url) {
-    document.querySelectorAll('.overlay-preview-wrap').forEach(w => {
-      w.style.backgroundImage = url ? `url('${url}')` : '';
-      w.style.backgroundSize = 'cover';
-      w.style.backgroundPosition = 'center';
-      w.style.backgroundRepeat = 'no-repeat';
-    });
+    _previewBgImageUrl = url || '';
+    // Nettoie l'ancienne image posée directement sur le wrap (compat).
+    document.querySelectorAll('.overlay-preview-wrap').forEach(w => { w.style.backgroundImage = ''; });
+    scaleAllPreviews();
   }
   if (_previewBgPicker) {
     const saved = (typeof localStorage !== 'undefined' && localStorage.getItem(_PREVIEW_BG_KEY)) || '#000000';
