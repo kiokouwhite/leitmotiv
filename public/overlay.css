@@ -235,10 +235,20 @@ body.sb-cards-separated #particle-canvas {
   display: none !important;
 }
 
-/* Logo central masqué : le bloc central .center-logo-area est retiré (JS) ; on
-   annule aussi le min-width du .score-center pour qu'il n'y ait plus de carré
-   vide au milieu (les scores se rapprochent). */
-body.sb-logo-hidden .score-center { min-width: 0; }
+/* Logo central masqué : le bloc central .center-logo-area est retiré (JS). On
+   efface aussi le « carré » résiduel du .score-center (min-width + fond +
+   bordures + padding) pour qu'il ne reste rien au milieu. Les scores, s'ils
+   sont au centre (mode « entre »), restent visibles mais sans panneau. */
+body.sb-logo-hidden .score-center {
+  min-width: 0 !important;
+  background: transparent !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+body.sb-logo-hidden .score-center .score-box { padding: 0; gap: 0; }
+/* Mode « score dans les cartes » : le centre n'a plus aucun contenu utile →
+   on retire complètement le .score-center. */
+body.sb-logo-hidden.sb-score-in-cards .score-center { display: none; }
 
 /* Score dans les cartes — le JS déplace p1-score à la fin de player1-block et
    p2-score au début de player2-block. CSS aligne chaque score sur le côté
