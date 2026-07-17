@@ -783,17 +783,27 @@ function update(s) {
       canvas.style.webkitMaskImage = ''; canvas.style.maskImage = '';
       return;
     }
-    const cRect = canvas.getBoundingClientRect();
-    if (!cRect.width) return;
+    if (!canvas.offsetWidth) return;
+    // Position d'un élément en coordonnées LOCALES relatives à `ancestor`, en
+    // cumulant les offsetLeft/Top à travers les conteneurs intermédiaires
+    // (.full-layout, players-container centrée…). offset* = px de layout, donc
+    // immunisé au transform du #scoreboard (scale/translate), contrairement à
+    // getBoundingClientRect qui renvoie des coords écran post-transform.
+    const _off = (el, ancestor) => {
+      let x = 0, y = 0, n = el;
+      while (n && n !== ancestor) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; }
+      return { x, y };
+    };
+    const origin = canvas.offsetParent; // #scoreboard (canvas en inset:0 dessus)
     const cards = Array.from(document.querySelectorAll('.players-container > .player, .players-container > .score-center'))
-      .filter(el => el.offsetParent !== null && el.getBoundingClientRect().width > 0);
+      .filter(el => el.offsetParent !== null && el.offsetWidth > 0);
     if (!cards.length) { canvas.style.webkitMaskImage = ''; canvas.style.maskImage = ''; return; }
     const grads = [], pos = [], size = [];
     cards.forEach(el => {
-      const r = el.getBoundingClientRect();
+      const o = _off(el, origin);
       grads.push('linear-gradient(#000,#000)');
-      pos.push(Math.round(r.left - cRect.left) + 'px ' + Math.round(r.top - cRect.top) + 'px');
-      size.push(Math.round(r.width) + 'px ' + Math.round(r.height) + 'px');
+      pos.push(Math.round(o.x - canvas.offsetLeft) + 'px ' + Math.round(o.y - canvas.offsetTop) + 'px');
+      size.push(el.offsetWidth + 'px ' + el.offsetHeight + 'px');
     });
     const gi = grads.join(','), pi = pos.join(','), si = size.join(',');
     canvas.style.webkitMaskImage = gi;    canvas.style.maskImage = gi;
