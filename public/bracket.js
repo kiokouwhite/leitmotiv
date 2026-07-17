@@ -38,6 +38,9 @@
 
   function getColors(theme) {
     // Support préfixe 's' pour les thèmes personnages non listés
+    if (theme && theme.indexOf('__custom__') === 0 && window.customThemeColors) {
+      var cc = window.customThemeColors(); if (cc) return cc;
+    }
     return THEME_COLORS[theme] || THEME_COLORS.default;
   }
 
@@ -369,13 +372,13 @@
 
   // ── Socket.IO ─────────────────────────────────────────────────
   const socket = io();
-  socket.on('stateUpdate',   (s) => { try { applyTheme(s.overlayTheme || 'default'); } catch(e) {} });
+  socket.on('stateUpdate',   (s) => { try { applyTheme(window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default')); } catch(e) {} });
   socket.on('bracketUpdate', (s) => { try { applyTheme(currentTheme); render(s); } catch(e) { console.error('[bracket]', e); } });
 
   // Chargement initial
   fetch('/api/bracket').then(r => r.json()).then(s => { render(s); }).catch(() => {});
   fetch('/api/state').then(r => r.json()).then(s => {
-    try { applyTheme(s.overlayTheme || 'default'); } catch(e) {}
+    try { applyTheme(window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default')); } catch(e) {}
   }).catch(() => {});
 
 })();

@@ -45,6 +45,9 @@
   };
 
   function getThemeColors(theme) {
+    if (theme && theme.indexOf('__custom__') === 0 && window.customThemeColors) {
+      var cc = window.customThemeColors(); if (cc) return cc;
+    }
     return THEME_COLORS[theme] || THEME_COLORS.default;
   }
 
@@ -89,7 +92,7 @@
   }
 
   function update(s) {
-    const theme = s.overlayTheme || 'default';
+    const theme = window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default');
     setThemeClass(theme);
     applyColors(getThemeColors(theme));
 

@@ -53,7 +53,10 @@
 
   /* ── Thème ────────────────────────────────────────── */
   function applyTheme(theme) {
-    const c    = THEME_COLORS[theme] || THEME_COLORS.default;
+    let c = THEME_COLORS[theme] || THEME_COLORS.default;
+    if (theme && theme.indexOf('__custom__') === 0 && window.customThemeColors) {
+      const cc = window.customThemeColors(); if (cc) c = cc;
+    }
     const root = document.getElementById('uc-root');
     if (!root) return;
 
@@ -249,11 +252,11 @@
   /* ── Réseau ───────────────────────────────────────── */
   const socket = io();
 
-  fetch('/api/state').then(r => r.json()).then(s => applyTheme(s.overlayTheme || 'default')).catch(() => {});
+  fetch('/api/state').then(r => r.json()).then(s => applyTheme(window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default'))).catch(() => {});
   fetch('/api/upcoming').then(r => r.json()).then(render).catch(() => {});
 
   socket.on('stateUpdate', s => {
-    applyTheme(s.overlayTheme || 'default');
+    applyTheme(window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default'));
     if (_textColor) applyTextColor(_textColor);
   });
   socket.on('upcomingUpdate', render);

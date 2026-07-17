@@ -39,6 +39,9 @@
   const ALL_THEMES = Object.keys(THEME_COLORS);
 
   function getColors(theme) {
+    if (theme && theme.indexOf('__custom__') === 0 && window.customThemeColors) {
+      var cc = window.customThemeColors(); if (cc) return cc;
+    }
     return THEME_COLORS[theme] || THEME_COLORS.default;
   }
 
@@ -336,7 +339,7 @@
   // ── Socket.IO ─────────────────────────────────────────────────
   var socket = io();
   socket.on('stateUpdate', function (s) {
-    applyTheme(s.overlayTheme);
+    applyTheme(window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default'));
     if (s.centerLogo !== undefined) {
       _centerLogo = s.centerLogo || '';
       // Re-appliquer le logo si pas de logo tournoi dans l'état courant
@@ -346,7 +349,7 @@
 
   // ── État initial ──────────────────────────────────────────────
   fetch('/api/state').then(function (r) { return r.json(); }).then(function (s) {
-    applyTheme(s.overlayTheme);
+    applyTheme(window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default'));
     _centerLogo = s.centerLogo || '';
   }).catch(function () {});
   fetch('/api/top8').then(function (r) { return r.json(); }).then(render).catch(function () {});

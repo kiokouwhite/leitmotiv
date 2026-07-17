@@ -46,7 +46,12 @@
   const ALL_THEMES = Object.keys(THEME_COLORS);
   let currentTheme = 'default';
 
-  function getC(theme) { return THEME_COLORS[theme] || THEME_COLORS.default; }
+  function getC(theme) {
+    if (theme && theme.indexOf('__custom__') === 0 && window.customThemeColors) {
+      var cc = window.customThemeColors(); if (cc) return cc;
+    }
+    return THEME_COLORS[theme] || THEME_COLORS.default;
+  }
 
   /* ── Application du thème ────────────────────────────────────── */
   function applyTheme(theme) {
@@ -169,7 +174,7 @@
 
   /* ── Socket.IO ───────────────────────────────────────────────── */
   const socket = io();
-  socket.on('stateUpdate',  s => { try { applyTheme(s.overlayTheme || 'default'); } catch(e) {} });
+  socket.on('stateUpdate',  s => { try { applyTheme(window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default')); } catch(e) {} });
   socket.on('titleUpdate',  s => { try { applyState(s); } catch(e) { console.error('[stream-title]', e); } });
 
 })();

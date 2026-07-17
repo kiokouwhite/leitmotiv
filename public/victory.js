@@ -75,6 +75,8 @@ const CHAR_COLORS = {
 };
 
 function getThemeColor(s, wPlayer) {
+  // Thème custom (palette) → couleur principale comme accent de la victoire.
+  if (s.customThemeActive && s.themePalette && s.themePalette.primary) return s.themePalette.primary;
   const theme = s.overlayTheme || 'default';
   if (theme === 'custom') return s.customTheme?.accentColor || wPlayer.color || '#e6c84a';
   if (theme === 'dual' || theme.startsWith('s')) {

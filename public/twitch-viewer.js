@@ -50,6 +50,9 @@
   };
 
   function getThemeColors(theme) {
+    if (theme && theme.indexOf('__custom__') === 0 && window.customThemeColors) {
+      var cc = window.customThemeColors(); if (cc) return cc;
+    }
     return THEME_COLORS[theme] || THEME_COLORS.default;
   }
 
@@ -105,7 +108,7 @@
   const socket = io();
 
   socket.on('stateUpdate', (s) => {
-    try { applyTheme(s.overlayTheme || 'default'); } catch(e) { console.error('[twitch-viewer]', e); }
+    try { applyTheme(window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default')); } catch(e) { console.error('[twitch-viewer]', e); }
   });
 
   socket.on('twitch-viewers', (data) => {

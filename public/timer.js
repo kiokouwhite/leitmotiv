@@ -44,6 +44,9 @@
   };
 
   function getColors(theme) {
+    if (theme && theme.indexOf('__custom__') === 0 && window.customThemeColors) {
+      var cc = window.customThemeColors(); if (cc) return cc;
+    }
     return THEME_COLORS[theme] || THEME_COLORS.default;
   }
 
@@ -233,12 +236,12 @@
   // ── Socket.IO ─────────────────────────────────────────────────
   const socket = io();
 
-  socket.on('stateUpdate',  (s) => { try { applyTheme(s.overlayTheme || 'default'); } catch(e) {} });
+  socket.on('stateUpdate',  (s) => { try { applyTheme(window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default')); } catch(e) {} });
   socket.on('timerUpdate',  (s) => { try { applyTimerState(s); } catch(e) { console.error('[timer]', e); } });
 
   // Chargement initial
   initParticles();
   fetch('/api/timer').then(r => r.json()).then(applyTimerState).catch(() => {});
-  fetch('/api/state').then(r => r.json()).then(s => { try { applyTheme(s.overlayTheme || 'default'); } catch(e) {} }).catch(() => {});
+  fetch('/api/state').then(r => r.json()).then(s => { try { applyTheme(window.themeNameFromState ? window.themeNameFromState(s) : (s.overlayTheme || 'default')); } catch(e) {} }).catch(() => {});
 
 })();

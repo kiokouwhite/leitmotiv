@@ -368,7 +368,7 @@ function update(s) {
 
   // Thème overlay → accent color
   const theme = s.overlayTheme || 'default';
-  let accent = VS_THEME_ACCENT[theme];
+  let accent = (s.customThemeActive && s.themePalette && s.themePalette.primary) || VS_THEME_ACCENT[theme];
   if (!accent && theme === 'dual') {
     accent = s.player1.color || '#FFFFFF';
   }
