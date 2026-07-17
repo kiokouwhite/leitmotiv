@@ -46,6 +46,22 @@
     document.documentElement.style.setProperty('--cam-glow',    c.glow);
   }
 
+  // hex → rgba (pour l'aura semi-transparente).
+  function _hexToRgba(hex, a) {
+    hex = String(hex).replace('#', '');
+    if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+    const r = parseInt(hex.substr(0, 2), 16), g = parseInt(hex.substr(2, 2), 16), b = parseInt(hex.substr(4, 2), 16);
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+  }
+  // Thème custom : bordure/coins = couleur principale, aura = couleur secondaire.
+  function applyCustomPalette(pal) {
+    const key = '__custom__:' + pal.primary + '|' + pal.secondary;
+    if (key === currentTheme) return;
+    currentTheme = key;
+    document.documentElement.style.setProperty('--cam-primary', pal.primary);
+    document.documentElement.style.setProperty('--cam-glow', _hexToRgba(pal.secondary, 0.55));
+  }
+
   // ── Helpers ───────────────────────────────────────────────────
   function el(id) { return document.getElementById(id); }
   function show(id, visible) { el(id)?.classList.toggle('hidden', !visible); }
@@ -167,7 +183,8 @@
   const socket = io();
   socket.on('stateUpdate', (s) => {
     try {
-      applyTheme(s.overlayTheme || 'default');
+      if (s.customThemeActive && s.themePalette) applyCustomPalette(s.themePalette);
+      else applyTheme(s.overlayTheme || 'default');
       currentMatch = s;
       applyInfo();
     } catch(e) {}
