@@ -1912,6 +1912,29 @@ app.post('/api/logo/upload', (req, res) => {
   res.json({ url: '/logos/' + safe });
 });
 
+// ── Presets/thèmes scoreboard utilisateur ─────────────────────────
+// Stockés dans un fichier de l'appli (sb-presets.json) au lieu du localStorage
+// du navigateur → ils suivent le dossier Leitmotiv d'un PC à l'autre.
+const SB_PRESETS_FILE = path.join(__dirname, 'sb-presets.json');
+app.get('/api/sb-presets', (req, res) => {
+  try {
+    if (fs.existsSync(SB_PRESETS_FILE)) {
+      const list = JSON.parse(fs.readFileSync(SB_PRESETS_FILE, 'utf8'));
+      return res.json(Array.isArray(list) ? list : []);
+    }
+  } catch (e) {}
+  res.json([]);
+});
+app.post('/api/sb-presets', (req, res) => {
+  try {
+    const list = Array.isArray(req.body) ? req.body : ((req.body && req.body.presets) || []);
+    fs.writeFileSync(SB_PRESETS_FILE, JSON.stringify(list, null, 2));
+    res.json({ ok: true, count: list.length });
+  } catch (e) {
+    res.status(500).json({ error: String(e) });
+  }
+});
+
 app.delete('/api/logo/upload', (req, res) => {
   const { filename } = req.body || {};
   if (filename) {

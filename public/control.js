@@ -2367,15 +2367,39 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
     } catch (_) { return []; }
   }
   function persistUserPresets() {
+    const list = SB_PRESETS.filter(p => !p.builtin);
+    // Mirror localStorage (cache local) + source de vérité portable côté serveur
+    // (sb-presets.json) → les presets suivent le dossier d'un PC à l'autre.
+    try { localStorage.setItem(USER_PRESETS_KEY, JSON.stringify(list)); } catch (_) {}
     try {
-      const list = SB_PRESETS.filter(p => !p.builtin);
-      localStorage.setItem(USER_PRESETS_KEY, JSON.stringify(list));
+      fetch('/api/sb-presets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(list),
+      }).catch(() => {});
     } catch (_) {}
   }
-  // Charge au boot et concatène à la liste built-in
+  // Charge au boot : d'abord le cache localStorage (affichage immédiat), puis
+  // le fichier serveur (source de vérité) qui remplace/complète la liste.
   loadUserPresets().forEach(p => {
     if (p && p.id && p.name) SB_PRESETS.push({ ...p, builtin: false });
   });
+  (function _loadPresetsFromServer() {
+    fetch('/api/sb-presets').then(r => r.json()).then(serverList => {
+      if (!Array.isArray(serverList)) return;
+      if (serverList.length) {
+        // Le serveur fait foi : on retire les presets user locaux et on met les siens.
+        for (let i = SB_PRESETS.length - 1; i >= 0; i--) if (!SB_PRESETS[i].builtin) SB_PRESETS.splice(i, 1);
+        serverList.forEach(p => { if (p && p.id && p.name) SB_PRESETS.push({ ...p, builtin: false }); });
+      } else if (SB_PRESETS.some(p => !p.builtin)) {
+        // Serveur vide mais presets locaux présents (1re fois / migration) → on les y pousse.
+        persistUserPresets();
+      }
+      try { localStorage.setItem(USER_PRESETS_KEY, JSON.stringify(SB_PRESETS.filter(p => !p.builtin))); } catch (_) {}
+      if (currentMode === 'presets') renderPresets(currentOverlay);
+      if (typeof window.renderCustomThemeCards === 'function') window.renderCustomThemeCards();
+    }).catch(() => {});
+  })();
 
   function renderPresets(overlayId) {
     const grid = document.getElementById('overlay-presets-grid');
