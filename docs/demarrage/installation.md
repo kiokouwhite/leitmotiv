@@ -20,7 +20,7 @@ Les deux commandes doivent afficher un numéro de version.
 
 Le projet est sur GitHub. Deux options :
 
-**Avec Git (recommandé — permet les mises à jour)**
+**Avec Git (recommandé, permet les mises à jour)**
 
 ```bash
 git clone https://github.com/kiokouwhite/leitmotiv.git
@@ -52,7 +52,7 @@ Au premier lancement, l'appli crée un `config.json` par défaut si besoin. Tu r
 * le mot de passe du panneau → voir [Lancer & se connecter](lancer.md)
 
 {% hint style="info" %}
-**Ce qui EST sur GitHub** : le code, et le fichier `sb-presets.json` (nos thèmes et presets, ex. *Hoplan*). Donc en clonant le repo tu récupères directement nos presets de scoreboard. **Ce qui n'y est PAS** : `config.json` (secrets) et le dossier `public/uploads/` (images uploadées).
+**Ce qui EST sur GitHub** : le code, et le fichier `sb-presets.json` (nos thèmes et presets, ex. _Hoplan_). Donc en clonant le repo tu récupères directement nos presets de scoreboard. **Ce qui n'y est PAS** : `config.json` (secrets) et le dossier `public/uploads/` (images uploadées).
 {% endhint %}
 
 ## 5. Mettre à jour plus tard
@@ -66,6 +66,6 @@ npm install
 
 L'appli affiche aussi une bannière **« Mise à jour disponible »** dans le panneau quand une nouvelle version existe.
 
----
+***
 
 ➡️ Ensuite : [Lancer & se connecter](lancer.md)
