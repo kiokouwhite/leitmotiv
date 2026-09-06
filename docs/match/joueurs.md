@@ -75,13 +75,8 @@ Pense à ajuster le format au round : les premiers tours sont généralement en 
 Dans l'onglet **Principal** :
 
 * **+ / −** sous chaque joueur pour incrémenter / décrémenter,
-* ou tape directement la valeur dans le champ.
 
 Le changement apparaît **instantanément** sur l'overlay.
-
-### Reset
-
-Le bouton **Reset** remet les **deux scores à 0**. À faire au début de chaque nouveau set (ou automatiquement quand tu charges un nouveau set start.gg).
 
 ### Envoyer sur start.gg
 
