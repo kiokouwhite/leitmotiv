@@ -1,4 +1,4 @@
-# Joueurs & personnages
+# Scoreboard
 
 Tout se passe dans l'onglet **Principal** du panneau. C'est là que tu remplis les deux joueurs affichés sur le scoreboard.
 
@@ -8,12 +8,12 @@ Le plus souvent, tu ne remplis **pas** ça à la main : tu **charges le set depu
 
 ## Identité du joueur
 
-| Champ | Rôle |
-|---|---|
-| **Tag** | Le nom court affiché en gros (ex. `Hoplan`). C'est le champ principal. |
-| **Nom** | Nom complet, optionnel, affiché en plus petit. |
-| **Pronoms** | Affichés en petit près du tag (ex. `she/her`, `il/lui`). |
-| **Seed** | Le seed du joueur (rang de départ), affichable sur certains overlays. |
+| Champ       | Rôle                                                                                                                               |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **Tag**     | L'équipe/la team dont fait partie la personne (le champ affiché devant le pseudo.)                                                 |
+| Pseudo      | Le pseudo choisi par le joueur, c'est le champ principal.                                                                          |
+| **Pronoms** | Affichés en petit près du tag (ex. `she/her`, `il/lui`).                                                                           |
+| **Seed**    | Le _seed_ = le classement de départ attribué au joueur dans le bracket (seed 1 = tête de série). Affichable sur certains overlays. |
 
 ## Personnage
 
@@ -41,6 +41,6 @@ Chaque joueur a une **couleur d'accent** utilisée pour les touches visuelles (b
 
 Le bouton **⇄ Inverser** échange J1 et J2 avec **toutes** leurs données (tag, perso, score, couleur…). Pratique quand les joueurs changent de côté physiquement.
 
----
+***
 
 ➡️ Ensuite : [Infos du match](infos.md)

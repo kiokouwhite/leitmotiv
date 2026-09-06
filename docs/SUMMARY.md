@@ -1,4 +1,4 @@
-# Sommaire
+# Table of contents
 
 * [Bienvenue](README.md)
 
@@ -11,7 +11,7 @@
 
 ## 🏆 Gérer un match
 
-* [Joueurs & personnages](match/joueurs.md)
+* [Scoreboard](match/joueurs.md)
 * [Infos du match](match/infos.md)
 * [Scores](match/scores.md)
 * [Commentateurs](match/casters.md)
