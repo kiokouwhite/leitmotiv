@@ -12,7 +12,6 @@
 ## 🏆 Gérer un match
 
 * [Scoreboard](match/joueurs.md)
-* [Infos du match](match/infos.md)
 * [Scores](match/scores.md)
 * [Commentateurs](match/casters.md)
 
