@@ -12,7 +12,6 @@
 ## 🏆 Gérer un match
 
 * [Scoreboard](match/joueurs.md)
-* [Scores](match/scores.md)
 * [Commentateurs](match/casters.md)
 
 ## 🎮 start.gg (le cœur du workflow)

@@ -23,7 +23,7 @@ Si vous utilisez la **Stream Queue** de start.gg (les TO y mettent les sets à p
 Après chargement, jette un œil au scoreboard :
 
 * les **tags** sont-ils corrects (pas de faute, bon côté) ?
-* le **format** correspond-il au round (Bo3 en pool, Bo5 en top) ? Voir [Infos du match](/broken/pages/3wLcf35ao8dflkxXcnWw).
+* le **format** correspond-il au round (Bo3 en pool, Bo5 en top) ? Voir [Scoreboard](../match/joueurs.md).
 * besoin d'**inverser** les joueurs pour coller à leur position physique ? Bouton ⇄.
 
 ## Enchaîner les sets
