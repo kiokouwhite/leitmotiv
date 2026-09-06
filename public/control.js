@@ -764,6 +764,9 @@ document.querySelectorAll('.format-btn').forEach(btn => {
       b.classList.toggle('active', b.dataset.fmt === state.format);
     });
     document.getElementById('custom-wins-group').style.display = state.format === 'custom' ? '' : 'none';
+    // Un clic sur un <button> ne déclenche pas 'input'/'change', donc l'auto-apply
+    // (branché sur .scoreboard-section) ne partait pas : on pousse l'état à la main.
+    emitState(buildStateFromForm());
   });
 });
 
