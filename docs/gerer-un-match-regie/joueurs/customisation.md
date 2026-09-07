@@ -18,19 +18,20 @@ Panneau → onglet **Customisation** → catégorie **SSBU** → **Scoreboard**.
 | **Drapeaux** | Affichage et position des drapeaux |
 | **Particules** | Type de particules et teinte |
 
-### Aplatir le texte
+### Débordement du texte
 
-Dans l'onglet **Scoreboard** → **Géométrie des cartes** → **Dimensions**, la case **« Aplatir le texte s'il dépasse la largeur »** change la façon dont un pseudo trop long est traité :
+Dans l'onglet **Scoreboard** → **Géométrie des cartes** → **Débordement du texte**, le menu **« Si le texte est plus grand que la carte »** propose trois comportements :
 
-| | Décoché *(défaut)* | Coché |
+| Option | Carte joueur | Texte |
 | --- | --- | --- |
-| **Carte joueur** | S'élargit pour contenir le texte | Reste à la **largeur min** |
-| **Texte** | Taille inchangée | **Comprimé horizontalement** pour rentrer |
+| **Agrandir la carte** *(défaut)* | S'élargit pour tout contenir | Taille inchangée |
+| **Aplatir le texte** | Reste à la **largeur min** | **Comprimé** horizontalement |
+| **Rétrécir le texte (…)** | Reste à la **largeur min** | **Coupé**, suivi de points de suspension |
 
-Avantage : les deux cartes gardent la même largeur, donc la barre reste **symétrique** et le VS naturellement centré, quelle que soit la longueur des pseudos.
+Avec « Aplatir » et « Rétrécir », les deux cartes gardent la même largeur : la barre reste **symétrique** et le VS naturellement centré, quelle que soit la longueur des pseudos.
 
 {% hint style="warning" %}
-Sur un pseudo très long, la compression devient forte et le texte peut finir par être difficile à lire. Augmente alors la **largeur min** plutôt que de tout miser sur l'aplatissement.
+Les deux ont un défaut opposé : **Aplatir** garde le pseudo entier mais le déforme (très condensé sur un nom long), **Rétrécir** garde la typo intacte mais perd la fin du pseudo. Si aucun des deux ne convient, augmente plutôt la **largeur min**.
 {% endhint %}
 
 ### Centrage horizontal

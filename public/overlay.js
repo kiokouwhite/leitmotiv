@@ -826,7 +826,7 @@ function update(s) {
   // Aplatissement du texte puis centrage : l'ordre compte, la compression
   // modifie la largeur des cartes donc le décalage de centrage.
   _sbLastState = s;
-  applySquashText(s);
+  applyTextOverflow(s);
   applySbCenterShift(s, _sbAnch);
 
   // Lot 4 / 6 : event-bar — vars posées sur <body> (et pas sur #scoreboard) pour
@@ -1422,17 +1422,22 @@ fetch('/api/state')
 let _sbCenterLast = { anchor: 'top-center', mode: 'bar' };
 let _sbLastState = null;
 
-// Aplatit horizontalement le bloc de texte d'un joueur quand il déborde de sa
-// carte, au lieu de laisser la carte s'élargir. scaleX ne change pas le layout,
-// donc scrollWidth/clientWidth restent mesurables d'un passage à l'autre.
-function applySquashText(state) {
-  const on = !!(state && state.sbSquashText);
-  document.body.classList.toggle('sb-squash-text', on);
+// Comportement quand le texte d'un joueur dépasse sa carte :
+//   • grow (défaut) : la carte s'élargit (aucune contrainte CSS) ;
+//   • squash        : la carte est bornée et le texte comprimé en scaleX ;
+//   • ellipsis      : la carte est bornée et le texte coupé avec des points.
+// scaleX ne change pas le layout, donc scrollWidth/clientWidth restent
+// mesurables d'un passage à l'autre.
+function applyTextOverflow(state) {
+  // Compat : ancienne case booléenne sbSquashText -> mode 'squash'.
+  const mode = (state && (state.sbOverflowMode || (state.sbSquashText === true ? 'squash' : null))) || 'grow';
+  document.body.classList.toggle('sb-overflow-squash',   mode === 'squash');
+  document.body.classList.toggle('sb-overflow-ellipsis', mode === 'ellipsis');
   ['p1-name', 'p2-name'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     el.style.transform = '';
-    if (!on) return;
+    if (mode !== 'squash') return;
     const dispo = el.clientWidth;
     const naturel = el.scrollWidth;
     if (dispo > 0 && naturel > dispo) {
@@ -1472,7 +1477,7 @@ function applySbCenterShift(state, anchor) {
   const ro = new ResizeObserver(() => {
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(() => {
-      applySquashText(_sbLastState);
+      applyTextOverflow(_sbLastState);
       applySbCenterShift(_sbLastState || { sbCenterMode: _sbCenterLast.mode }, _sbCenterLast.anchor);
     });
   });

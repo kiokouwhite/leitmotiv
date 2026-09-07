@@ -4479,14 +4479,22 @@ body.sb-layout-compact-corner #scoreboard { display: none !important; }
 #sb-compact-corner .cc-sep { color: var(--smash-border, rgba(255, 255, 255, 0.3)); }
 
 
-/* ── Aplatissement du texte ──────────────────────────────────────────────────
-   Option « Aplatir le texte s'il dépasse la largeur » : la carte joueur est
-   bornée à la largeur min, et overlay.js comprime horizontalement le bloc de
-   texte (scaleX) pour qu'il rentre — au lieu de laisser la carte s'élargir.
+/* ── Débordement du texte ───────────────────────────────────────────────────
+   Trois comportements quand le texte est plus large que la carte :
+     • grow (défaut)  : aucune règle ici, la carte s'élargit naturellement ;
+     • squash         : carte bornée, overlay.js comprime le texte (scaleX) ;
+     • ellipsis       : carte bornée, le texte est coupé avec des points.
    min-width:0 est indispensable : sans lui, un flex item refuse de rétrécir
    sous la taille de son contenu et rien ne déborderait jamais. */
-body.sb-squash-text .player      { max-width: var(--player-min-width, 320px); }
-body.sb-squash-text .player-info { min-width: 0; }
-body.sb-squash-text .player-name { min-width: 0; }
-body.sb-squash-text .player-left  .player-name { transform-origin: left center; }
-body.sb-squash-text .player-right .player-name { transform-origin: right center; }
+body.sb-overflow-squash .player,
+body.sb-overflow-ellipsis .player      { max-width: var(--player-min-width, 320px); }
+body.sb-overflow-squash .player-info,
+body.sb-overflow-ellipsis .player-info { min-width: 0; }
+body.sb-overflow-squash .player-name,
+body.sb-overflow-ellipsis .player-name { min-width: 0; }
+
+body.sb-overflow-squash .player-left  .player-name { transform-origin: left center; }
+body.sb-overflow-squash .player-right .player-name { transform-origin: right center; }
+
+/* .player-name est déjà en white-space:nowrap, requis par text-overflow. */
+body.sb-overflow-ellipsis .player-name { overflow: hidden; text-overflow: ellipsis; }

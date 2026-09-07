@@ -776,12 +776,19 @@
                           <input type="number" id="player-card-padding-num" min="0" max="40" value="12" step="1" style="width:58px" />
                         </div>
                       </div>
-                      <div class="form-group" style="margin:7px 0 0">
-                        <label class="vis-toggle" style="font-size:11px;display:flex;align-items:center;gap:6px;cursor:pointer">
-                          <input type="checkbox" id="sb-squash-text" />
-                          <span>Aplatir le texte s'il dépasse la largeur</span>
-                        </label>
-                        <div style="font-size:10px;color:var(--text-muted);margin-top:4px">La carte reste à la largeur min : le texte est comprimé horizontalement au lieu d'élargir la carte.</div>
+                    </div>
+
+                    <!-- Sous-encadré Débordement du texte -->
+                    <div style="border:1px solid var(--border);border-radius:8px;padding:0 12px 10px;margin-top:10px;background:rgba(0,0,0,0.15);overflow:hidden">
+                      <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin:0 -12px 10px;padding:6px 12px;background:rgba(255,255,255,0.07);border-bottom:1px solid var(--border)">Débordement du texte</div>
+                      <div class="form-group" style="margin:0">
+                        <label>Si le texte est plus grand que la carte</label>
+                        <select id="sb-overflow-mode" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:5px 6px">
+                          <option value="grow">Agrandir la carte (par défaut)</option>
+                          <option value="squash">Aplatir le texte</option>
+                          <option value="ellipsis">Rétrécir le texte (…)</option>
+                        </select>
+                        <div style="font-size:10px;color:var(--text-muted);margin-top:4px">« Aplatir » et « Rétrécir » gardent la carte à la largeur min, donc la barre reste symétrique.</div>
                       </div>
                     </div>
 
