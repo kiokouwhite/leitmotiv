@@ -39,6 +39,8 @@
 ## 🧩 Overlays annexes
 
 * [VS Screen & Victoire](overlays/vs-victory.md)
+  * [Fonctionnement](overlays/vs-victory/fonctionnement.md)
+  * [Customisation](overlays/vs-victory/customisation.md)
 * [Cam](overlays/cam.md)
   * [Fonctionnement](overlays/cam/fonctionnement.md)
   * [Customisation](overlays/cam/customisation.md)
