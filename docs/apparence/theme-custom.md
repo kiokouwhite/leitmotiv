@@ -26,6 +26,12 @@ Change une couleur → tous les overlays se recolorent en direct.
 
 Le thème apparaît alors comme **carte** dans la liste des thèmes custom, avec son nom. Tu peux le rappeler d'un clic, plus tard, dans n'importe quelle session.
 
+{% hint style="info" %}
+Cliquer une carte de thème custom **n'applique que le thème** : palette, police et particules. La mise en page (position, géométrie des cartes, image de fond, logo…) n'est pas touchée.
+
+Pour rejouer une mise en page complète, clique la carte du **[preset](presets.md)** correspondant. Le bouton **✎** d'un thème, lui, recharge tout le preset — c'est normal : on s'apprête à le réenregistrer.
+{% endhint %}
+
 ## Modifier ou supprimer
 
 Survole la carte d'un thème custom : deux boutons apparaissent dans le coin.

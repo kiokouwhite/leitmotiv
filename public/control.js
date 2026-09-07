@@ -2584,13 +2584,13 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
           if (i >= 0) { SB_PRESETS.splice(i, 1); persistUserPresets(); window.renderCustomThemeCards(); }
           return;
         }
-        // Charge le thème puis ouvre le theme maker en mode édition.
-        Object.assign(state, preset.data);
-        state.customThemeActive = true; // swatches « Couleurs du thème » = palette custom
-        state.scoreboardLayout = preset.id; window.__activePresetId = preset.id; // devient le preset actif
-        if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data, scoreboardLayout: preset.id });
-        emitState(buildStateFromForm());
         if (ev.target.closest('.user-theme-edit')) {
+          // Édition : on recharge le preset en entier, puisqu'on va le réenregistrer.
+          Object.assign(state, preset.data);
+          state.customThemeActive = true; // swatches « Couleurs du thème » = palette custom
+          state.scoreboardLayout = preset.id; window.__activePresetId = preset.id;
+          if (typeof syncFromState === 'function') syncFromState({ ...state, ...preset.data, scoreboardLayout: preset.id });
+          emitState(buildStateFromForm());
           ev.stopPropagation();
           document.getElementById('theme-card-custom')?.click(); // ouvre le modal
           setTimeout(() => {
@@ -2600,7 +2600,27 @@ document.querySelectorAll('.match-subnav .match-subpanel-btn').forEach(btn => {
           }, 60);
           return;
         }
-        // Clic simple = applique le thème.
+        // Clic simple : on n'applique QUE le thème — palette, police, particules.
+        // Volontairement pas la mise en page (position, géométrie, fond, logo…) ni
+        // le statut de « preset actif » : choisir un thème ne doit pas rejouer un
+        // preset entier ; pour ça on clique la carte du preset.
+        const _d = preset.data || {};
+        const _pal = _d.themePalette;
+        const _setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+        if (_pal) {
+          _setVal('theme-pal-primary',   _pal.primary   || '#E8B830');
+          _setVal('theme-pal-secondary', _pal.secondary || '#3070E8');
+          _setVal('theme-pal-white',     _pal.white     || '#F0EEF8');
+          _setVal('theme-pal-black',     _pal.black     || '#0E0E12');
+        }
+        if (_d.fontFamily)   state.fontFamily = _d.fontFamily;
+        if (_d.particleType) { state.particleType = _d.particleType; _setVal('particle-type', _d.particleType); }
+        if (typeof window.__applyThemePalette === 'function') {
+          window.__applyThemePalette(); // rejoue la dérivation des couleurs + emit
+        } else {
+          state.themePalette = _pal; state.customThemeActive = true; state.overlayTheme = 'default';
+          emitState(buildStateFromForm());
+        }
         if (typeof setStatus === 'function') setStatus('Thème « ' + preset.name + ' » appliqué', 'success');
       });
       grid.appendChild(card);
@@ -6908,6 +6928,9 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       if (_tintCb) _tintCb.checked = true;
       emitState(buildStateFromForm());
     }
+    // Exposée : appliquer un thème custom depuis sa carte doit rejouer exactement
+    // la même dérivation de couleurs que le créateur de thème.
+    window.__applyThemePalette = applyThemePalette;
     ['theme-pal-primary', 'theme-pal-secondary', 'theme-pal-white', 'theme-pal-black'].forEach(id => {
       document.getElementById(id)?.addEventListener('input', applyThemePalette);
     });
