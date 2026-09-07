@@ -50,8 +50,14 @@
   * [Fonctionnement](overlays/ticker/fonctionnement.md)
   * [Customisation](overlays/ticker/customisation.md)
 * [Cadres](overlays/frames.md)
+  * [Fonctionnement](overlays/frames/fonctionnement.md)
+  * [Customisation](overlays/frames/customisation.md)
 * [Minuteur](overlays/timer.md)
+  * [Fonctionnement](overlays/timer/fonctionnement.md)
+  * [Customisation](overlays/timer/customisation.md)
 * [Next / Prochains matchs](overlays/next.md)
+  * [Fonctionnement](overlays/next/fonctionnement.md)
+  * [Customisation](overlays/next/customisation.md)
 
 ## 🎛️ Master overlay
 

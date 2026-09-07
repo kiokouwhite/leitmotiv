@@ -1,17 +1,10 @@
 # Next / Prochains matchs
 
-Deux overlays pour annoncer ce qui arrive, à partir des sets start.gg.
+Deux overlays pour annoncer ce qui arrive, alimentés par les sets start.gg.
 
-## Next Match (`/nextmatch`)
+* [**Fonctionnement**](next/fonctionnement.md) — la différence entre Next Match et Prochains matchs, et d'où viennent les données.
+* [**Customisation**](next/customisation.md) — le cadre et les éléments affichés du bandeau Next Match.
 
-Affiche **le prochain match** (les deux joueurs à venir). Pratique en bas d'écran ou sur un écran d'attente pour dire « à suivre : X vs Y ».
+***
 
-Options : cadre, éléments affichés (tags, seeds…), position dans OBS.
-
-## Prochains matchs (`/upcoming`)
-
-Affiche une **file de plusieurs matchs à venir** avec un titre de phase et un compteur. Idéal pour un écran « Coming up » entre deux phases, ou pour laisser tourner pendant une pause.
-
-{% hint style="info" %}
-Ces overlays se nourrissent des sets chargés depuis [start.gg](../startgg/charger.md) (notamment la file de stream). Garde start.gg à jour pour que la liste soit juste.
-{% endhint %}
+➡️ Ensuite : [Fonctionnement](next/fonctionnement.md)
