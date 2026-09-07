@@ -20,28 +20,31 @@ La clé API est **personnelle et secrète**. Elle donne accès à ton compte sta
 
 ## 2. Enregistrer la clé dans Leitmotiv
 
-1. Panneau → onglet **Paramètres** → section **start.gg**.
-2. Colle ta clé API dans le champ prévu.
-3. Clique **Sauvegarder**.
+1. Panneau → onglet **Paramètres** → catégorie **Connexions** → section **Clé API start.gg**.
+2. Colle ta clé dans le champ **Clé API (token Bearer)**.
+3. Clique **Enregistrer**.
 
-La clé est mémorisée dans `config.json` : tu ne la ressaisis pas au prochain démarrage.
+<figure><img src="../.gitbook/assets/parametres-cle-api.png" alt="Section Clé API start.gg dans les Paramètres"><figcaption><p>Onglet <strong>Paramètres</strong> → <strong>Clé API start.gg</strong> : colle ta clé, puis Enregistrer.</p></figcaption></figure>
+
+La clé est mémorisée dans `config.json` : tu ne la ressaisis pas au prochain démarrage. Une fois enregistrée, la section affiche « Clé API start.gg enregistrée » avec un bouton **Modifier** pour la changer.
 
 ## 3. Charger un tournoi
 
-1. Va dans la section start.gg du panneau.
-2. Saisis le **slug** du tournoi. Le slug est la fin de l'URL start.gg :
+Ça se passe dans la fenêtre [Configuration du tournoi](../demarrage/configuration-tournoi.md), qu'on ouvre en cliquant sur le **nom du tournoi en haut à gauche** du panneau.
+
+1. Saisis le **slug** ou l'URL du tournoi. Le slug est la fin de l'URL start.gg :
    * URL : `https://start.gg/tournament/reverie-4/…`
    * slug : `reverie-4` (ou `tournament/reverie-4`)
-3. Clique **Rechercher**.
-4. Sélectionne l'**événement** (Smash Ultimate Singles, SF6…) dans le menu déroulant.
-5. Clique **Charger** : les participants et les sets sont importés.
+2. Clique **🔍 Vérifier** : le tournoi est récupéré, son **nom** et son **logo** se remplissent tout seuls.
+3. Sélectionne le **Bracket** (Smash Ultimate Singles, SF6…) dans le menu déroulant.
+4. Valide avec **✓ Commencer**.
 
-<figure><img src="../.gitbook/assets/config-tournoi.png" alt="Modale Configuration du tournoi"><figcaption><p>La modale <strong>Configuration du tournoi</strong> : slug, bracket, nom et logo (auto-remplis depuis start.gg).</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/startgg-connexion-slug.png" alt="Bloc Connexion start.gg de la fenêtre de configuration"><figcaption><p>Le bloc <strong>Connexion start.gg</strong> : slug du tournoi, bouton Vérifier, puis choix du bracket.</p></figcaption></figure>
 
 {% hint style="success" %}
 Une fois connectée, tu retrouves : la liste des **sets en cours** (à charger sur le scoreboard), le **report de score**, le **Head-to-Head**, les **stats joueur**, le **bracket** et le **Top 8**.
 {% endhint %}
 
----
+***
 
 ➡️ Ensuite : [Charger un set](charger.md)
