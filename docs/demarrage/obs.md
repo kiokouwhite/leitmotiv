@@ -52,6 +52,10 @@ Le réflexe **n°1**, et de loin le plus efficace : **rafraîchir le cache de la
 3. En bas de la fenêtre, clique **Rafraîchir le cache de cette page**.
 4. Valide avec **OK**.
 
+<figure><img src="../.gitbook/assets/obs-menu-proprietes.png" alt="Menu clic droit d'une source OBS"><figcaption><p>Étape 2 : clic droit sur la source → <strong>Propriétés</strong>, tout en bas du menu.</p></figcaption></figure>
+
+<figure><img src="../.gitbook/assets/obs-refresh-cache.png" alt="Bouton Rafraîchir le cache de cette page"><figcaption><p>Étape 3 : en bas de la fenêtre Propriétés, clique <strong>Rafraîchir le cache de cette page</strong>.</p></figcaption></figure>
+
 L'overlay se recharge depuis le serveur Leitmotiv. Dans la grande majorité des cas, c'est réglé.
 
 {% hint style="info" %}
