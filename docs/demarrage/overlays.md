@@ -3,67 +3,91 @@
 Chaque overlay est une page à ajouter en **Source Navigateur** dans OBS (1920×1080). Préfixe toutes les URLs par `http://localhost:3002` (ou l'IP du PC serveur en multi-PC).
 
 {% hint style="info" %}
-L'onglet **OBS** du panneau liste ces mêmes URLs avec un clic pour copier, et un bouton pour importer toute la collection d'un coup.
+Cette page suit **exactement l'organisation du menu « Overlays ▾ »** du panneau : mêmes catégories, même ordre, mêmes noms. Tu retrouves donc au même endroit ce que tu cherches dans l'appli.
 {% endhint %}
 
-## Overlays principaux
+<figure><img src="../.gitbook/assets/menu-overlays.png" alt="Menu Overlays du panneau"><figcaption><p>Le menu <strong>Overlays ▾</strong> du panneau — les sections ci-dessous suivent le même ordre.</p></figcaption></figure>
 
-| Overlay | URL | Description |
-|---|---|---|
-| **Scoreboard** | `/overlay` | Le scoreboard complet : joueurs, persos, scores, infos |
-| **Scoreboard Slim** | `/overlay-slim` | Version barre compacte |
-| **Commentateurs** | `/casters` | Noms + réseaux des casters |
-| **Stage Veto** | `/stageveto` | Sélection de stage en direct |
-| **Cam** | `/cam` | Cadre caméra + infos joueur |
-| **Cadres** | `/frames` | Jusqu'à 6 cadres décoratifs |
-| **Bandeau défilant** | `/ticker` | Infos qui défilent |
-| **Minuteur** | `/timer` | Compte à rebours / chrono |
-| **Titre du stream** | `/stream-title` | Titre / sous-titre à l'écran |
+## 🎛 Master Overlay
 
-## Transitions & présentation
+| Nom | URL | Description |
+| --- | --- | --- |
+| [Master](../overlays/master.md) | `/master` ou `/master/<id>` | Compose plusieurs overlays en **une seule** source OBS. Le sous-menu liste un lien par master créé. |
 
-| Overlay | URL | Description |
-|---|---|---|
-| **VS Screen** | `/vs-screen` | Écran de présentation d'un set |
-| **Victoire** | `/victory` | Écran de fin de set |
-| **Next Match** | `/nextmatch` | Le prochain match |
-| **Prochains matchs** | `/upcoming` | File des matchs à venir |
-| **Stingers** | `/stinger-*` | ~60 transitions animées (ex. `/stinger-cyberpunk`, `/stinger-glitch`…) |
+## Scoreboard
 
-## Données start.gg
+| Nom | URL | Description |
+| --- | --- | --- |
+| [Scoreboard](../gerer-un-match-regie/joueurs/README.md) | `/overlay` | Le scoreboard complet : joueurs, personnages, scores, infos du match |
+| [VS Screen](../overlays/vs-victory.md) | `/vs-screen` | Écran de présentation d'un set |
+| [Cam](../overlays/cam.md) | `/cam` | Cadre caméra + infos joueur |
+| [Casters](../gerer-un-match-regie/casters.md) | `/casters` | Noms et réseaux des commentateurs |
+| Casters Custom | `/casters-custom` | Layout casters entièrement personnalisé |
 
-| Overlay | URL | Description |
-|---|---|---|
-| **Bracket** | `/bracket` | Arbre du bracket |
-| **Top 8** | `/top8` | Tableau du Top 8 |
-| **Head-to-Head** | `/h2h` | Confrontation directe entre 2 joueurs |
-| **Stats joueur** | `/player-stats` | Statistiques d'un joueur |
-| **Historique tournoi** | `/tournament-history` | Parcours d'un joueur dans le tournoi |
+## Tournoi
 
-## Plateformes de stream
+| Nom | URL | Description |
+| --- | --- | --- |
+| [Stage Veto](../veto/deroulement.md) | `/stageveto` | Sélection de stage en direct |
+| [Bracket](../startgg/bracket.md) | `/bracket` | Arbre du bracket |
+| [Top 8](../startgg/bracket.md) | `/top8` | Tableau du Top 8 |
+| [Historique](../startgg/h2h.md) | `/tournament-history` | Parcours d'un joueur dans le tournoi |
+| [Stats joueur](../startgg/h2h.md) | `/player-stats` | Statistiques d'un joueur |
+| [H2H](../startgg/h2h.md) | `/h2h` | Confrontation directe entre deux joueurs |
 
-| Overlay | URL | Description |
-|---|---|---|
-| **Viewers Twitch** | `/twitch-viewer` | Compteur de viewers |
-| **Chat Twitch** | `/twitch-chat` | Chat en overlay |
-| **Alertes Twitch** | `/twitch-alerts` | Follows, subs, raids, bits |
-| **Viewers YouTube** | `/youtube-viewer` | Compteur YouTube |
-| **Chat YouTube** | `/youtube-chat` | Chat YouTube |
-| **Alertes YouTube** | `/youtube-alerts` | Super Chats, membres |
-| **Chat combiné** | `/combined-chat` | Twitch + YouTube fusionnés |
+## Stream
 
-## Tout-en-un & outils
+| Nom | URL | Description |
+| --- | --- | --- |
+| Titre | `/stream-title` | Titre / sous-titre affiché à l'écran |
+| [Bandeau](../overlays/ticker.md) | `/ticker` | Informations qui défilent |
+| [Cadres](../overlays/frames.md) | `/frames` | Jusqu'à 6 cadres décoratifs |
+| [Timer](../overlays/timer.md) | `/timer` | Compte à rebours / chronomètre |
+| [🎮 Stream Deck URLs](../avance/stream-deck.md) | `/deck` | La liste des URLs à coller sur tes boutons Stream Deck |
 
-| Overlay | URL | Description |
-|---|---|---|
-| **Master** | `/master` (ou `/master/:id`) | Compose plusieurs overlays en une seule source |
-| **Régie** | `/regie` | Panneau de contrôle allégé |
-| **Notes** | `/notes` | Bloc-notes / rundown pour le staff |
-| **AV Sync** | `/avsync` | Mire pour régler la synchro audio/vidéo |
-| **Créateur de scoreboard** | `/scoreboard-custom` | Scoreboard entièrement personnalisé |
-| **Créateur de casters** | `/casters-custom` | Layout casters personnalisé |
-| **Ce guide** | `/guide` | Version intégrée à l'appli |
+## Twitch
+
+| Nom | URL | Description |
+| --- | --- | --- |
+| [Layout](../overlays/next.md) | `/nextmatch` | Le prochain match (bandeau « à suivre ») |
+| Viewers | `/twitch-viewer` | Compteur de viewers |
+| [Alertes](../plateformes/chat.md) | `/twitch-alerts` | Follows, subs, raids, bits |
+| [Chat](../plateformes/chat.md) | `/twitch-chat` | Chat Twitch en overlay |
+
+Connexion et réglages : [Twitch](../plateformes/twitch.md).
+
+## YouTube
+
+| Nom | URL | Description |
+| --- | --- | --- |
+| [Chat](../plateformes/chat.md) | `/youtube-chat` | Chat YouTube en overlay |
+| Viewers | `/youtube-viewer` | Compteur de viewers |
+| [Alertes](../plateformes/chat.md) | `/youtube-alerts` | Super Chats, nouveaux membres, paliers |
+
+Connexion et réglages : [YouTube](../plateformes/youtube.md).
+
+## Chat combiné
+
+| Nom | URL | Description |
+| --- | --- | --- |
+| [Twitch + YouTube](../plateformes/chat.md) | `/combined-chat` | Les deux chats fusionnés, avec un badge de couleur par plateforme |
+
+## Autres pages (hors menu)
+
+Accessibles directement par leur URL, même si elles ne figurent pas dans le menu **Overlays ▾** :
+
+| Nom | URL | Description |
+| --- | --- | --- |
+| Scoreboard Slim | `/overlay-slim` | Version barre compacte du scoreboard |
+| [Victoire](../overlays/vs-victory.md) | `/victory` | Écran de fin de set (piloté par le bouton 🏆 de l'en-tête) |
+| [Prochains matchs](../overlays/next.md) | `/upcoming` | File des matchs à venir |
+| Stingers | `/stinger-*` | Une soixantaine de transitions animées (ex. `/stinger-cyberpunk`) |
+| [Régie](../avance/regie.md) | `/regie` | Panneau de contrôle allégé, sur 3 colonnes |
+| Notes | `/notes` | Bloc-notes / rundown pour le staff |
+| AV Sync | `/avsync` | Mire pour régler la synchro audio/vidéo |
+| Créateur de scoreboard | `/scoreboard-custom` | Scoreboard entièrement personnalisé |
+| Ce guide | `/guide` | Version intégrée à l'appli |
 
 {% hint style="success" %}
-Tu n'as pas besoin d'ajouter **tous** ces overlays dans OBS. Choisis ceux dont tu te sers réellement pour ton format de stream.
+Tu n'as pas besoin d'ajouter **tous** ces overlays dans OBS. Choisis ceux dont tu te sers vraiment pour ton format de stream.
 {% endhint %}
