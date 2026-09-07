@@ -44,6 +44,9 @@
 * [Minuteur](overlays/timer.md)
 * [VS Screen & Victoire](overlays/vs-victory.md)
 * [Next / Prochains matchs](overlays/next.md)
+
+## 🎛 Master overlay
+
 * [Master (tout-en-un)](overlays/master.md)
 
 ## 📡 Plateformes de stream

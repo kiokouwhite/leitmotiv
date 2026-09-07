@@ -12,6 +12,10 @@ L'overlay **Master** compose **plusieurs overlays en une seule** Source Navigate
 
 Panneau → onglet **OBS** → sous-onglet **Master overlay**.
 
+{% hint style="info" %}
+Contrairement aux autres overlays, qui se règlent dans **Customisation**, le Master se configure dans l'onglet **OBS** : c'est un outil de composition pour OBS, pas un réglage d'apparence.
+{% endhint %}
+
 <figure><img src="../.gitbook/assets/master-panneau.png" alt="Onglet OBS, sous-onglet Master overlay"><figcaption><p>À gauche la liste des <strong>overlays inclus</strong>, à droite l'<strong>aperçu en direct</strong> du master.</p></figcaption></figure>
 
 ## Composer une scène master
