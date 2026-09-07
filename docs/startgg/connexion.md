@@ -36,6 +36,8 @@ La clé est mémorisée dans `config.json` : tu ne la ressaisis pas au prochain 
 4. Sélectionne l'**événement** (Smash Ultimate Singles, SF6…) dans le menu déroulant.
 5. Clique **Charger** : les participants et les sets sont importés.
 
+<figure><img src="../.gitbook/assets/config-tournoi.png" alt="Modale Configuration du tournoi"><figcaption><p>La modale <strong>Configuration du tournoi</strong> : slug, bracket, nom et logo (auto-remplis depuis start.gg).</p></figcaption></figure>
+
 {% hint style="success" %}
 Une fois connectée, tu retrouves : la liste des **sets en cours** (à charger sur le scoreboard), le **report de score**, le **Head-to-Head**, les **stats joueur**, le **bracket** et le **Top 8**.
 {% endhint %}

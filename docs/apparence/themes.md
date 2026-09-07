@@ -10,6 +10,8 @@ Un **thème** change les **couleurs de tous les overlays en même temps** (score
 
 Onglet **Customisation** → section **Thèmes** → clique une carte de thème. Le changement est **instantané** sur tous les overlays actifs.
 
+<figure><img src="../.gitbook/assets/customisation-themes.png" alt="Onglet Customisation, sélecteur de thèmes"><figcaption><p>L'onglet <strong>Customisation</strong> : thèmes custom (dont HOPLAN), Dual personnages, et les ambiances prédéfinies.</p></figcaption></figure>
+
 ## Thèmes prédéfinis
 
 Une vingtaine de thèmes sont fournis, par exemple :
