@@ -27,7 +27,7 @@ git clone https://github.com/kiokouwhite/leitmotiv.git
 cd leitmotiv
 ```
 
-**Sans Git** : sur la page GitHub → bouton vert **Code → Download ZIP**, puis décompresse le dossier.
+**Sans Git** : va sur [github.com/kiokouwhite/leitmotiv](https://github.com/kiokouwhite/leitmotiv) → bouton vert **Code → Download ZIP**, puis décompresse le dossier.
 
 ## 3. Installer les dépendances
 
