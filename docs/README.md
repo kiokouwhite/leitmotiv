@@ -1,5 +1,9 @@
 # Bienvenue
 
+{% hint style="info" %}
+**Smash Strasbourg** : les liens sont dans le salon **TO-magna**, dans les **messages épinglés**.
+{% endhint %}
+
 **Leitmotiv** est le système d'overlays de stream de l'association pour nos tournois FGC (Smash Ultimate, SF6, etc.). Il tourne en **serveur local** sur le PC de régie et communique **en temps réel** avec OBS.
 
 Ce guide s'adresse à **tout le staff** : après l'avoir lu, tu dois pouvoir gérer un stream de A à Z sans dépendre de personne.
