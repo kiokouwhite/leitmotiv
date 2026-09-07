@@ -100,6 +100,8 @@ function syncFromState(s) {
   }
   const _logoFloat = document.getElementById('logo-float');
   if (_logoFloat) _logoFloat.checked = s.logoFloat === true;
+  const _logoAnch = s.logoAnchor || '';
+  document.querySelectorAll('.logo-anchor-btn').forEach(b => b.classList.toggle('active', b.dataset.anchor === _logoAnch));
   // Police (thème maker) : conserve dans state + reflète dans le sélecteur.
   if (s.fontFamily) state.fontFamily = s.fontFamily;
   const _fontSel = document.getElementById('theme-custom-font');
@@ -161,6 +163,8 @@ function syncFromState(s) {
   [
     ['center-logo-size',          'centerLogoSize',          52],
     ['center-logo-offset-y',      'centerLogoOffsetY',       0],
+    ['logo-anchor-x',             'logoAnchorX',             0],
+    ['logo-anchor-y',             'logoAnchorY',             0],
     ['center-logo-opacity',       'centerLogoOpacity',       100],
     ['center-logo-glow',          'centerLogoGlowIntensity', 0],
     ['players-gap',               'playersGap',              0],
@@ -579,6 +583,9 @@ function buildStateFromForm() {
     centerLogo: document.getElementById('center-logo').value.trim(),
     centerLogoHidden: document.getElementById('btn-logo-toggle')?.classList.contains('active') === false,
     logoFloat: document.getElementById('logo-float')?.checked === true,
+    logoAnchor:  document.querySelector('.logo-anchor-btn.active')?.dataset.anchor || '',
+    logoAnchorX: parseInt(document.getElementById('logo-anchor-x-num')?.value ?? 0),
+    logoAnchorY: parseInt(document.getElementById('logo-anchor-y-num')?.value ?? 0),
     swapped: state.swapped ?? false,
     fontFamily: state.fontFamily || 'Russo One',
     overlayStyle: state.overlayStyle || 'full',
@@ -3361,7 +3368,7 @@ document.querySelectorAll('.sb-pcolor-btn').forEach(btn => {
 // synchronise les deux inputs entre eux puis on émet le state.
 [
   // Lot 2
-  'center-logo-size', 'center-logo-offset-y', 'center-logo-opacity',
+  'center-logo-size', 'center-logo-offset-y', 'center-logo-opacity', 'logo-anchor-x', 'logo-anchor-y',
   'center-logo-glow', 'players-gap',
   // Lot 3 : géométrie + tailles
   'player-min-width', 'sb-height', 'player-card-radius', 'player-card-padding', 'player-card-skew',
@@ -3484,6 +3491,7 @@ const SCOREBOARD_DEFAULTS = {
   centerLogo: '', centerLogoHidden: false,
   centerLogoSize: 52, centerLogoOffsetY: 0, centerLogoOpacity: 100,
   centerLogoShape: 'none', centerLogoGlowColor: '#00f0ff', centerLogoGlowIntensity: 0, logoFloat: false,
+  logoAnchor: '', logoAnchorX: 0, logoAnchorY: 0,
   playersGap: 0,
   // Lot 3
   playerCardMinWidth: 320, scoreboardHeight: 0, playerCardRadius: 0, playerCardPadding: 0,
@@ -3648,6 +3656,17 @@ document.getElementById('logo-particles-num').addEventListener('change', functio
 });
 // Logo qui survole le scoreboard
 document.getElementById('logo-float')?.addEventListener('change', () => emitState(buildStateFromForm()));
+// Ancrage du logo : re-cliquer le point actif le désélectionne (retour au
+// comportement « suit la barre »), d'où un handler dédié plutôt que le
+// multi-toggle générique qui ne sait pas désactiver.
+document.querySelectorAll('.logo-anchor-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const etaitActif = btn.classList.contains('active');
+    document.querySelectorAll('.logo-anchor-btn').forEach(b => b.classList.remove('active'));
+    if (!etaitActif) btn.classList.add('active');
+    emitState(buildStateFromForm());
+  });
+});
 
 // Scoreboard scale/position sliders — sync range ↔ number and emit.
 // Optional chaining sur addEventListener car les sliders lt-* peuvent ne plus

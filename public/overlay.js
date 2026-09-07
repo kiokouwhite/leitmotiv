@@ -656,6 +656,12 @@ function update(s) {
   sb.style.setProperty('--center-logo-opacity',        (s.centerLogoOpacity ?? 100) / 100);
   sb.style.setProperty('--center-logo-glow-color',     s.centerLogoGlowColor || 'transparent');
   sb.style.setProperty('--center-logo-glow-intensity', (s.centerLogoGlowIntensity ?? 0) + 'px');
+  // Miroir sur <body> : en mode ancré le logo est greffé à <body> et n'hérite
+  // plus des variables posées sur #scoreboard.
+  document.body.style.setProperty('--center-logo-size',           (s.centerLogoSize ?? 52) + 'px');
+  document.body.style.setProperty('--center-logo-opacity',        (s.centerLogoOpacity ?? 100) / 100);
+  document.body.style.setProperty('--center-logo-glow-color',     s.centerLogoGlowColor || 'transparent');
+  document.body.style.setProperty('--center-logo-glow-intensity', (s.centerLogoGlowIntensity ?? 0) + 'px');
   sb.style.setProperty('--players-gap',                (s.playersGap ?? 0) + 'px');
   // Forme du logo central — classe body sb-logo-shape-<id>
   const shape = ['none','circle','square','hex'].includes(s.centerLogoShape) ? s.centerLogoShape : 'none';
@@ -664,6 +670,7 @@ function update(s) {
   // Logo qui « survole » le scoreboard : sort du clipping des conteneurs et
   // flotte au-dessus sans redimensionner la barre (position absolue).
   document.body.classList.toggle('sb-logo-float', s.logoFloat === true);
+  applyLogoAnchor(s);
 
   // Lot 3 : géométrie des cartes joueur (Customisation > Scoreboard).
   sb.style.setProperty('--player-min-width',     (s.playerCardMinWidth ?? 320) + 'px');
@@ -1484,3 +1491,35 @@ function applySbCenterShift(state, anchor) {
   ro.observe(sbEl);
   sbEl.querySelectorAll('.player, .score-center').forEach(el => ro.observe(el));
 })();
+
+
+// ── Ancrage écran du logo central ────────────────────────────────────────────
+// Comme la barre événement détachée, le logo est greffé à <body> pour
+// s'affranchir des transform des ancêtres (#scoreboard et .center-logo-area en
+// posent, ce qui en fait des containing blocks et casserait position:fixed).
+// Sans ancrage choisi, le logo reste dans le bloc central : le comportement
+// historique est préservé, rien ne bouge pour les presets existants.
+function applyLogoAnchor(s) {
+  const anchor   = (s && s.logoAnchor) || '';
+  const detached = !!(s && s.logoFloat) && !!anchor;
+  document.body.style.setProperty('--logo-anchor-x', ((s && s.logoAnchorX) || 0) + 'px');
+  document.body.style.setProperty('--logo-anchor-y', ((s && s.logoAnchorY) || 0) + 'px');
+  ['center-logo-img', 'center-logo-frame'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (!el._logoOrigParent && el.parentElement !== document.body) {
+      el._logoOrigParent = el.parentElement;
+      el._logoOrigNext   = el.nextSibling;
+    }
+    if (detached) {
+      if (el.parentElement !== document.body) document.body.appendChild(el);
+      el.setAttribute('data-logo-anchor', anchor);
+    } else {
+      if (el._logoOrigParent && el.parentElement !== el._logoOrigParent) {
+        el._logoOrigParent.insertBefore(el, el._logoOrigNext);
+      }
+      el.removeAttribute('data-logo-anchor');
+    }
+    el.classList.toggle('logo-detached', detached);
+  });
+}

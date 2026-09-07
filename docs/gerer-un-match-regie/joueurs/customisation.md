@@ -41,10 +41,21 @@ Dans l'onglet **Logo**, la case **« Le logo dépasse (survole le scoreboard) »
 * le logo peut **sortir des cartes** au lieu d'être rogné par leurs bords ;
 * il devient **indépendant des décalages X px / Y px** de la barre : quand tu déplaces le scoreboard, le logo **garde sa position à l'écran**.
 
-Pratique pour un logo qui déborde volontairement au-dessus de la barre : tu peux recaler le scoreboard sans avoir à repositionner le logo derrière.
-
 {% hint style="info" %}
-Le **VS** n'est pas concerné : il reste solidaire de la barre (et il est de toute façon masqué dès qu'un logo est posé). La **Taille %** du scoreboard continue elle aussi de s'appliquer au logo.
+Le **VS** n'est pas concerné : il reste solidaire de la barre (et il est de toute façon masqué dès qu'un logo est posé).
+{% endhint %}
+
+### Ancrer le logo à l'écran
+
+Toujours dans l'onglet **Logo**, une grille d'**ancrage à l'écran** en 9 points, identique à celle du scoreboard, permet de sortir complètement le logo de la barre : coin haut-gauche, centre, bas-droite… Les champs **Décalage X / Y px** ajustent finement depuis le point choisi (X+ vers la droite, Y+ vers le bas).
+
+Pratique pour un **logo de tournoi posé dans un coin du stream**, qui ne bouge plus du tout quand tu recales le scoreboard.
+
+{% hint style="warning" %}
+Deux conditions :
+
+* l'ancrage n'agit que si la case **« Le logo dépasse »** est cochée ;
+* **aucun point sélectionné** = comportement par défaut, le logo reste centré sur la barre. Re-clique le point actif pour le désélectionner et revenir à ce mode.
 {% endhint %}
 
 ### Centrage horizontal

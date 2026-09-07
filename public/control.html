@@ -1590,6 +1590,35 @@
                     </label>
                     <div style="font-size:10px;color:var(--text-muted);margin-top:4px">Le logo ignore aussi les décalages <strong>X px / Y px</strong> de la barre : il garde sa position à l'écran quand tu la déplaces.</div>
                   </div>
+                  <div class="form-group" style="margin:10px 0 0">
+                    <label>Ancrage à l'écran <span style="font-weight:400;opacity:0.6">(optionnel)</span></label>
+                    <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:4px;margin-top:4px;max-width:140px">
+                      <button class="logo-anchor-btn theme-btn" data-anchor="top-left" title="Haut-gauche" style="aspect-ratio:1;padding:0;font-size:14px">↖</button>
+                      <button class="logo-anchor-btn theme-btn" data-anchor="top-center" title="Haut-centre" style="aspect-ratio:1;padding:0;font-size:14px">↑</button>
+                      <button class="logo-anchor-btn theme-btn" data-anchor="top-right" title="Haut-droite" style="aspect-ratio:1;padding:0;font-size:14px">↗</button>
+                      <button class="logo-anchor-btn theme-btn" data-anchor="middle-left" title="Milieu-gauche" style="aspect-ratio:1;padding:0;font-size:14px">←</button>
+                      <button class="logo-anchor-btn theme-btn" data-anchor="middle-center" title="Centre" style="aspect-ratio:1;padding:0;font-size:14px">●</button>
+                      <button class="logo-anchor-btn theme-btn" data-anchor="middle-right" title="Milieu-droite" style="aspect-ratio:1;padding:0;font-size:14px">→</button>
+                      <button class="logo-anchor-btn theme-btn" data-anchor="bottom-left" title="Bas-gauche" style="aspect-ratio:1;padding:0;font-size:14px">↙</button>
+                      <button class="logo-anchor-btn theme-btn" data-anchor="bottom-center" title="Bas-centre" style="aspect-ratio:1;padding:0;font-size:14px">↓</button>
+                      <button class="logo-anchor-btn theme-btn" data-anchor="bottom-right" title="Bas-droite" style="aspect-ratio:1;padding:0;font-size:14px">↘</button>
+                    </div>
+                    <div style="font-size:10px;color:var(--text-muted);margin-top:4px">Sans ancrage, le logo reste centré sur la barre. Clique un point pour l'ancrer à l'écran — re-clique dessus pour annuler. Nécessite la case ci-dessus.</div>
+                  </div>
+                  <div class="form-group" style="margin:7px 0 0">
+                    <label>Décalage X px (ancré)</label>
+                    <div class="logo-particles-row">
+                      <input type="range" id="logo-anchor-x-range" min="-960" max="960" value="0" step="1" />
+                      <input type="number" id="logo-anchor-x-num" min="-960" max="960" value="0" step="1" style="width:58px" />
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin:7px 0 0">
+                    <label>Décalage Y px (ancré)</label>
+                    <div class="logo-particles-row">
+                      <input type="range" id="logo-anchor-y-range" min="-540" max="540" value="0" step="1" />
+                      <input type="number" id="logo-anchor-y-num" min="-540" max="540" value="0" step="1" style="width:58px" />
+                    </div>
+                  </div>
                 </div>
               </div>
 
