@@ -18,6 +18,21 @@ Panneau → onglet **Customisation** → catégorie **SSBU** → **Scoreboard**.
 | **Drapeaux** | Affichage et position des drapeaux |
 | **Particules** | Type de particules et teinte |
 
+### Aplatir le texte
+
+Dans l'onglet **Scoreboard** → **Géométrie des cartes** → **Dimensions**, la case **« Aplatir le texte s'il dépasse la largeur »** change la façon dont un pseudo trop long est traité :
+
+| | Décoché *(défaut)* | Coché |
+| --- | --- | --- |
+| **Carte joueur** | S'élargit pour contenir le texte | Reste à la **largeur min** |
+| **Texte** | Taille inchangée | **Comprimé horizontalement** pour rentrer |
+
+Avantage : les deux cartes gardent la même largeur, donc la barre reste **symétrique** et le VS naturellement centré, quelle que soit la longueur des pseudos.
+
+{% hint style="warning" %}
+Sur un pseudo très long, la compression devient forte et le texte peut finir par être difficile à lire. Augmente alors la **largeur min** plutôt que de tout miser sur l'aplatissement.
+{% endhint %}
+
 ### Centrage horizontal
 
 Dans l'onglet **Scoreboard** → **Position & taille** → **Ancrage & position**, deux modes :

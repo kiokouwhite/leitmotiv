@@ -132,6 +132,8 @@ function syncFromState(s) {
   if (_pTint) _pTint.checked = s.particleTintTheme === true;
   const _pPh = document.getElementById('preview-placeholders');
   if (_pPh) _pPh.checked = s.previewPlaceholders === true;
+  const _sqT = document.getElementById('sb-squash-text');
+  if (_sqT) _sqT.checked = s.sbSquashText === true;
   updateParticlesToggle(s.particlesEnabled !== false);
   updateHidePlayerColorsBtn(s.hidePlayerColors === true);
   updateCharDisplayModeBtn(s.charDisplayMode || 'normal');
@@ -622,6 +624,7 @@ function buildStateFromForm() {
       ? (parseInt(document.getElementById('logo-particles-num').value) || 3)
       : 0,
     previewPlaceholders: document.getElementById('preview-placeholders')?.checked === true,
+    sbSquashText:        document.getElementById('sb-squash-text')?.checked === true,
     themePalette: state.themePalette || { primary: '#E8B830', secondary: '#3070E8', white: '#F0EEF8', black: '#0E0E12' },
     particleType:       document.getElementById('particle-type')?.value || 'auto',
     particleTintTheme:  document.getElementById('particle-tint-theme')?.checked === true,
@@ -3322,6 +3325,7 @@ document.getElementById('btn-particles-toggle').addEventListener('click', () => 
 document.getElementById('particle-type')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Placeholders d'aperçu (tag / pronoms / seed)
 document.getElementById('preview-placeholders')?.addEventListener('change', () => emitState(buildStateFromForm()));
+document.getElementById('sb-squash-text')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Particules aux couleurs du thème (principale / secondaire)
 document.getElementById('particle-tint-theme')?.addEventListener('change', () => emitState(buildStateFromForm()));
 
@@ -3511,6 +3515,7 @@ const SCOREBOARD_DEFAULTS = {
   // Lot 5
   sbAnchor: 'top-center',
   sbCenterMode: 'bar',
+  sbSquashText: false,
   sbScale: 100, sbX: 0, sbY: 0,
 };
 

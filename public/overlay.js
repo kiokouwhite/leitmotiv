@@ -823,8 +823,10 @@ function update(s) {
   document.body.classList.toggle('sb-anchor-middle', _sbRow === 'middle');
   document.body.classList.toggle('sb-anchor-bottom', _sbRow === 'bottom');
 
-  // Centrage horizontal : « bar » centre la barre entière, « logo » aligne le
-  // bloc central (VS / logo) sur le centre de l'écran.
+  // Aplatissement du texte puis centrage : l'ordre compte, la compression
+  // modifie la largeur des cartes donc le décalage de centrage.
+  _sbLastState = s;
+  applySquashText(s);
   applySbCenterShift(s, _sbAnch);
 
   // Lot 4 / 6 : event-bar — vars posées sur <body> (et pas sur #scoreboard) pour
@@ -1418,6 +1420,26 @@ fetch('/api/state')
 // Le décalage est posé dans le translateX, qui déplace la barre au pixel rendu
 // près : il est donc multiplié par le zoom (--sb-scale) pour compenser.
 let _sbCenterLast = { anchor: 'top-center', mode: 'bar' };
+let _sbLastState = null;
+
+// Aplatit horizontalement le bloc de texte d'un joueur quand il déborde de sa
+// carte, au lieu de laisser la carte s'élargir. scaleX ne change pas le layout,
+// donc scrollWidth/clientWidth restent mesurables d'un passage à l'autre.
+function applySquashText(state) {
+  const on = !!(state && state.sbSquashText);
+  document.body.classList.toggle('sb-squash-text', on);
+  ['p1-name', 'p2-name'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.transform = '';
+    if (!on) return;
+    const dispo = el.clientWidth;
+    const naturel = el.scrollWidth;
+    if (dispo > 0 && naturel > dispo) {
+      el.style.transform = 'scaleX(' + (dispo / naturel).toFixed(4) + ')';
+    }
+  });
+}
 
 function applySbCenterShift(state, anchor) {
   const sbEl = document.getElementById('scoreboard');
@@ -1449,7 +1471,10 @@ function applySbCenterShift(state, anchor) {
   let raf = null;
   const ro = new ResizeObserver(() => {
     cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => applySbCenterShift({ sbCenterMode: _sbCenterLast.mode }, _sbCenterLast.anchor));
+    raf = requestAnimationFrame(() => {
+      applySquashText(_sbLastState);
+      applySbCenterShift(_sbLastState || { sbCenterMode: _sbCenterLast.mode }, _sbCenterLast.anchor);
+    });
   });
   ro.observe(sbEl);
   sbEl.querySelectorAll('.player, .score-center').forEach(el => ro.observe(el));
