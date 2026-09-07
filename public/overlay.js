@@ -755,14 +755,13 @@ function update(s) {
   sb.style.setProperty('--name-font-size',       (s.nameFontSize ?? 24) + 'px');
   sb.style.setProperty('--tag-font-size',        (s.tagFontSize ?? 16) + 'px');
   // Position du score — classe body sb-score-<between|above>
-  const scorePos = ['above','in-cards','in-cards-left','in-cards-right'].includes(s.scorePositionMode) ? s.scorePositionMode : 'between';
+  const scorePos = ['above','in-cards','in-cards-outer'].includes(s.scorePositionMode) ? s.scorePositionMode : 'between';
   // Les trois variantes « dans les cartes » partagent la classe sb-score-in-cards
   // (styles communs) ; deux classes de plus portent l'alignement gauche/droite.
   const _inCards = scorePos.indexOf('in-cards') === 0;
   document.body.classList.toggle('sb-score-above',           scorePos === 'above');
   document.body.classList.toggle('sb-score-in-cards',        _inCards);
-  document.body.classList.toggle('sb-score-in-cards-left',   scorePos === 'in-cards-left');
-  document.body.classList.toggle('sb-score-in-cards-right',  scorePos === 'in-cards-right');
+  document.body.classList.toggle('sb-score-in-cards-outer',  scorePos === 'in-cards-outer');
   // Mode in-cards : déplace les <span class="score"> dans chaque carte joueur
   // (p1-score à la fin de player1-block, p2-score au début de player2-block)
   // pour reproduire le rendu façon TSH. Mémorise le parent d'origine pour
@@ -780,9 +779,10 @@ function update(s) {
     // est déjà dans la carte, seul son rang change.
     const debut = (sc, cd) => { if (sc && cd && cd.firstChild !== sc) cd.insertBefore(sc, cd.firstChild); };
     const fin   = (sc, cd) => { if (sc && cd && cd.lastChild  !== sc) cd.appendChild(sc); };
-    if (scorePos === 'in-cards-left')       { debut(_p1Sc, _p1Cd); debut(_p2Sc, _p2Cd); }
-    else if (scorePos === 'in-cards-right') { fin(_p1Sc, _p1Cd);   fin(_p2Sc, _p2Cd);   }
-    else                                    { fin(_p1Sc, _p1Cd);   debut(_p2Sc, _p2Cd); }
+    // centre   : chaque score vers l'intérieur de la barre (P1 fin, P2 début)
+    // extérieur : l'inverse, les scores aux extrémités de la barre
+    if (scorePos === 'in-cards-outer') { debut(_p1Sc, _p1Cd); fin(_p2Sc, _p2Cd);   }
+    else                               { fin(_p1Sc, _p1Cd);   debut(_p2Sc, _p2Cd); }
   } else {
     if (_p1Sc?._origParent && _p1Sc.parentElement !== _p1Sc._origParent) _p1Sc._origParent.insertBefore(_p1Sc, _p1Sc._origNext);
     if (_p2Sc?._origParent && _p2Sc.parentElement !== _p2Sc._origParent) _p2Sc._origParent.insertBefore(_p2Sc, _p2Sc._origNext);

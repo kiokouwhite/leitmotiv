@@ -4542,10 +4542,8 @@ body.sb-logo-float .center-logo-area iframe {
 .logo-detached[data-logo-anchor="bottom-right"] { bottom:0; right:0; transform: translate(var(--logo-anchor-x, 0px), var(--logo-anchor-y, 0px)); }
 
 
-/* Variantes « score dans les cartes » — gauche / droite.
-   Le mode historique pousse chaque score vers l'intérieur de la barre ; ces
-   deux variantes alignent les DEUX scores sur le même bord de leur carte. */
-body.sb-score-in-cards-left .player-left > .score,
-body.sb-score-in-cards-left .player-right > .score  { margin-left: 0;    margin-right: auto; }
-body.sb-score-in-cards-right .player-left > .score,
-body.sb-score-in-cards-right .player-right > .score { margin-left: auto; margin-right: 0;    }
+/* Variante « score dans les cartes — extérieur » : l'inverse du mode centre.
+   Le mode centre pousse chaque score vers le logo ; celui-ci les envoie aux
+   extrémités de la barre (P1 sur le bord gauche, P2 sur le bord droit). */
+body.sb-score-in-cards-outer .player-left > .score  { margin-left: 0;    margin-right: auto; }
+body.sb-score-in-cards-outer .player-right > .score { margin-left: auto; margin-right: 0;    }

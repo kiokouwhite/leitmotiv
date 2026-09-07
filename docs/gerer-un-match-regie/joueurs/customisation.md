@@ -27,10 +27,9 @@ Dans l'onglet **Score**, le réglage **Position** place le chiffre :
 | **⇆ Entre** *(défaut)* | Au centre de la barre, de part et d'autre du VS |
 | **↑ Au-dessus** | Au-dessus des cartes joueurs |
 | **📦 Cartes (centre)** | Dans les cartes, chaque score poussé vers le centre de la barre |
-| **◧ Cartes gauche** | Dans les cartes, les **deux** scores sur le bord **gauche** |
-| **◨ Cartes droite** | Dans les cartes, les **deux** scores sur le bord **droit** |
+| **◨◧ Cartes (extérieur)** | Dans les cartes, mais vers l'**extérieur** : score de P1 tout à gauche, score de P2 tout à droite |
 
-Les trois variantes « cartes » rapprochent le score du joueur concerné, à la façon d'un scoreboard TSH.
+Les modes « cartes » rapprochent le score du joueur concerné, à la façon d'un scoreboard TSH. **Centre** et **extérieur** sont exactement inverses : le premier ramène les scores vers le logo, le second les envoie aux deux bouts de la barre.
 
 ### Débordement du texte
 
