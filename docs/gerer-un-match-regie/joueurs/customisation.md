@@ -6,6 +6,10 @@ Panneau → onglet **Customisation** → catégorie **SSBU** → **Scoreboard**.
 
 <figure><img src="../../.gitbook/assets/scoreboard-custom-panneau.png" alt="Panneau de customisation du scoreboard"><figcaption><p>Les réglages à gauche, deux aperçus en direct à droite.</p></figcaption></figure>
 
+{% hint style="info" %}
+Les sous-encadrés (**Ancrage & position**, **Fond du scoreboard**, **Contour**…) sont **repliés par défaut** pour que tout tienne à l'écran. Clique le titre — ou le petit chevron à sa gauche — pour déplier, re-clique pour replier. Les bascules **Off/On** logées dans certains titres restent utilisables sans déplier.
+{% endhint %}
+
 ## Les sept onglets
 
 | Onglet | Contenu |

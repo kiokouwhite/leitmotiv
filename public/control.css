@@ -6401,3 +6401,14 @@ h1, .section-header h2, .custom-card h3,
 #sb-scroll-area .custom-card .vis-grid > .vis-toggle { justify-content: center; }
 #sb-scroll-area .custom-card input[type="color"] { display: inline-block; }
 #sb-scroll-area .custom-card select { text-align: center; text-align-last: center; }
+
+
+/* ── Sous-encadrés repliables (Customisation) ────────────────────────────────
+   Les sous-encadrés à en-tête doré sont repliés par défaut pour raccourcir la
+   page ; un chevron à gauche du titre les déplie. Marge de l'en-tête et
+   padding bas de la carte sont en style inline, d'où les !important. */
+.subcard-header { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+.subcard-chevron { font-size: 9px; opacity: 0.75; flex-shrink: 0; }
+.subcard.collapsed > .subcard-body { display: none; }
+.subcard.collapsed > .subcard-header { margin-bottom: 0 !important; }
+.subcard.collapsed { padding-bottom: 0 !important; }

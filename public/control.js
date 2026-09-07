@@ -14120,3 +14120,40 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
     }
   }, { passive: true });
 })();
+
+
+// ── Sous-encadrés repliables ────────────────────────────────────────────────
+// Les sous-encadrés de la Customisation (en-tête doré) sont repliés par défaut
+// pour raccourcir la page ; un chevron à gauche du titre les déplie. On les
+// repère par la signature de style de leur en-tête plutôt qu'en balisant les
+// quinze blocs un par un — ceux qu'on ajoutera plus tard en hériteront.
+(function sousEncadresRepliables() {
+  const init = () => {
+    document.querySelectorAll('div[style*="letter-spacing:0.1em"]').forEach(entete => {
+      if (entete._repliable) return;
+      const carte = entete.parentElement;
+      if (!carte) return;
+      entete._repliable = true;
+
+      const corps = document.createElement('div');
+      corps.className = 'subcard-body';
+      while (entete.nextSibling) corps.appendChild(entete.nextSibling);
+      carte.appendChild(corps);
+
+      const chevron = document.createElement('span');
+      chevron.className = 'subcard-chevron';
+      chevron.textContent = '▸';
+      entete.insertBefore(chevron, entete.firstChild);
+
+      carte.classList.add('subcard', 'collapsed');
+      entete.classList.add('subcard-header');
+
+      entete.addEventListener('click', (e) => {
+        if (e.target.closest('button, input, select, label')) return;
+        chevron.textContent = carte.classList.toggle('collapsed') ? '▸' : '▾';
+      });
+    });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
