@@ -17,9 +17,9 @@ Il faut le réinitialiser côté `config.json` / relancer la configuration. Dema
 Ne mets **aucun** CSS personnalisé dans la Browser Source, et vérifie que l'URL est la bonne. La transparence est automatique.
 
 **L'overlay ne se met pas à jour / est figé.**
-1. Vérifie le voyant **« Connecté »** en haut du panneau.
-2. Dans OBS, clic droit sur la source → **Actualiser**.
-3. Vérifie que tu n'as **pas** coché « Actualiser au changement de scène » (ça casse les animations). → [Configurer OBS](../demarrage/obs.md)
+1. Dans OBS, **clic droit** sur la source → **Propriétés** → **Rafraîchir le cache de cette page**. C'est le correctif le plus fréquent. → [Configurer OBS](../demarrage/obs.md)
+2. Vérifie le voyant **« Connecté »** en haut du panneau.
+3. Vérifie que tu n'as **pas** coché « Actualiser au changement de scène » (ça casse les animations).
 
 **Les animations se coupent en changeant de scène.**
 Décoche « Actualiser le navigateur quand la scène devient active » sur la source concernée (surtout le Ticker).

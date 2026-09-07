@@ -43,6 +43,29 @@ Alternative : l'overlay **[Master](../overlays/master.md)** compose plusieurs ov
 
 L'overlay **Cam** ne fait qu'afficher le cadre + les infos joueur ; il est transparent au milieu. Dans OBS, place ta **Capture de périphérique vidéo** (webcam / capture 3DS/Switch) **juste en dessous** de la source Cam, et redimensionne-la pour qu'elle rentre dans la zone.
 
+## Dépannage : un overlay ne s'affiche pas
+
+Le réflexe **n°1**, et de loin le plus efficace : **rafraîchir le cache de la source**. OBS garde en mémoire une version de la page, qui peut être périmée — d'où un overlay resté blanc/noir, un ancien contenu affiché, ou un changement qui n'apparaît pas.
+
+1. Dans OBS, **clic droit** sur la source navigateur concernée.
+2. Choisis **Propriétés** (tout en bas du menu).
+3. En bas de la fenêtre, clique **Rafraîchir le cache de cette page**.
+4. Valide avec **OK**.
+
+L'overlay se recharge depuis le serveur Leitmotiv. Dans la grande majorité des cas, c'est réglé.
+
+{% hint style="info" %}
+À faire **systématiquement après une mise à jour** de Leitmotiv (`git pull`) : sinon OBS peut continuer d'afficher l'ancienne version de l'overlay.
+{% endhint %}
+
+Si ça ne suffit pas, vérifie dans l'ordre :
+
+* la **fenêtre noire du serveur** est-elle toujours ouverte ? (sans elle, plus aucun overlay ne fonctionne)
+* l'**URL** de la source est-elle la bonne ? (voir [Tous les overlays](overlays.md))
+* la taille est-elle bien **1920 × 1080** ?
+* le voyant **« Connecté »** est-il vert en haut du panneau ?
+* en multi-PC : bonne **IP** et **port 3002 autorisé** dans le pare-feu ? (voir [Multi-PC & accès distant](../avance/multi-pc.md))
+
 ---
 
 ➡️ Ensuite : [Tous les overlays](overlays.md)
