@@ -88,6 +88,17 @@ Si tu es connecté·e à start.gg et que le set courant vient de start.gg, un bo
 
 Détails complets : [Reporter le score](../startgg/reporter.md).
 
+### Match depuis start.gg
+
+Le bouton **« Match depuis start.gg »** (dans le panneau du milieu) ouvre une fenêtre pour charger un set directement depuis start.gg, sans quitter l'onglet **Principal**.
+
+* Si un tournoi est déjà configuré, la fenêtre affiche la **liste des sets** en cours / en attente. Clique sur un set : les **deux joueurs** et le **round** remplissent le scoreboard automatiquement, les scores repassent à 0, et la fenêtre se ferme.
+* Si aucun tournoi n'est encore connecté, la fenêtre affiche le bloc de **recherche / connexion** pour en choisir un.
+
+{% hint style="info" %}
+C'est le raccourci le plus rapide pour remplir le scoreboard en régie. Le détail complet (file de stream, vérifications avant de lancer) est sur la page [Charger un set](../startgg/charger.md).
+{% endhint %}
+
 ### Contrôle par Stream Deck
 
 Les scores peuvent aussi se piloter depuis un Stream Deck :
