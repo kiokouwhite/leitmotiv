@@ -14,7 +14,7 @@ Les sous-encadrés (**Ancrage & position**, **Fond du scoreboard**, **Contour**�
 
 | Onglet | Contenu |
 | --- | --- |
-| **Scoreboard** | **Visibilité** des champs (pronoms, tag/sponsor, seed), **Position & taille** (ancrage, X/Y, tailles de texte), **Géométrie des cartes** (dimensions, arrondi, forme, inclinaison, disposition), fond, couleurs et effets |
+| **Scoreboard** | **Visibilité** des champs (pronoms, tag/sponsor, seed) — avec une case *Exemples de tag / pronoms / seed* qui remplit l'aperçu de fausses valeurs, pour juger le rendu sans charger un vrai set, **Position & taille** (ancrage, X/Y, tailles de texte), **Géométrie des cartes** (dimensions, arrondi, forme, inclinaison, disposition), fond, couleurs et effets |
 | **Personnage** | Affichage des personnages : taille, position |
 | **Score** | Le chiffre du score : taille, alignement, décalage, et le carré derrière |
 | **Événement** | La barre du haut : texte, taille, style de la barre |
