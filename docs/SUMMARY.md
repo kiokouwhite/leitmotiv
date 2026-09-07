@@ -9,12 +9,12 @@
 * [Configurer OBS](demarrage/obs.md)
 * [Tous les overlays](demarrage/overlays.md)
 
-## 🏆 Gérer un match
+## 🏆 Gérer un match (Régie)
 
-* [Scoreboard](match/joueurs.md)
-  * [Panneau de gauche/droite](match/joueurs/les-joueurs.md)
-  * [Panneau du milieu](match/joueurs/infos-du-match.md)
-* [Commentateurs](match/casters.md)
+* [Scoreboard](gerer-un-match-regie/joueurs/README.md)
+  * [Panneau de gauche/droite](gerer-un-match-regie/joueurs/les-joueurs.md)
+  * [Panneau du milieu](gerer-un-match-regie/joueurs/infos-du-match.md)
+* [Commentateurs](gerer-un-match-regie/casters.md)
 
 ## 🎮 start.gg (le cœur du workflow)
 
