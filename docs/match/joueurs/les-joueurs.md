@@ -33,6 +33,10 @@ Cherche un pays par nom ou code (ex. `FR`, `France`). Le drapeau apparaît sur l
 
 Chaque joueur a une **couleur d'accent** utilisée pour les touches visuelles (bordures, aura…). Tu peux la choisir manuellement ou la synchroniser avec la couleur du skin sélectionné.
 
+## Modifier le score
+
+Sous chaque joueur, les boutons **+ / −** incrémentent / décrémentent son score. Le changement apparaît **instantanément** sur l'overlay.
+
 ## Inverser les joueurs
 
 Le bouton **⇄ Inverser** échange J1 et J2 avec **toutes** leurs données (tag, perso, score, couleur…). Pratique quand les joueurs changent de côté physiquement.

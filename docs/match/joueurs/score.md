@@ -1,13 +1,5 @@
 # Score
 
-## Modifier le score
-
-Dans l'onglet **Principal** :
-
-* **+ / −** sous chaque joueur pour incrémenter / décrémenter,
-
-Le changement apparaît **instantanément** sur l'overlay.
-
 ## Envoyer sur start.gg
 
 Si tu es connecté·e à start.gg et que le set courant vient de start.gg, un bouton **« Envoyer sur start.gg »** apparaît. Il reporte le score final directement sur la plateforme.
