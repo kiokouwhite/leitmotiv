@@ -34,6 +34,19 @@ Avec « Aplatir » et « Rétrécir », les deux cartes gardent la même largeur
 Les deux ont un défaut opposé : **Aplatir** garde le pseudo entier mais le déforme (très condensé sur un nom long), **Rétrécir** garde la typo intacte mais perd la fin du pseudo. Si aucun des deux ne convient, augmente plutôt la **largeur min**.
 {% endhint %}
 
+### Le logo qui dépasse
+
+Dans l'onglet **Logo**, la case **« Le logo dépasse (survole le scoreboard) »** fait deux choses :
+
+* le logo peut **sortir des cartes** au lieu d'être rogné par leurs bords ;
+* il devient **indépendant des décalages X px / Y px** de la barre : quand tu déplaces le scoreboard, le logo **garde sa position à l'écran**.
+
+Pratique pour un logo qui déborde volontairement au-dessus de la barre : tu peux recaler le scoreboard sans avoir à repositionner le logo derrière.
+
+{% hint style="info" %}
+Le **VS** n'est pas concerné : il reste solidaire de la barre (et il est de toute façon masqué dès qu'un logo est posé). La **Taille %** du scoreboard continue elle aussi de s'appliquer au logo.
+{% endhint %}
+
 ### Centrage horizontal
 
 Dans l'onglet **Scoreboard** → **Position & taille** → **Ancrage & position**, deux modes :

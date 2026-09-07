@@ -4498,3 +4498,17 @@ body.sb-overflow-squash .player-right .player-name { transform-origin: right cen
 
 /* .player-name est déjà en white-space:nowrap, requis par text-overflow. */
 body.sb-overflow-ellipsis .player-name { overflow: hidden; text-overflow: ellipsis; }
+
+
+/* ── « Le logo dépasse » : logo découplé des décalages du scoreboard ─────────
+   En plus de laisser le logo sortir des cartes (overflow visible plus haut),
+   l'option le rend indépendant des curseurs X px / Y px : il garde sa position
+   à l'écran quand on déplace la barre. La contre-translation s'applique dans
+   l'espace local du logo, déjà mis à l'échelle par le zoom du scoreboard —
+   d'où la division par --sb-scale. Le « VS » n'est pas concerné : il reste
+   ancré à la barre (et il est masqué de toute façon dès qu'un logo est posé). */
+body.sb-logo-float .center-logo-area img,
+body.sb-logo-float .center-logo-area iframe {
+  transform: translate(calc(-1 * var(--sb-x, 0px) / var(--sb-scale, 1)),
+                       calc(-1 * var(--sb-y, 0px) / var(--sb-scale, 1)));
+}
