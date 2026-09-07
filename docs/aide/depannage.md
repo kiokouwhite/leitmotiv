@@ -49,6 +49,10 @@ Le logo doit être enregistré **dans** le preset. Recharge le preset, remets le
 
 ## La 3DS
 
+{% hint style="warning" %}
+**En cours de développement.** Cette méthode n'est pas encore stabilisée — garde le report depuis le panneau comme solution de repli.
+{% endhint %}
+
 **La page `/remote` ne s'affiche pas sur mon téléphone/PC.**
 C'est normal : `/remote` est **verrouillée sur le navigateur 3DS**. Utilise une 3DS, sur le même réseau. → [Télécommande 3DS](../avance/remote-3ds.md)
 

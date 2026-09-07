@@ -22,7 +22,7 @@ Le panneau n'a **aucune authentification** : toute personne qui atteint `http://
 
 ## Accès distant (hors réseau local)
 
-Leitmotiv intègre un **tunnel d'accès distant** : il expose ton serveur local sur une URL publique temporaire, pour qu'une personne **en dehors de ton réseau** (un commentateur à distance, la [télécommande 3DS](remote-3ds.md) d'un autre lieu…) puisse y accéder.
+Leitmotiv intègre un **tunnel d'accès distant** : il expose ton serveur local sur une URL publique temporaire, pour qu'une personne **en dehors de ton réseau** (un commentateur à distance, la [télécommande 3DS](remote-3ds.md) — en cours de développement — d'un autre lieu…) puisse y accéder.
 
 * Se configure et se démarre/arrête depuis l'onglet **Paramètres → Accès distant**.
 * Une URL publique est générée quand le tunnel est actif.

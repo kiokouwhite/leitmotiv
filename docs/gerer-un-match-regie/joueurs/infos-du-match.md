@@ -26,7 +26,7 @@ Pense à ajuster le format au round : les premiers tours sont généralement en 
 Si tu es connecté·e à start.gg et que le set courant vient de start.gg, un bouton **« Envoyer sur start.gg »** apparaît. Il reporte le score final directement sur la plateforme.
 
 {% hint style="danger" %}
-**start.gg est la source de vérité.** On reporte toujours le résultat sur start.gg (via ce bouton, ou via la [télécommande 3DS](../../avance/remote-3ds.md), ou directement sur start.gg). Le scoreboard n'est qu'un affichage : ce qui compte pour le bracket, c'est ce qui est sur start.gg.
+**start.gg est la source de vérité.** On reporte toujours le résultat sur start.gg (via ce bouton, ou via la [télécommande 3DS](../../avance/remote-3ds.md) *(en cours de développement)*, ou directement sur start.gg). Le scoreboard n'est qu'un affichage : ce qui compte pour le bracket, c'est ce qui est sur start.gg.
 {% endhint %}
 
 Détails complets : [Reporter le score](../../startgg/reporter.md).

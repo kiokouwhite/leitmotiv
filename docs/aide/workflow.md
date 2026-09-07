@@ -18,7 +18,7 @@ La routine complète d'une soirée de stream, du montage au rangement. À suivre
 1. Charger le set depuis start.gg      → scoreboard rempli, scores à 0
 2. (Smash) Nouveau veto → shifumi → bans → stage confirmé
 3. Afficher le scoreboard, lancer le gameplay
-4. Suivre le score avec + / − (ou Stream Deck, ou la 3DS des joueurs)
+4. Suivre le score avec + / − (ou Stream Deck, ou la 3DS des joueurs — WIP)
 5. Fin du set → Envoyer le score sur start.gg
 6. (option) Afficher H2H / stats / Top 8 pendant la transition
 7. Charger le set suivant

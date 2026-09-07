@@ -67,7 +67,7 @@
 
 * [Animations entrée/sortie](avance/animations.md)
 * [Stream Deck](avance/stream-deck.md)
-* [Télécommande 3DS](avance/remote-3ds.md)
+* [Télécommande 3DS (WIP)](avance/remote-3ds.md)
 * [Régie](avance/regie.md)
 * [Multi-PC & accès distant](avance/multi-pc.md)
 

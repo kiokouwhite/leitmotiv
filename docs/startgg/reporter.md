@@ -22,6 +22,10 @@ Si le panneau ne sait pas quel set reporter, un **sélecteur de match start.gg**
 
 ## Méthode télécommande 3DS
 
+{% hint style="warning" %}
+**En cours de développement.** Cette méthode n'est pas encore stabilisée — garde le report depuis le panneau comme solution de repli.
+{% endhint %}
+
 Les joueurs peuvent reporter eux-mêmes depuis une **3DS** (ou tout appareil verrouillé sur cette page), sans toucher à la régie : choix du set, saisie du score game par game, envoi sur start.gg. Voir [Télécommande 3DS](../avance/remote-3ds.md).
 
 ## En cas d'erreur

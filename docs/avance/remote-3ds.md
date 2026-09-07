@@ -1,4 +1,8 @@
-# Télécommande 3DS
+# Télécommande 3DS (WIP)
+
+{% hint style="warning" %}
+**Fonctionnalité en cours de développement (work in progress).** La télécommande fonctionne, mais elle n'est pas encore stabilisée : les écrans et les comportements peuvent changer, et des bugs restent possibles en conditions réelles. Sur un vrai tournoi, garde la régie prête à reprendre la main et le report classique comme solution de repli.
+{% endhint %}
 
 La **télécommande 3DS** (`/remote`) laisse les **joueurs reporter leur score eux-mêmes**, depuis une vieille 3DS (ou un appareil équivalent), sans toucher à la régie.
 
