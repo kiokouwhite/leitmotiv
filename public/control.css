@@ -6412,3 +6412,9 @@ h1, .section-header h2, .custom-card h3,
 .subcard.collapsed > .subcard-body { display: none; }
 .subcard.collapsed > .subcard-header { margin-bottom: 0 !important; }
 .subcard.collapsed { padding-bottom: 0 !important; }
+/* En-têtes contenant un contrôle (Off/On) : leur style inline utilise
+   justify-content:space-between. Avec le chevron ajouté, cela fait trois
+   éléments et le titre se retrouve écarté au milieu. On le recolle au chevron
+   en poussant le reste à droite via une marge auto. */
+.subcard-header { justify-content: flex-start !important; }
+.subcard-header > .subcard-chevron + * { margin-right: auto; }
