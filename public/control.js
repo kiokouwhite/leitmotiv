@@ -905,7 +905,7 @@ document.getElementById('btn-send-startgg').addEventListener('click', () => open
     const p1EntrantId = document.getElementById('sgg-p1-entrant-id')?.value  || sb?.dataset.p1entrantid || '';
     const p2EntrantId = document.getElementById('sgg-p2-entrant-id')?.value  || sb?.dataset.p2entrantid || '';
     if (!setId || !p1EntrantId || !p2EntrantId) {
-      setStatus('Aucun set start.gg lié au scoreboard', 'error');
+      setStatus('Aucun set start.gg chargé — charge un set via « Match depuis start.gg » pour pouvoir envoyer le score.', 'error');
       return;
     }
     const p1Label = (document.getElementById('p1-name')?.value || '').trim() || 'J1';
@@ -971,7 +971,7 @@ document.getElementById('btn-send-startgg').addEventListener('click', () => open
       document.getElementById('sgg-current-set-id').value = '';
       document.getElementById('sgg-p1-entrant-id').value  = '';
       document.getElementById('sgg-p2-entrant-id').value  = '';
-      if (sb) { sb.dataset.setid = ''; sb.dataset.p1entrantid = ''; sb.dataset.p2entrantid = ''; sb.style.display = 'none'; }
+      if (sb) { sb.dataset.setid = ''; sb.dataset.p1entrantid = ''; sb.dataset.p2entrantid = ''; sb.style.display = ''; sb.classList.add('is-locked'); }
       setStatus('Score envoyé sur start.gg !');
       document.getElementById('match-sgg-refresh-sets')?.click();
       setTimeout(() => { modal.style.display = 'none'; sendBtn.disabled = false; }, 700);

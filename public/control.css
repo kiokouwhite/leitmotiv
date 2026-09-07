@@ -1842,6 +1842,14 @@ code {
   cursor: not-allowed;
 }
 
+/* Bouton d'action verrouillé (ex : « Envoyer sur start.gg » sans set lié) :
+   toujours visible mais grisé — reste cliquable pour afficher un message. */
+.btn.is-locked {
+  opacity: 0.4;
+  filter: grayscale(0.7);
+  cursor: not-allowed;
+}
+
 .ban-seq-block.pick {
   background: rgba(232, 184, 48, 0.12);
   border: 1px solid rgba(232, 184, 48, 0.5);

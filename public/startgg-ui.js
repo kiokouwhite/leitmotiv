@@ -728,7 +728,9 @@
       sendBtn.dataset.setid       = setId       || '';
       sendBtn.dataset.p1entrantid = p1EntrantId || '';
       sendBtn.dataset.p2entrantid = p2EntrantId || '';
-      sendBtn.style.display = setId ? '' : 'none';
+      // Toujours visible : grisé (is-locked) si aucun set lié, actif sinon.
+      sendBtn.style.display = '';
+      sendBtn.classList.toggle('is-locked', !setId);
     }
     const p1TagInput      = document.getElementById('p1-tag');
     const p1NameInput     = document.getElementById('p1-name');
