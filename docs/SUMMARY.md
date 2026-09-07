@@ -40,6 +40,8 @@
 
 * [VS Screen & Victoire](overlays/vs-victory.md)
 * [Cam](overlays/cam.md)
+  * [Fonctionnement](overlays/cam/fonctionnement.md)
+  * [Customisation](overlays/cam/customisation.md)
 * [Bandeau défilant](overlays/ticker.md)
 * [Cadres](overlays/frames.md)
 * [Minuteur](overlays/timer.md)
