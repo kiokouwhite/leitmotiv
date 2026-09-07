@@ -38,11 +38,11 @@
 
 ## 🧩 Overlays annexes
 
-* [Cam](overlays/cam.md)
-* [Cadres](overlays/frames.md)
-* [Bandeau défilant](overlays/ticker.md)
-* [Minuteur](overlays/timer.md)
 * [VS Screen & Victoire](overlays/vs-victory.md)
+* [Cam](overlays/cam.md)
+* [Bandeau défilant](overlays/ticker.md)
+* [Cadres](overlays/frames.md)
+* [Minuteur](overlays/timer.md)
 * [Next / Prochains matchs](overlays/next.md)
 
 ## 🎛 Master overlay
