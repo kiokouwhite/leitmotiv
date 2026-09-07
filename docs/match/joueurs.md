@@ -3,112 +3,15 @@
 Tout se passe dans l'onglet **Principal** du panneau. C'est là que tu remplis les deux joueurs affichés sur le scoreboard.
 
 {% hint style="success" %}
-Le plus souvent, tu ne remplis **pas** ça à la main : tu **charges le set depuis start.gg** et les deux joueurs se remplissent tout seuls. Voir [Charger un set](../startgg/charger.md). Cette page décrit ce que contient chaque champ.
+Le plus souvent, tu ne remplis **pas** ça à la main : tu **charges le set depuis start.gg** et les deux joueurs se remplissent tout seuls. Voir [Charger un set](../startgg/charger.md).
 {% endhint %}
 
-## Panneau de gauche/droite
+L'onglet **Principal** est organisé en trois zones, chacune détaillée dans sa page :
 
-### Identité du joueur
-
-| Champ       | Rôle                                                                                                                               |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **Tag**     | L'équipe/la team dont fait partie la personne (le champ affiché devant le pseudo.)                                                 |
-| Pseudo      | Le pseudo choisi par le joueur, c'est le champ principal.                                                                          |
-| **Pronoms** | Affichés en petit près du tag (ex. `she/her`, `il/lui`).                                                                           |
-| **Seed**    | Le _seed_ = le classement de départ attribué au joueur dans le bracket (seed 1 = tête de série). Affichable sur certains overlays. |
-
-### Personnage
-
-1. Tape le nom du personnage dans le champ de recherche.
-2. Choisis la **couleur de skin** avec les pastilles (1 à 8).
-3. L'image du personnage s'affiche automatiquement sur l'overlay.
-
-{% hint style="info" %}
-Les images de personnages sont dans `public/Stock Icons/` (icônes) et `public/full/` (arts complets). Format : `chara_2_{Nom}_{00…07}.png` pour les icônes, `chara_1_{Nom}_{00…07}.png` pour les arts. Pour un jeu autre que Smash, le champ perso peut rester vide.
-{% endhint %}
-
-### Réseaux sociaux
-
-Jusqu'à **3 comptes** par joueur (Twitter/X, Twitch, YouTube). Ils s'affichent en petit carrousel sous le tag. Si tu charges le joueur depuis start.gg, ses réseaux peuvent être récupérés automatiquement.
-
-### Drapeau
-
-Cherche un pays par nom ou code (ex. `FR`, `France`). Le drapeau apparaît sur l'overlay. La position du drapeau se règle dans la [Customisation du scoreboard](../apparence/presets.md).
-
-### Couleur du joueur
-
-Chaque joueur a une **couleur d'accent** utilisée pour les touches visuelles (bordures, aura…). Tu peux la choisir manuellement ou la synchroniser avec la couleur du skin sélectionné.
-
-### Inverser les joueurs
-
-Le bouton **⇄ Inverser** échange J1 et J2 avec **toutes** leurs données (tag, perso, score, couleur…). Pratique quand les joueurs changent de côté physiquement.
+* [**Panneau de gauche/droite**](joueurs/les-joueurs.md) — l'identité des deux joueurs (tag, pseudo, personnage, drapeau, réseaux…).
+* [**Panneau du milieu**](joueurs/infos-du-match.md) — les infos du match (événement, phase, format).
+* [**Score**](joueurs/score.md) — modifier, reporter et piloter le score.
 
 ***
 
-## Panneau du milieu
-
-Ces champs de l'onglet **Principal** décrivent le contexte du match affiché en haut du scoreboard.
-
-### Événement & phase
-
-| Champ         | Rôle                                                                                                                    |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **Événement** | Pour mettre le nom du tournoi et de l'événement en cours (exemple : Lorem Ipsum #246, Super Smash Bros Ultimate etc...) |
-| **Phase**     | Pour mettre le nom de la phase ou le round en cours (`Pools A`, `Top 8`, `Winners Final`, `Grand Final)`                |
-
-Quand tu charges un set depuis start.gg, la phase se remplit souvent automatiquement.
-
-### Format du match
-
-Choisis le format : **Bo1**, **Bo3**, **Bo5** ou **Custom**. Le format détermine le nombre de manches et l'affichage des scores (ex. « first to 3 » en Bo5).
-
-{% hint style="info" %}
-Pense à ajuster le format au round : les premiers tours sont généralement en **Bo3**, puis on passe en **Bo5** pour la suite.
-{% endhint %}
-
-***
-
-## Score
-
-### Modifier le score
-
-Dans l'onglet **Principal** :
-
-* **+ / −** sous chaque joueur pour incrémenter / décrémenter,
-
-Le changement apparaît **instantanément** sur l'overlay.
-
-### Envoyer sur start.gg
-
-Si tu es connecté·e à start.gg et que le set courant vient de start.gg, un bouton **« Envoyer sur start.gg »** apparaît. Il reporte le score final directement sur la plateforme.
-
-{% hint style="danger" %}
-**start.gg est la source de vérité.** On reporte toujours le résultat sur start.gg (via ce bouton, ou via la [télécommande 3DS](../avance/remote-3ds.md), ou directement sur start.gg). Le scoreboard n'est qu'un affichage : ce qui compte pour le bracket, c'est ce qui est sur start.gg.
-{% endhint %}
-
-Détails complets : [Reporter le score](../startgg/reporter.md).
-
-### Match depuis start.gg
-
-Le bouton **« Match depuis start.gg »** (dans le panneau du milieu) ouvre une fenêtre pour charger un set directement depuis start.gg, sans quitter l'onglet **Principal**.
-
-* Si un tournoi est déjà configuré, la fenêtre affiche la **liste des sets** en cours / en attente. Clique sur un set : les **deux joueurs** et le **round** remplissent le scoreboard automatiquement, les scores repassent à 0, et la fenêtre se ferme.
-* Si aucun tournoi n'est encore connecté, la fenêtre affiche le bloc de **recherche / connexion** pour en choisir un.
-
-{% hint style="info" %}
-C'est le raccourci le plus rapide pour remplir le scoreboard en régie. Le détail complet (file de stream, vérifications avant de lancer) est sur la page [Charger un set](../startgg/charger.md).
-{% endhint %}
-
-### Contrôle par Stream Deck
-
-Les scores peuvent aussi se piloter depuis un Stream Deck :
-
-* `/api/deck/score/1/add` — +1 au joueur 1
-* `/api/deck/score/2/add` — +1 au joueur 2
-* `/api/deck/score/reset` — remet à 0
-
-Voir [Stream Deck](../avance/stream-deck.md).
-
-***
-
-➡️ Ensuite : [Commentateurs](casters.md)
+➡️ Ensuite : [Panneau de gauche/droite](joueurs/les-joueurs.md)

@@ -12,6 +12,9 @@
 ## 🏆 Gérer un match
 
 * [Scoreboard](match/joueurs.md)
+  * [Panneau de gauche/droite](match/joueurs/les-joueurs.md)
+  * [Panneau du milieu](match/joueurs/infos-du-match.md)
+  * [Score](match/joueurs/score.md)
 * [Commentateurs](match/casters.md)
 
 ## 🎮 start.gg (le cœur du workflow)
