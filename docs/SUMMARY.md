@@ -49,7 +49,7 @@
 * [Minuteur](overlays/timer.md)
 * [Next / Prochains matchs](overlays/next.md)
 
-## 🎛 Master overlay
+## 🎛️ Master overlay
 
 * [Master (tout-en-un)](overlays/master.md)
 
