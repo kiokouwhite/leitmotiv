@@ -2,6 +2,8 @@
 
 Ces champs de l'onglet **Principal** décrivent le contexte du match affiché en haut du scoreboard.
 
+<figure><img src="../../.gitbook/assets/panneau-milieu.png" alt="Panneau du milieu — Informations du match"><figcaption><p>Le panneau du milieu : événement, phase, format, et les actions start.gg.</p></figcaption></figure>
+
 ## Événement & phase
 
 | Champ         | Rôle                                                                                                                    |

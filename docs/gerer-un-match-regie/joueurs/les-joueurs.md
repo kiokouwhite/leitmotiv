@@ -2,6 +2,8 @@
 
 Les deux panneaux latéraux de l'onglet **Principal** contiennent l'identité des deux joueurs (J1 à gauche, J2 à droite).
 
+<figure><img src="../../.gitbook/assets/carte-joueur.png" alt="Carte d'un joueur dans le panneau"><figcaption><p>Le panneau d'un joueur (J1) : identité, réseaux, drapeau, personnage, couleur et score.</p></figcaption></figure>
+
 ## Identité du joueur
 
 | Champ       | Rôle                                                                                                                               |
@@ -40,6 +42,8 @@ Chaque joueur a une **couleur d'accent** utilisée pour les touches visuelles (b
 ### Modifier le score
 
 Sous chaque joueur, les boutons **+ / −** incrémentent / décrémentent son score. Le changement apparaît **instantanément** sur l'overlay.
+
+<figure><img src="../../.gitbook/assets/score-controls.png" alt="Boutons de score moins / valeur / plus"><figcaption><p>Le contrôle de score sous chaque joueur : − pour retirer un point, + pour en ajouter.</p></figcaption></figure>
 
 ### Inverser les joueurs
 
