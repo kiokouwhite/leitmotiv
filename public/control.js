@@ -13026,8 +13026,11 @@ document.querySelectorAll('.conn-copy-btn').forEach(btn => {
     .then(data => {
       if (data.error) { setVerifyStatus('❌ ' + data.error, 'err'); return; }
       setVerifyStatus('✓ Tournoi trouvé : ' + data.name, 'ok');
-      if (data.name && !nameInput.value) nameInput.value = data.name;
-      if (data.logoUrl) { logoInput.value = data.logoUrl; updateLogoPreview(data.logoUrl); }
+      // « Vérifier » est une action explicite : on rafraîchit toujours les infos
+      // du tournoi trouvé (sinon changer de tournoi laissait l'ancien nom/logo).
+      if (data.name) nameInput.value = data.name;
+      logoInput.value = data.logoUrl || '';
+      updateLogoPreview(logoInput.value);
       if (data.events?.length) populateEventSelect(data.events, eventSelect?.dataset.savedId);
     })
     .catch(() => setVerifyStatus('❌ Erreur réseau', 'err'))
