@@ -823,6 +823,10 @@ function update(s) {
   document.body.classList.toggle('sb-anchor-middle', _sbRow === 'middle');
   document.body.classList.toggle('sb-anchor-bottom', _sbRow === 'bottom');
 
+  // Centrage horizontal : « bar » centre la barre entière, « logo » aligne le
+  // bloc central (VS / logo) sur le centre de l'écran.
+  applySbCenterShift(s, _sbAnch);
+
   // Lot 4 / 6 : event-bar — vars posées sur <body> (et pas sur #scoreboard) pour
   // qu'elles restent accessibles à .event-bar même en mode détaché, où la barre
   // est sortie du DOM du scoreboard (cf. déplacement plus bas).
@@ -1402,3 +1406,51 @@ fetch('/api/state')
     applyCompactCorner(s);
     update(s);
   });
+
+
+// ── Centrage horizontal du scoreboard ────────────────────────────────────────
+// Deux modes :
+//   • « bar »  : la barre entière est centrée (comportement historique).
+//   • « logo » : la barre est décalée pour que le bloc central (VS / logo)
+//                tombe pile au centre de l'écran. Utile dès que les deux
+//                joueurs n'ont pas la même largeur (pseudos de longueurs
+//                différentes), car la barre devient alors asymétrique.
+// Le décalage est posé dans le translateX, qui déplace la barre au pixel rendu
+// près : il est donc multiplié par le zoom (--sb-scale) pour compenser.
+let _sbCenterLast = { anchor: 'top-center', mode: 'bar' };
+
+function applySbCenterShift(state, anchor) {
+  const sbEl = document.getElementById('scoreboard');
+  if (!sbEl) return;
+  const mode = (state && state.sbCenterMode) || 'bar';
+  _sbCenterLast = { anchor: anchor || _sbCenterLast.anchor, mode };
+  const centered = String(_sbCenterLast.anchor).endsWith('-center');
+  const c = sbEl.querySelector('.score-center');
+  if (!centered || mode !== 'logo' || !c) {
+    sbEl.style.setProperty('--sb-center-shift', '0px');
+    return;
+  }
+  // Offset cumulé du bloc central jusqu'au scoreboard (coordonnées de layout).
+  let left = 0, node = c;
+  while (node && node !== sbEl) { left += node.offsetLeft; node = node.offsetParent; }
+  // Le translateX déplace la barre au pixel rendu près (1:1), alors que l'écart
+  // mesuré est en px de layout : il faut donc le multiplier par le zoom courant.
+  const scale = parseFloat(getComputedStyle(sbEl).getPropertyValue('--sb-scale')) || 1;
+  const shift = ((sbEl.offsetWidth / 2) - (left + c.offsetWidth / 2)) * scale;
+  sbEl.style.setProperty('--sb-center-shift', Math.round(shift) + 'px');
+}
+
+// Recalcule quand la largeur de la barre bouge (pseudo plus long, perso chargé…).
+// Le shift n'agit que sur le transform : il ne modifie pas offsetWidth, donc
+// pas de boucle avec le ResizeObserver.
+(function () {
+  const sbEl = document.getElementById('scoreboard');
+  if (!sbEl || typeof ResizeObserver === 'undefined') return;
+  let raf = null;
+  const ro = new ResizeObserver(() => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => applySbCenterShift({ sbCenterMode: _sbCenterLast.mode }, _sbCenterLast.anchor));
+  });
+  ro.observe(sbEl);
+  sbEl.querySelectorAll('.player, .score-center').forEach(el => ro.observe(el));
+})();

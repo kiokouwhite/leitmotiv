@@ -18,6 +18,21 @@ Panneau → onglet **Customisation** → catégorie **SSBU** → **Scoreboard**.
 | **Drapeaux** | Affichage et position des drapeaux |
 | **Particules** | Type de particules et teinte |
 
+### Centrage horizontal
+
+Dans l'onglet **Scoreboard** → **Position & taille** → **Ancrage & position**, deux modes :
+
+| Mode | Ce qui est aligné sur le centre de l'écran |
+| --- | --- |
+| **Barre entière** *(défaut)* | Le bloc scoreboard dans son ensemble |
+| **Logo / VS** | Le bloc central (VS / logo) — la barre se décale en conséquence |
+
+Les deux donnent le même résultat quand les deux joueurs ont la même largeur. Dès que ce n'est plus le cas (un pseudo bien plus long que l'autre), la barre devient **asymétrique** : centrer la barre décale visuellement le VS, alors que le mode **Logo / VS** le remet pile au milieu de l'image.
+
+{% hint style="info" %}
+Sans effet si l'ancrage choisi n'est pas un ancrage **centré** (haut-centre, centre, bas-centre).
+{% endhint %}
+
 ## Les aperçus en direct
 
 Deux aperçus, à droite du panneau :

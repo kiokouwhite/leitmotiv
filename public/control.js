@@ -295,6 +295,8 @@ function syncFromState(s) {
   const _sbAnch = s.sbAnchor
     || (s.sbAnchorY ? `${s.sbAnchorY}-center` : 'top-center');
   document.querySelectorAll('.sb-anchor-btn').forEach(b => b.classList.toggle('active', b.dataset.anchor === _sbAnch));
+  const _sbCM = s.sbCenterMode || 'bar';
+  document.querySelectorAll('.sb-center-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.centermode === _sbCM));
   updateLogoPreview();
 
   // Format buttons
@@ -689,6 +691,7 @@ function buildStateFromForm() {
     cardsSeparated:      document.getElementById('cards-separated')?.checked === true,
     // Lot 5 : ancrage vertical du scoreboard
     sbAnchor:            document.querySelector('.sb-anchor-btn.active')?.dataset.anchor || 'top-center',
+    sbCenterMode:        document.querySelector('.sb-center-mode-btn.active')?.dataset.centermode || 'bar',
     // Lot 4 : event-bar tripartite
     eventBarLeftWidth:   parseInt(document.getElementById('eb-left-width-num')?.value ?? 0),
     eventBarRightWidth:  parseInt(document.getElementById('eb-right-width-num')?.value ?? 0),
@@ -3394,7 +3397,7 @@ document.querySelectorAll('.sb-pcolor-btn').forEach(btn => {
 // Lot 4 + Lot 5 + Lot 6 : multi-toggles (alignement, empilement, ancrage, casse, graisse).
 [['.eb-left-align-btn', 'align'], ['.eb-stack-btn', 'stack'], ['.sb-anchor-btn', 'anchor'],
  ['.eb-case-btn', 'case'], ['.eb-weight-btn', 'weight'], ['.eb-mode-btn', 'mode'],
- ['.eb-shadow-btn', 'shadow'], ['.sb-shadow-on-btn', 'shadow']].forEach(([sel]) => {
+ ['.eb-shadow-btn', 'shadow'], ['.sb-shadow-on-btn', 'shadow'], ['.sb-center-mode-btn', 'centermode']].forEach(([sel]) => {
   document.querySelectorAll(sel).forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll(sel).forEach(b => b.classList.remove('active'));
@@ -3507,6 +3510,7 @@ const SCOREBOARD_DEFAULTS = {
   eventBarShadowSpread: 0, eventBarShadowAngle: 315,
   // Lot 5
   sbAnchor: 'top-center',
+  sbCenterMode: 'bar',
   sbScale: 100, sbX: 0, sbY: 0,
 };
 
