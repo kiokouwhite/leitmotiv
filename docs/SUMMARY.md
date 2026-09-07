@@ -13,8 +13,10 @@
 ## 🏆 Gérer un match (Régie)
 
 * [Scoreboard](gerer-un-match-regie/joueurs/README.md)
-  * [Panneau de gauche/droite](gerer-un-match-regie/joueurs/les-joueurs.md)
-  * [Panneau du milieu](gerer-un-match-regie/joueurs/infos-du-match.md)
+  * [Fonctionnement](gerer-un-match-regie/joueurs/fonctionnement.md)
+    * [Panneau de gauche/droite](gerer-un-match-regie/joueurs/les-joueurs.md)
+    * [Panneau du milieu](gerer-un-match-regie/joueurs/infos-du-match.md)
+  * [Customisation](gerer-un-match-regie/joueurs/customisation.md)
 * [Commentateurs](gerer-un-match-regie/casters.md)
 
 ## 🎮 start.gg (le cœur du workflow)
