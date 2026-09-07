@@ -4509,6 +4509,9 @@ body.sb-overflow-ellipsis .player-name { overflow: hidden; text-overflow: ellips
    ancré à la barre (et il est masqué de toute façon dès qu'un logo est posé). */
 body.sb-logo-float .center-logo-area img,
 body.sb-logo-float .center-logo-area iframe {
-  transform: translate(calc(-1 * var(--sb-x, 0px) / var(--sb-scale, 1)),
-                       calc(-1 * var(--sb-y, 0px) / var(--sb-scale, 1)));
+  /* IMPORTANT : en mode float le logo est en position absolue et c'est ce
+     translate(-50%, -50%) qui le centre. On le conserve donc, en lui ajoutant
+     la contre-translation — sinon le logo se décentre. */
+  transform: translate(calc(-50% - var(--sb-x, 0px) / var(--sb-scale, 1)),
+                       calc(-50% - var(--sb-y, 0px) / var(--sb-scale, 1)));
 }
