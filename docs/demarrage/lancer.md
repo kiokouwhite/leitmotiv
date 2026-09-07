@@ -30,17 +30,6 @@ http://localhost:3002/control
 
 Garde cet onglet **ouvert en permanence** pendant le stream. Tout se pilote de là.
 
-## Se connecter (mot de passe)
-
-Si un mot de passe a été configuré, une page de connexion apparaît d'abord (`/login`). Saisis le mot de passe du panneau ; un cookie de session te garde connecté·e.
-
-* **Où changer le mot de passe** : onglet **Paramètres** du panneau → section sécurité → *Changer le mot de passe*.
-* Si **aucun** mot de passe n'est défini, la connexion est désactivée et le panneau s'ouvre directement (pratique en local, à éviter si le PC est accessible sur le réseau).
-
-{% hint style="danger" %}
-Si tu ouvres le panneau depuis un autre PC du réseau (multi-PC), **mets un mot de passe**. Voir [Multi-PC & accès distant](../avance/multi-pc.md).
-{% endhint %}
-
 ## Les onglets du panneau
 
 | Onglet | À quoi ça sert |
@@ -48,7 +37,7 @@ Si tu ouvres le panneau depuis un autre PC du réseau (multi-PC), **mets un mot 
 | **Principal** | Le match en cours : joueurs, personnages, scores, casters, import start.gg, stage veto |
 | **Customisation** | L'apparence : thèmes, presets de scoreboard, réglages fins de chaque overlay |
 | **OBS** | Les liens des overlays à copier dans OBS + téléchargement de la collection OBS |
-| **Paramètres** | Clés API (start.gg, Twitch, YouTube), mot de passe, multi-PC, accès distant |
+| **Paramètres** | Clés API (start.gg, Twitch, YouTube), multi-PC, accès distant |
 
 ---
 

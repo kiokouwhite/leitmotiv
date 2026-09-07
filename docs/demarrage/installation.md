@@ -42,14 +42,13 @@ npm install
 ## 4. Créer le fichier `config.json`
 
 {% hint style="danger" %}
-`config.json` contient la **clé API start.gg** et le **mot de passe** du panneau. Il n'est **jamais** partagé sur GitHub (il est ignoré volontairement). Sur un nouveau PC, il faut donc le recréer ou le recopier depuis une clé USB / le PC principal.
+`config.json` contient la **clé API start.gg**. Il n'est **jamais** partagé sur GitHub (il est ignoré volontairement). Sur un nouveau PC, il faut donc le recréer ou le recopier depuis une clé USB / le PC principal.
 {% endhint %}
 
 Au premier lancement, l'appli crée un `config.json` par défaut si besoin. Tu renseigneras ensuite depuis le panneau :
 
 * la clé API start.gg → voir [Connexion à start.gg](../startgg/connexion.md)
 * les identifiants Twitch / YouTube (optionnel) → voir [Plateformes](../plateformes/twitch.md)
-* le mot de passe du panneau → voir [Lancer & se connecter](lancer.md)
 
 {% hint style="info" %}
 **Ce qui EST sur GitHub** : le code, et le fichier `sb-presets.json` (nos thèmes et presets, ex. _Hoplan_). Donc en clonant le repo tu récupères directement nos presets de scoreboard. **Ce qui n'y est PAS** : `config.json` (secrets) et le dossier `public/uploads/` (images uploadées).

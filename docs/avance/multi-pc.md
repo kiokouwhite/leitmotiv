@@ -17,7 +17,7 @@ Utilise Leitmotiv sur un PC dédié pendant qu'OBS tourne sur un autre PC du **m
 {% endhint %}
 
 {% hint style="danger" %}
-Dès que le panneau est joignable depuis d'autres machines, **mets un mot de passe** (onglet Paramètres). Voir [Lancer & se connecter](../demarrage/lancer.md).
+Le panneau n'a **aucune authentification** : toute personne qui atteint `http://<IP>:3002/control` sur le réseau peut piloter le stream. N'ouvre le port que sur un réseau de confiance.
 {% endhint %}
 
 ## Accès distant (hors réseau local)
@@ -28,7 +28,7 @@ Leitmotiv intègre un **tunnel d'accès distant** : il expose ton serveur local 
 * Une URL publique est générée quand le tunnel est actif.
 
 {% hint style="danger" %}
-Une URL publique rend ton panneau **accessible depuis Internet**. **Toujours** un mot de passe fort, et **coupe le tunnel** dès que tu n'en as plus besoin.
+Une URL publique rend ton panneau **accessible depuis Internet**, sans **aucun mot de passe** pour le protéger : quiconque a l'URL peut piloter le stream. Ne la communique qu'aux personnes concernées, et **coupe le tunnel** dès que tu n'en as plus besoin.
 {% endhint %}
 
 {% hint style="info" %}

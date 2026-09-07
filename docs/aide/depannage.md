@@ -8,9 +8,6 @@ Node.js n'est pas installé (ou pas dans le PATH). Réinstalle-le depuis [nodejs
 **Le panneau ne s'ouvre pas sur `localhost:3002`.**
 La fenêtre noire du serveur est-elle bien ouverte ? Si un autre logiciel occupe le port 3002, ferme-le. Sinon relance `start.bat`.
 
-**J'ai oublié le mot de passe du panneau.**
-Il faut le réinitialiser côté `config.json` / relancer la configuration. Demande à la personne qui gère l'installation.
-
 ## Les overlays dans OBS
 
 **L'overlay est tout noir (pas transparent).**

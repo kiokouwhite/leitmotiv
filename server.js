@@ -5,9 +5,6 @@ const path = require('path');
 const fs = require('fs');
 const net = require('net');
 const os = require('os');
-const crypto = require('crypto');
-const rateLimit = require('express-rate-limit');
-const auth = require('./auth-state'); // S1 : module central d'authentification (hash + rotation à chaud)
 const remoteAccess = require('./remote-access'); // S3 : tunnel ngrok intégré (module additif isolé)
 const updater = require('./update-checker'); // S4 : check + DL + apply mises à jour GitHub (release v1.0.0+)
 const { mountRemote3DS } = require('./remote-3ds'); // télécommande de score « 3DS only » (module additif isolé)
@@ -30,52 +27,6 @@ function saveRulesets(list) {
 
 const PORT     = process.env.PORT || 3002;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
-// S1 : SESSION_SECRET et CONTROL_PASSWORD ne sont plus capturés en `const`.
-// L'état vit dans auth-state.js et est lu via getters → permet la rotation à chaud.
-
-// ─── Auth helpers ─────────────────────────────────────────────────────────────
-
-function signToken(payload) {
-  const data = JSON.stringify(payload);
-  const sig  = crypto.createHmac('sha256', auth.getSessionSecret()).update(data).digest('base64url');
-  return Buffer.from(data).toString('base64url') + '.' + sig;
-}
-
-function verifyToken(token) {
-  if (!token) return null;
-  const [dataPart, sig] = token.split('.');
-  if (!dataPart || !sig) return null;
-  const expected = crypto.createHmac('sha256', auth.getSessionSecret()).update(Buffer.from(dataPart, 'base64url').toString()).digest('base64url');
-  // Garde anti-throw : timingSafeEqual exige des buffers de même longueur.
-  const sigBuf = Buffer.from(sig);
-  const expBuf = Buffer.from(expected);
-  if (sigBuf.length !== expBuf.length) return null;
-  if (!crypto.timingSafeEqual(sigBuf, expBuf)) return null;
-  try { return JSON.parse(Buffer.from(dataPart, 'base64url').toString()); } catch { return null; }
-}
-
-function parseCookies(req) {
-  const raw = req.headers.cookie || '';
-  return Object.fromEntries(raw.split(';').map(c => {
-    const i = c.indexOf('=');
-    return i < 0
-      ? [decodeURIComponent(c.trim()), '']
-      : [decodeURIComponent(c.slice(0, i).trim()), decodeURIComponent(c.slice(i + 1).trim())];
-  }));
-}
-
-function requireAuth(req, res, next) {
-  if (!auth.isAuthEnabled()) return next();
-  const cookies = parseCookies(req);
-  const payload = verifyToken(cookies['pso-session']);
-  if (payload && payload.auth === true) return next();
-  if (req.path === '/login' || req.path === '/api/login') return next();
-  // Réponse 401 JSON dès qu'on tape une API (Accept JSON OU /api/*), sinon redirect HTML.
-  const wantsJson = (req.headers.accept && req.headers.accept.includes('application/json'))
-                 || req.path.startsWith('/api/');
-  if (wantsJson) return res.status(401).json({ error: 'Non authentifié' });
-  res.redirect('/login');
-}
 
 const app = express();
 const server = http.createServer(app);
@@ -93,27 +44,6 @@ app.use(express.json({ limit: '25mb' }));
 // S1 : trust proxy pour que req.ip reflète le vrai client (rate-limit par IP).
 // Sans ça, derrière un reverse-proxy tout le monde partage la même IP → rate-limit global.
 app.set('trust proxy', 1);
-
-// S1 : rate-limiter dédié au login. 5 tentatives par IP / 15 min, ne décompte que les échecs.
-const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
-  standardHeaders: true,
-  legacyHeaders: false,
-  skipSuccessfulRequests: true,
-  message: { error: 'Trop de tentatives, réessayez dans 15 minutes' },
-});
-
-// Auth check on /control and write-API routes — overlays stay public
-app.use((req, res, next) => {
-  const p = req.path.toLowerCase();
-  const isControl  = p === '/control' || p === '/control.html';
-  const isWriteApi = req.method !== 'GET' && p.startsWith('/api/') && p !== '/api/login';
-  // S1 : /api/server-info passe désormais par l'auth (expose la topologie réseau LAN).
-  const isServerInfo = p === '/api/server-info';
-  if (isControl || isWriteApi || isServerInfo) return requireAuth(req, res, next);
-  next();
-});
 
 
 // Favicon inline (évite le 404 + l'indicateur de chargement permanent du navigateur).
@@ -145,72 +75,6 @@ app.use(express.static(path.join(__dirname, 'public'), {
   },
 }));
 app.use('/companion', express.static(path.join(__dirname, 'companion')));
-
-// ─── Auth routes ──────────────────────────────────────────────────────────────
-
-app.get('/login', (req, res) => {
-  if (!auth.isAuthEnabled()) return res.redirect('/control');
-  const cookies = parseCookies(req);
-  if (verifyToken(cookies['pso-session'])?.auth) return res.redirect('/control');
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
-});
-
-app.post('/api/login', loginLimiter, async (req, res) => {
-  const { password } = req.body || {};
-  // verifyPassword retourne true si auth désactivée (préserve la sémantique d'origine).
-  const ok = await auth.verifyPassword(password || '');
-  if (!ok) return res.status(401).json({ error: 'Mot de passe incorrect' });
-  const token  = signToken({ auth: true, ts: Date.now() });
-  const maxAge = 7 * 24 * 3600;
-  const secureFlag = (req.secure || req.headers['x-forwarded-proto'] === 'https') ? '; Secure' : '';
-  res.setHeader('Set-Cookie', `pso-session=${encodeURIComponent(token)}; HttpOnly; Path=/; Max-Age=${maxAge}; SameSite=Lax${secureFlag}`);
-  res.json({ ok: true });
-});
-
-app.get('/logout', (req, res) => {
-  res.setHeader('Set-Cookie', 'pso-session=; HttpOnly; Path=/; Max-Age=0');
-  res.redirect('/login');
-});
-
-// S1 : API admin pour changer le mot de passe à chaud (sans restart).
-// Protégée par le middleware global (POST + /api/ + pas /api/login).
-app.post('/api/auth/change-password', async (req, res) => {
-  const { current, next: nextPwd } = req.body || {};
-  if (typeof nextPwd !== 'string' || nextPwd.length < 4) {
-    return res.status(400).json({ error: 'Nouveau mot de passe requis (4 chars min)' });
-  }
-  // Si une auth est déjà active, exiger le mdp actuel (en plus du cookie déjà validé par requireAuth).
-  if (auth.isAuthEnabled()) {
-    const ok = await auth.verifyPassword(current || '');
-    if (!ok) return res.status(401).json({ error: 'Mot de passe actuel incorrect' });
-  }
-  try {
-    await auth.setControlPassword(nextPwd);
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
-
-// S1 : rotation du session secret (invalide tous les cookies → re-login forcé).
-app.post('/api/auth/rotate-secret', (req, res) => {
-  try {
-    auth.rotateSessionSecret();
-    res.setHeader('Set-Cookie', 'pso-session=; HttpOnly; Path=/; Max-Age=0');
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
-
-// S1 : statut auth (pour bannière UI « mot de passe par défaut / secret d'usine »).
-app.get('/api/auth/status', requireAuth, (req, res) => {
-  res.json({
-    authEnabled: auth.isAuthEnabled(),
-    hasDefaultPassword: auth.hasDefaultPassword(),
-    hasDefaultSessionSecret: auth.hasDefaultSessionSecret(),
-  });
-});
 
 // ─── Server info (baseUrl + réseau) ──────────────────────────────────────────
 
@@ -2014,30 +1878,8 @@ app.delete('/api/rulesets/saved/:name', (req, res) => {
 
 // ─── Socket.io ────────────────────────────────────────────────────────────────
 
-// S1 : middleware Socket.IO. Politique :
-//  - Pas d'auth configurée → tout le monde passe (parité avec requireAuth HTTP).
-//  - Auth configurée → on lit le cookie pso-session OU socket.handshake.auth.token,
-//    on stocke socket.data.auth = payload | null. La connexion est TOUJOURS
-//    acceptée (overlays publics doivent recevoir les broadcasts en lecture seule).
-//  - Les 9 events de mutation sont gatés individuellement plus bas via requireSocketAuth.
-io.use((socket, next) => {
-  if (!auth.isAuthEnabled()) { socket.data.auth = { anonymous: true }; return next(); }
-  const cookies    = parseCookies({ headers: socket.handshake.headers });
-  const fromCookie = verifyToken(cookies['pso-session']);
-  const fromAuth   = verifyToken(socket.handshake.auth && socket.handshake.auth.token);
-  const payload    = (fromCookie && fromCookie.auth) ? fromCookie
-                   : (fromAuth   && fromAuth.auth)   ? fromAuth
-                   : null;
-  socket.data.auth = payload; // null = overlay public (lecture seule)
-  next();
-});
 
 io.on('connection', (socket) => {
-  // Helper : ignore silencieusement un event si le socket n'est pas authentifié.
-  // Silence volontaire pour ne pas leaker la liste des events à un attaquant.
-  const requireSocketAuth = (handler) => (...args) => {
-    if (!auth.isAuthEnabled() || socket.data.auth) return handler(...args);
-  };
   socket.emit('stateUpdate', matchState);
   socket.emit('vetoUpdate', vetoState);
   socket.emit('rulesetUpdate', rulesetState);
@@ -2053,42 +1895,42 @@ io.on('connection', (socket) => {
   socket.emit('top8Update', top8State);
 
   // Déclenche l'animation d'entrée sur la VS screen
-  socket.on('triggerVsScreen', requireSocketAuth(() => {
+  socket.on('triggerVsScreen', (() => {
     io.emit('vsScreenTrigger');
   }));
 
-  socket.on('hideVsScreen', requireSocketAuth(() => {
+  socket.on('hideVsScreen', (() => {
     io.emit('vsScreenHide');
   }));
 
-  socket.on('updateState', requireSocketAuth((data) => {
+  socket.on('updateState', ((data) => {
     matchState = { ...matchState, ...data };
     io.emit('stateUpdate', matchState);
   }));
 
-  socket.on('updateVeto', requireSocketAuth((data) => {
+  socket.on('updateVeto', ((data) => {
     vetoState = { ...vetoState, ...data };
     io.emit('vetoUpdate', vetoState);
   }));
 
-  socket.on('updateRuleset', requireSocketAuth((data) => {
+  socket.on('updateRuleset', ((data) => {
     rulesetState = { ...rulesetState, ...data };
     vetoState = makeVetoState();
     io.emit('rulesetUpdate', rulesetState);
     io.emit('vetoUpdate', vetoState);
   }));
 
-  socket.on('updateCharacters', requireSocketAuth((data) => {
+  socket.on('updateCharacters', ((data) => {
     characterList = data;
     io.emit('characterUpdate', characterList);
   }));
 
-  socket.on('updateCasters', requireSocketAuth((data) => {
+  socket.on('updateCasters', ((data) => {
     castersState = { ...castersState, ...data };
     io.emit('castersUpdate', castersState);
   }));
 
-  socket.on('vetoAction', requireSocketAuth(({ stageId }) => {
+  socket.on('vetoAction', (({ stageId }) => {
     const step = vetoState.sequence[vetoState.currentStep];
     if (!step || step.action === 'decider') return;
     const stage = vetoState.stages.find(s => s.id === stageId);
@@ -2114,7 +1956,7 @@ io.on('connection', (socket) => {
     io.emit('vetoUpdate', vetoState);
   }));
 
-  socket.on('vetoNextGame', requireSocketAuth(() => {
+  socket.on('vetoNextGame', (() => {
     const selected = vetoState.stages.find(s => s.status === 'selected');
     const newPlayed = [...(vetoState.playedStageIds || [])];
     if (selected) newPlayed.push(selected.id);
@@ -4399,8 +4241,8 @@ app.post('/api/upcoming/refresh', async (req, res) => {
 mountRemote3DS(app, { io, getMatchState: () => matchState, startggQuery, getTournamentConfig });
 
 // ─── S3 : Endpoints HTTP du tunnel ngrok ─────────────────────────────────────
-// Toutes les écritures POST passent par le middleware d'auth global (requireAuth).
-// Le GET status n'est pas protégé (pas de secret renvoyé — le token n'est jamais en clair).
+// Aucune authentification : ces endpoints sont ouverts à qui atteint le port.
+// Le GET status ne renvoie jamais le token ngrok en clair.
 
 app.get('/api/remote-access/status', (req, res) => {
   res.json(remoteAccess.getRemoteAccessStatus());
