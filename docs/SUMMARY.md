@@ -45,6 +45,8 @@
   * [Fonctionnement](overlays/cam/fonctionnement.md)
   * [Customisation](overlays/cam/customisation.md)
 * [Bandeau défilant](overlays/ticker.md)
+  * [Fonctionnement](overlays/ticker/fonctionnement.md)
+  * [Customisation](overlays/ticker/customisation.md)
 * [Cadres](overlays/frames.md)
 * [Minuteur](overlays/timer.md)
 * [Next / Prochains matchs](overlays/next.md)
