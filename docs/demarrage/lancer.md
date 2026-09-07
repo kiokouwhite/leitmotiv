@@ -52,4 +52,4 @@ Si tu ouvres le panneau depuis un autre PC du réseau (multi-PC), **mets un mot 
 
 ---
 
-➡️ Ensuite : [Configurer OBS](obs.md)
+➡️ Ensuite : [Configuration du tournoi](configuration-tournoi.md)

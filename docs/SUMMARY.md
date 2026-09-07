@@ -6,6 +6,7 @@
 
 * [Installation](demarrage/installation.md)
 * [Lancer & se connecter](demarrage/lancer.md)
+* [Configuration du tournoi](demarrage/configuration-tournoi.md)
 * [Configurer OBS](demarrage/obs.md)
 * [Tous les overlays](demarrage/overlays.md)
 
