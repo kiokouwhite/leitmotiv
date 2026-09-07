@@ -18,6 +18,20 @@ Panneau → onglet **Customisation** → catégorie **SSBU** → **Scoreboard**.
 | **Drapeaux** | Affichage et position des drapeaux |
 | **Particules** | Type de particules et teinte |
 
+### Position du score
+
+Dans l'onglet **Score**, le réglage **Position** place le chiffre :
+
+| Option | Où se place le score |
+| --- | --- |
+| **⇆ Entre** *(défaut)* | Au centre de la barre, de part et d'autre du VS |
+| **↑ Au-dessus** | Au-dessus des cartes joueurs |
+| **📦 Cartes (centre)** | Dans les cartes, chaque score poussé vers le centre de la barre |
+| **◧ Cartes gauche** | Dans les cartes, les **deux** scores sur le bord **gauche** |
+| **◨ Cartes droite** | Dans les cartes, les **deux** scores sur le bord **droit** |
+
+Les trois variantes « cartes » rapprochent le score du joueur concerné, à la façon d'un scoreboard TSH.
+
 ### Débordement du texte
 
 Dans l'onglet **Scoreboard** → **Géométrie des cartes** → **Débordement du texte**, le menu **« Si le texte est plus grand que la carte »** propose trois comportements :
