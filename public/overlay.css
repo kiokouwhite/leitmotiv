@@ -486,7 +486,7 @@ body.sb-score-above .players-container > .score-center .series-dots {
 
 .player-seed {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: var(--seed-font-size, 11px);
   font-weight: 700;
   color: var(--smash-muted);
   letter-spacing: 1px;
@@ -512,7 +512,7 @@ body.sb-score-above .players-container > .score-center .series-dots {
 
 .player-pronouns {
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: var(--pronouns-font-size, 14px);
   font-weight: 600;
   color: var(--pronouns-color, var(--smash-muted));
   letter-spacing: 0.5px;

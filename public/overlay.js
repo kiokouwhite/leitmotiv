@@ -754,6 +754,8 @@ function update(s) {
   sb.style.setProperty('--char-size',            (s.characterSize ?? 100) + 'px');
   sb.style.setProperty('--name-font-size',       (s.nameFontSize ?? 24) + 'px');
   sb.style.setProperty('--tag-font-size',        (s.tagFontSize ?? 16) + 'px');
+  sb.style.setProperty('--pronouns-font-size',   (s.pronounsFontSize ?? 14) + 'px');
+  sb.style.setProperty('--seed-font-size',       (s.seedFontSize ?? 11) + 'px');
   // Position du score — classe body sb-score-<between|above>
   const scorePos = ['above','in-cards','in-cards-outer'].includes(s.scorePositionMode) ? s.scorePositionMode : 'between';
   // Les trois variantes « dans les cartes » partagent la classe sb-score-in-cards
