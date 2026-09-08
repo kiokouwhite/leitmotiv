@@ -210,6 +210,8 @@ function syncFromState(s) {
   if (_sbBdStyle) _sbBdStyle.value = s.sbBorderStyle || 'solid';
   const _sbBdPos = document.getElementById('sb-border-position');
   if (_sbBdPos) _sbBdPos.value = s.sbBorderPosition || 'inside';
+  const _sbBdOn = s.sbBorderOn !== false ? 'on' : 'off';
+  document.querySelectorAll('.sb-border-on-btn').forEach(b => b.classList.toggle('active', b.dataset.border === _sbBdOn));
   // Ombre portée scoreboard — toggle + select + 4 sliders (opacity/dist/spread/angle).
   // Le slider Flou existe déjà via la boucle pair-sync (sb-shadow-range/num).
   const _sbShOn = s.sbShadowOn !== false ? 'on' : 'off';
@@ -688,6 +690,7 @@ function buildStateFromForm() {
     playerCardSkew:      parseInt(document.getElementById('player-card-skew-num')?.value ?? 20),
     sbBorderColor:       document.getElementById('sb-border-color')?.value || '#2A2A3E',
     sbBorderWidth:       parseInt(document.getElementById('sb-border-width-num')?.value ?? 1),
+    sbBorderOn:          document.querySelector('.sb-border-on-btn.active')?.dataset.border !== 'off',
     sbBorderStyle:       document.getElementById('sb-border-style')?.value || 'solid',
     sbBorderPosition:    document.getElementById('sb-border-position')?.value || 'inside',
     sbShadowIntensity:   parseInt(document.getElementById('sb-shadow-num')?.value ?? 32),
@@ -3441,7 +3444,8 @@ document.querySelectorAll('.sb-pcolor-btn').forEach(btn => {
 // Lot 4 + Lot 5 + Lot 6 : multi-toggles (alignement, empilement, ancrage, casse, graisse).
 [['.eb-left-align-btn', 'align'], ['.eb-stack-btn', 'stack'], ['.sb-anchor-btn', 'anchor'],
  ['.eb-case-btn', 'case'], ['.eb-weight-btn', 'weight'], ['.eb-mode-btn', 'mode'],
- ['.eb-shadow-btn', 'shadow'], ['.sb-shadow-on-btn', 'shadow'], ['.sb-center-mode-btn', 'centermode']].forEach(([sel]) => {
+ ['.eb-shadow-btn', 'shadow'], ['.sb-shadow-on-btn', 'shadow'], ['.sb-center-mode-btn', 'centermode'],
+ ['.sb-border-on-btn', 'border']].forEach(([sel]) => {
   document.querySelectorAll(sel).forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll(sel).forEach(b => b.classList.remove('active'));
@@ -3528,7 +3532,7 @@ const SCOREBOARD_DEFAULTS = {
   // Lot 3
   playerCardMinWidth: 320, scoreboardHeight: 0, playerCardRadius: 0, playerCardPadding: 0,
   playerCardShape: 'rectangle', playerCardSkew: 20,
-  sbBorderColor: '#2A2A3E', sbBorderWidth: 1, sbBorderStyle: 'solid', sbBorderPosition: 'inside',
+  sbBorderColor: '#2A2A3E', sbBorderWidth: 1, sbBorderStyle: 'solid', sbBorderPosition: 'inside', sbBorderOn: true,
   sbShadowIntensity: 32, sbShadowColor: '#000000',
   sbShadowOn: true, sbShadowBlend: 'normal', sbShadowOpacity: 80,
   sbShadowDistance: 4, sbShadowSpread: 0, sbShadowAngle: 270,
@@ -6921,6 +6925,8 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       setVal('sb-border-color', P);
       setVal('sb-border-width-range', 2);
       setVal('sb-border-width-num', 2);
+      // Le theme pose un contour visible : inutile de le laisser eteint.
+      document.querySelectorAll('.sb-border-on-btn').forEach(b => b.classList.toggle('active', b.dataset.border === 'on'));
       setVal('center-logo-glow-color', P);
       setVal('score-bg-color', P);
       // Couleur secondaire → pronoms, texte événement, carré score J2

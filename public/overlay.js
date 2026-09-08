@@ -680,13 +680,15 @@ function update(s) {
   sb.style.setProperty('--player-card-radius',   (s.playerCardRadius ?? 0) + 'px');
   // Contour du scoreboard (carte « Contour »)
   sb.style.setProperty('--sb-border-color', s.sbBorderColor || '#2A2A3E');
-  sb.style.setProperty('--sb-border-width', (s.sbBorderWidth ?? 1) + 'px');
+  // Le toggle Off/On de la carte « Contour » force l'épaisseur effective à 0
+  // sans écraser la valeur réglée : repasser sur On restitue l'épaisseur.
+  const _bw = s.sbBorderOn === false ? 0 : parseInt(s.sbBorderWidth ?? 1);
+  sb.style.setProperty('--sb-border-width', _bw + 'px');
   sb.style.setProperty('--sb-border-style', ['solid','dashed','dotted','double'].includes(s.sbBorderStyle) ? s.sbBorderStyle : 'solid');
   // Contour à 0 → efface aussi les bordures d'accent (couleur joueur sous
   // les cartes, portrait, dots, barre événement) via body.sb-no-border.
-  document.body.classList.toggle('sb-no-border', parseInt(s.sbBorderWidth ?? 1) === 0);
+  document.body.classList.toggle('sb-no-border', _bw === 0);
   // Position du contour — Interne (border) / Milieu / Externe (outline + offset)
-  const _bw = parseInt(s.sbBorderWidth ?? 1);
   const _bpos = ['inside','center','outside'].includes(s.sbBorderPosition) ? s.sbBorderPosition : 'inside';
   document.body.classList.toggle('sb-border-pos-center',  _bpos === 'center');
   document.body.classList.toggle('sb-border-pos-outside', _bpos === 'outside');
