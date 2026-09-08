@@ -448,6 +448,8 @@ function syncFromState(s) {
   if (sbOpacityEl) sbOpacityEl.value = s.sbBgOpacity ?? 100;
   const sbNameAlignEl = document.getElementById('sb-name-valign');
   if (sbNameAlignEl) sbNameAlignEl.value = s.sbNameAlign || 'middle';
+  const sbNameHAlignEl = document.getElementById('sb-name-halign');
+  if (sbNameHAlignEl) sbNameHAlignEl.value = s.sbNameHAlign || 'mirror';
   const scoreAlignEl = document.getElementById('score-valign');
   if (scoreAlignEl) scoreAlignEl.value = s.scoreAlign || 'top';
   // Image de fond du scoreboard — miniature
@@ -621,6 +623,7 @@ function buildStateFromForm() {
     eventTextSize: parseInt(document.getElementById('event-text-size')?.value ?? 12),
     eventTextColor: document.getElementById('event-text-color')?.value || '#5A5A7A',
     sbNameAlign: document.getElementById('sb-name-valign')?.value || 'middle',
+    sbNameHAlign: document.getElementById('sb-name-halign')?.value || 'mirror',
     sbNameX: parseInt(document.getElementById('sb-name-x-num')?.value ?? 0),
     sbNameY: parseInt(document.getElementById('sb-name-y-num')?.value ?? 0),
     sbBgColor: document.getElementById('sb-bg-color')?.value || '#0E0E12',
@@ -3510,7 +3513,7 @@ const SCOREBOARD_DEFAULTS = {
   themePalette: { primary: '#E8B830', secondary: '#3070E8', white: '#F0EEF8', black: '#0E0E12' }, customThemeActive: false,
   // Couleurs textes + fond + textures (anciennement onglet Textes/Fond, maintenant Scoreboard)
   tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A', seedColor: '#5A5A7A',
-  sbNameAlign: 'middle', sbNameX: 0, sbNameY: 0,
+  sbNameAlign: 'middle', sbNameHAlign: 'mirror', sbNameX: 0, sbNameY: 0,
   sbBgColor: '#0E0E12', sbBgOpacity: 100, sbBgImage: null,
   sbBgImageFit: 'cover', sbBgImageBlend: 'normal', sbBgImageOpacity: 100, sbBgImageAdapt: false, sbBgImageW: 0, sbBgImageH: 0,
   overlayTexture: null, overlayTextureOpacity: 50, overlayTextureBlend: 'normal', overlayTextureSize: 'repeat',
@@ -9222,6 +9225,7 @@ document.getElementById('sb-bg-image-fit')?.addEventListener('change', () => emi
 document.getElementById('sb-bg-image-blend')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Alignement vertical des noms (haut / milieu / bas)
 document.getElementById('sb-name-valign')?.addEventListener('change', () => emitState(buildStateFromForm()));
+document.getElementById('sb-name-halign')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Alignement vertical du score (haut / milieu / bas)
 document.getElementById('score-valign')?.addEventListener('change', () => emitState(buildStateFromForm()));
 // Opacité de l'image de fond (slider <-> number liés)

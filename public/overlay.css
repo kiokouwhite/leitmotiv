@@ -478,10 +478,14 @@ body.sb-score-above .players-container > .score-center .series-dots {
   text-transform: uppercase;
   padding: 0 20px;
   white-space: nowrap;
+  /* Alignement horizontal (Customisation > Position du texte). En mode
+     « miroir » overlay.js ne pose pas --sb-halign : chaque côté garde alors
+     son repli, J1 à gauche et J2 à droite. */
+  text-align: var(--sb-halign, left);
 }
 
 .player-right .player-name {
-  text-align: right;
+  text-align: var(--sb-halign, right);
 }
 
 .player-seed {

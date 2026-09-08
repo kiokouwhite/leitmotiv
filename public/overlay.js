@@ -648,6 +648,11 @@ function update(s) {
   // Alignement vertical des noms/tags dans les cartes (haut / milieu / bas).
   const valignMap = { top: 'flex-start', middle: 'center', bottom: 'flex-end' };
   sb.style.setProperty('--sb-valign', valignMap[s.sbNameAlign] || 'center');
+  // Alignement horizontal. « Miroir » (défaut) = on retire la variable pour
+  // laisser jouer les replis CSS, qui donnent J1 à gauche et J2 à droite.
+  const _hal = s.sbNameHAlign;
+  if (['left', 'center', 'right'].includes(_hal)) sb.style.setProperty('--sb-halign', _hal);
+  else sb.style.removeProperty('--sb-halign');
   sb.style.setProperty('--sb-name-x', (s.sbNameX ?? 0) + 'px');
   sb.style.setProperty('--sb-name-y', (s.sbNameY ?? 0) + 'px');
 
