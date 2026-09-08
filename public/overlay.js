@@ -232,7 +232,7 @@ function applyCustomTheme(ct, sb) {
   const defaults = {
     bgType: 'gradient', bgColor1: '#0E0E12', bgColor2: '#16161E', bgAngle: 135,
     accentColor: '#E8B830', p1Color: '#E83030', p2Color: '#3070E8',
-    nameColor: '#F0EEF8', tagColor: '#E8B830', pronounsColor: '#5A5A7A',
+    nameColor: '#F0EEF8', tagColor: '#E8B830', pronounsColor: '#5A5A7A', seedColor: '#5A5A7A',
     scoreColor: '#F0EEF8', eventColor: '#5A5A7A', scoreSepColor: '#E8B830',
     neonEnabled: false, neonColor: '#E8B830', neonIntensity: 8,
     neonName: true, neonScore: true, neonTag: false, neonEvent: false, neonAccent: true,
@@ -259,6 +259,7 @@ function applyCustomTheme(ct, sb) {
   sb.style.setProperty('--name-color',      c.nameColor);
   sb.style.setProperty('--tag-color',       c.tagColor);
   sb.style.setProperty('--pronouns-color',  c.pronounsColor);
+  sb.style.setProperty('--seed-color',      c.seedColor);
   sb.style.setProperty('--event-text-color',c.eventColor);
   sb.style.setProperty('--score-color',     c.scoreColor);
   sb.style.setProperty('--smash-gold',      c.scoreSepColor);
@@ -964,6 +965,7 @@ function update(s) {
   sb.style.setProperty('--tag-color', s.tagColor || '#E8B830');
   sb.style.setProperty('--name-color', s.nameColor || '#F0EEF8');
   sb.style.setProperty('--pronouns-color', s.pronounsColor || '#5A5A7A');
+  sb.style.setProperty('--seed-color', s.seedColor || '#5A5A7A');
   // Onglet Score — couleur/taille du chiffre + VS + dots remplis
   if (s.scoreColor)     sb.style.setProperty('--score-color',    s.scoreColor);
   if (s.scoreVsColor)   sb.style.setProperty('--score-vs-color', s.scoreVsColor);
@@ -1358,7 +1360,7 @@ function applyEventBarTripartite() {
 // pour que tout preset hors-scoreboard hérite du même thème (background, polices, couleurs).
 const PRESET_THEME_VARS = [
   '--sb-bg', '--custom-font',
-  '--name-color', '--tag-color', '--pronouns-color',
+  '--name-color', '--tag-color', '--pronouns-color', '--seed-color',
   '--event-text-color', '--score-color', '--smash-gold',
 ];
 function syncThemeVarsToPreset(root) {

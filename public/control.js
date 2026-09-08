@@ -394,9 +394,11 @@ function syncFromState(s) {
   const tagEl = document.getElementById('tag-color');
   const nameEl = document.getElementById('name-color');
   const pronounsEl = document.getElementById('pronouns-color');
+  const seedColEl = document.getElementById('seed-color');
   if (tagEl) tagEl.value = s.tagColor || '#E8B830';
   if (nameEl) nameEl.value = s.nameColor || '#F0EEF8';
   if (pronounsEl) pronounsEl.value = s.pronounsColor || '#5A5A7A';
+  if (seedColEl) seedColEl.value = s.seedColor || '#5A5A7A';
   // Onglet Score — apparence du chiffre + VS + dots
   const _scCol = document.getElementById('score-color');
   if (_scCol) _scCol.value = s.scoreColor || '#F0EEF8';
@@ -597,6 +599,7 @@ function buildStateFromForm() {
     tagColor: document.getElementById('tag-color')?.value || '#E8B830',
     nameColor: document.getElementById('name-color')?.value || '#F0EEF8',
     pronounsColor: document.getElementById('pronouns-color')?.value || '#5A5A7A',
+    seedColor: document.getElementById('seed-color')?.value || '#5A5A7A',
     // Onglet Score : apparence du chiffre + VS + dots
     scoreColor:           document.getElementById('score-color')?.value || '#F0EEF8',
     scoreUsePlayerColor:  document.getElementById('score-use-player-color')?.checked === true,
@@ -1068,6 +1071,11 @@ document.getElementById('name-color').addEventListener('input', (e) => {
 
 document.getElementById('pronouns-color').addEventListener('input', (e) => {
   state.pronounsColor = e.target.value;
+  emitState(buildStateFromForm());
+});
+
+document.getElementById('seed-color').addEventListener('input', (e) => {
+  state.seedColor = e.target.value;
   emitState(buildStateFromForm());
 });
 
@@ -3497,7 +3505,7 @@ const SCOREBOARD_DEFAULTS = {
   // Palette du theme maker : 4 couleurs qui pilotent tous les champs couleur.
   themePalette: { primary: '#E8B830', secondary: '#3070E8', white: '#F0EEF8', black: '#0E0E12' }, customThemeActive: false,
   // Couleurs textes + fond + textures (anciennement onglet Textes/Fond, maintenant Scoreboard)
-  tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A',
+  tagColor: '#E8B830', nameColor: '#F0EEF8', pronounsColor: '#5A5A7A', seedColor: '#5A5A7A',
   sbNameAlign: 'middle', sbNameX: 0, sbNameY: 0,
   sbBgColor: '#0E0E12', sbBgOpacity: 100, sbBgImage: null,
   sbBgImageFit: 'cover', sbBgImageBlend: 'normal', sbBgImageOpacity: 100, sbBgImageAdapt: false, sbBgImageW: 0, sbBgImageH: 0,
@@ -6543,6 +6551,9 @@ function applyTheme(key) {
   state.tagColor       = t.tagColor;
   state.nameColor      = t.nameColor;
   state.pronounsColor  = t.pronounsColor;
+  // Les themes nommes ne declarent pas de couleur de seed : elle suit celle des
+  // pronoms, qui joue le meme role de texte secondaire attenue.
+  state.seedColor      = t.seedColor || t.pronounsColor;
 
   // Casters state
   castersState.bgColor   = t.castersBgColor;
@@ -6556,6 +6567,7 @@ function applyTheme(key) {
   document.getElementById('tag-color').value        = t.tagColor;
   document.getElementById('name-color').value       = t.nameColor;
   document.getElementById('pronouns-color').value   = t.pronounsColor;
+  document.getElementById('seed-color').value       = t.seedColor || t.pronounsColor;
   document.getElementById('casters-bg-color').value   = t.castersBgColor;
   document.getElementById('casters-bg-opacity').value = t.castersBgOpacity;
 
@@ -6913,6 +6925,7 @@ document.querySelectorAll('.theme-preset-card').forEach(card => {
       setVal('score-bg-color', P);
       // Couleur secondaire → pronoms, texte événement, carré score J2
       setVal('pronouns-color', S);
+      setVal('seed-color', S);
       setVal('event-text-color', S);
       setVal('score-bg-color-p2', S);
       // Cadre événement : fond = noir du thème, bordure = principale
@@ -7202,7 +7215,7 @@ const THEME_PRESET_FIELDS = [
   'overlayTheme','overlayStyle',
   'sbBgColor','sbBgOpacity',
   'eventTextColor','eventTextSize',
-  'tagColor','nameColor','pronounsColor',
+  'tagColor','nameColor','pronounsColor','seedColor',
   'sbScale','sbX','sbY',
   'particleOpacity','particleCountScale','particlesEnabled','logoParticleCount',
   'transparentPositions',
@@ -7238,6 +7251,7 @@ function applyThemePreset(preset) {
   setInput('tag-color',      preset.tagColor);
   setInput('name-color',     preset.nameColor);
   setInput('pronouns-color', preset.pronounsColor);
+  setInput('seed-color',     preset.seedColor);
   setInput('sb-scale-range', preset.sbScale);  setInput('sb-scale-num', preset.sbScale);
   setInput('sb-x-range',     preset.sbX);      setInput('sb-x-num', preset.sbX);
   setInput('sb-y-range',     preset.sbY);      setInput('sb-y-num', preset.sbY);
@@ -13965,6 +13979,7 @@ initScrollNav('casters-scroll-area', 'casters-nav-titles');
           { label: 'Pseudo joueur',   hex: normalizeToHex(T.nameColor) },
           { label: 'Tag joueur',      hex: normalizeToHex(T.tagColor) },
           { label: 'Pronoms',         hex: normalizeToHex(T.pronounsColor) },
+          { label: 'Seed',            hex: normalizeToHex(T.seedColor || T.pronounsColor) },
           { label: 'Texte event',     hex: normalizeToHex(T.eventTextColor) },
           { label: 'Score (chiffre)', hex: normalizeToHex(T.nameColor) },
         ];

@@ -9,7 +9,7 @@ Tout le thème dérive de ces quatre couleurs :
 | Couleur | Utilisée pour |
 |---|---|
 | **Principale** | Accents forts : bordures, titres, aura des cam, couleur principale des cartes |
-| **Secondaire** | Accents secondaires : lueurs (glow), particules, dégradés |
+| **Secondaire** | Accents secondaires : lueurs (glow), particules, dégradés, textes atténués (pronoms, seed) |
 | **Blanc** | Les textes clairs (noms, tags…) |
 | **Noir** | Les fonds sombres (cartes, panneaux…) |
 
